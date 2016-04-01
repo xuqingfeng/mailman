@@ -77,7 +77,7 @@ COPYRIGHT:
 
 	app := cli.NewApp()
 	app.Name = "mailman"
-	app.Usage = "send email via browser"
+	app.Usage = "send email through browser"
 	app.Version = "0.0.1"
 	app.Author = "xuqingfeng"
 	app.Action = func(c *cli.Context) {
