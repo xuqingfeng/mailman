@@ -39,7 +39,9 @@ func init() {
 	homeDir, _ := GetHomeDir()
 	logFile, err := os.OpenFile(homeDir+ConfigPath["logPath"]+"/"+LogName, os.O_WRONLY|os.O_CREATE, 0755)
 	if err != nil {
-		FileLog.Fatal(err.Error())
+        // mailman.log not exist
+		//FileLog.Fatal(err.Error())
+        os.Exit(1)
 	}
 	FileLog.Out = logFile
 	FileLog.Formatter = &logrus.TextFormatter{DisableColors: true}
