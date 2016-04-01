@@ -1,0 +1,24 @@
+footer {
+    margin-top: 5em;
+}
+
+footer li {
+    float: left;
+    margin-right: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+footer p {
+    clear: left;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+.label-gap {
+    margin-top: .5em;
+    margin-right: .5em;
+    cursor: pointer;
+}

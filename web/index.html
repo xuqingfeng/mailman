@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="assets/lib/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/lib/sweetalert/1.1.3/sweetalert.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <title>Mailman</title>
+</head>
+<body>
+
+<br>
+<div class="container" id="index">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <form action="#" class="form-horizontal" v-on:submit.prevent>
+                <fieldset>
+                    <legend>Mailman</legend>
+                    <div class="form-group">
+                        <label for="inputEmail" class="col-lg-2 control-label">Subject</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" id="inputEmail" placeholder="subject"
+                                   autocomplete="off" v-model="subject">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="to" class="col-lg-2 control-label">To</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" id="to" placeholder="to" autocomplete="off"
+                                   v-model="to">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cc" class="col-lg-2 control-label">Cc</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" id="cc" placeholder="cc"
+                                   autocomplete="off" v-model="cc">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="select" class="col-lg-2 control-label">From</label>
+                        <div class="col-lg-4">
+                            <select class="form-control" id="select" v-model="from">
+                                <option v-for="email in emails" v-bind:value="email">{{email}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="textArea" class="col-lg-2 control-label">Body</label>
+                        <div class="col-lg-10">
+                            <textarea class="form-control" rows="15" id="textArea" v-model="body"></textarea>
+                            <span class="help-block">Markdown syntax is supported !</span>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                    <!--<label for="mailTemplate" class="col-lg-2 control-label">Template</label>-->
+                    <!--<div class="col-lg-10" id="mailTemplate">-->
+                    <!--<button class="btn btn-default">Plain</button>-->
+                    <!--<button class="btn btn-default">Responsive</button>-->
+                    <!--<button class="btn btn-default">Action</button>-->
+                    <!--<button class="btn btn-default">Alert</button>-->
+                    <!--<button class="btn btn-default">Billing</button>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <br>
+                    <div class="form-group">
+                        <div class="col-lg-10 col-lg-offset-2">
+                            <button type="submit" class="btn btn-default" v-on:click="preview">Preview</button>
+                            <button type="submit" class="btn btn-primary pull-right" v-on:click="send">Send</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-10 col-lg-offset-2">
+                            <!--<iframe src="/api/preview" frameborder="0"></iframe>-->
+                            <span class="label label-primary" v-bind:class="{ 'hidden':previewLinkIsHidden }"><a
+                                    href="/api/preview" target="_blank" style="color: #ffffff;">Go To Preview</a></span>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8">
+                    <ul class="list-unstyled">
+                        <li><a href="index.html">Index</a></li>
+                        <li><a href="setting.html">Setting</a></li>
+                        <li><a href="log.html">Log</a></li>
+                    </ul>
+                    <p>Code released under MIT LICENSE</p>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script type="text/javascript" src="assets/lib/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="assets/lib/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/lib/vue/1.0.15/vue.min.js"></script>
+<script type="text/javascript" src="assets/lib/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script type="text/javascript" src="assets/js/index.js"></script>
+</body>
+</html>
