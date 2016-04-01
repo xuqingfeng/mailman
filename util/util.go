@@ -5,7 +5,6 @@ import (
 	"github.com/Sirupsen/logrus"
 	"os"
 	"os/user"
-    "log"
 )
 
 const (
@@ -38,11 +37,12 @@ var (
 func init() {
 
 	homeDir, _ := GetHomeDir()
+    CreateConfigDir()
 	logFile, err := os.OpenFile(homeDir+ConfigPath["logPath"]+"/"+LogName, os.O_WRONLY|os.O_CREATE, configMode)
 	if err != nil {
         // mailman.log not exist
-		//FileLog.Fatal(err.Error())
-        log.Fatal(err)
+		FileLog.Fatal(err.Error())
+        //log.Fatal(err)
 	}
 	FileLog.Out = logFile
 	FileLog.Formatter = &logrus.TextFormatter{DisableColors: true}
