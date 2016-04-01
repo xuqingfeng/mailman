@@ -36,7 +36,6 @@ var (
 		WriteBufferSize: 1024,
 	}
 	DataIsNotJsonErr = errors.New("data is not json format")
-	RandomInfoErr    = errors.New("this is a random info error")
 )
 
 type Key struct {
@@ -108,23 +107,6 @@ COPYRIGHT:
 		router.PathPrefix("/").Handler(http.FileServer(http.Dir("web")))
 
 		http.ListenAndServe(":8000", router)
-	}
-	app.Commands = []cli.Command{
-		{
-			Name:      "test",
-			ShortName: "t",
-			Usage:     "test func",
-			Action: func(c *cli.Context) {
-				//homeDir, _ := util.GetHomeDir()
-				//log.Info(homeDir)
-				//util.CreateConfigDir()
-
-				//err := util.DeleteAccount("js-xqf@hotmail.com")
-				//if err != nil {
-				//    log.Error(err.Error())
-				//}
-			},
-		},
 	}
 
 	app.Run(os.Args)
