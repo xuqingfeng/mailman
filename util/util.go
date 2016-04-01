@@ -5,10 +5,11 @@ import (
 	"github.com/Sirupsen/logrus"
 	"os"
 	"os/user"
+    "log"
 )
 
 const (
-	configDirMode    = 0755
+	configMode    = 0755
 	dbName           = "mailman.db"
 	LogName          = "mailman.log"
 	DefaultSMTPPort  = 25
@@ -37,11 +38,11 @@ var (
 func init() {
 
 	homeDir, _ := GetHomeDir()
-	logFile, err := os.OpenFile(homeDir+ConfigPath["logPath"]+"/"+LogName, os.O_WRONLY|os.O_CREATE, 0755)
+	logFile, err := os.OpenFile(homeDir+ConfigPath["logPath"]+"/"+LogName, os.O_WRONLY|os.O_CREATE, configMode)
 	if err != nil {
         // mailman.log not exist
 		//FileLog.Fatal(err.Error())
-        os.Exit(1)
+        log.Fatal(err)
 	}
 	FileLog.Out = logFile
 	FileLog.Formatter = &logrus.TextFormatter{DisableColors: true}
@@ -72,7 +73,7 @@ func CreateConfigDir() error {
 		var p = homeDir + path
 		if _, err := os.Stat(p); err != nil {
 			if os.IsNotExist(err) {
-				if err := os.MkdirAll(p, configDirMode); err != nil {
+				if err := os.MkdirAll(p, configMode); err != nil {
 					FileLog.Fatal(err.Error())
 					return err
 				}
