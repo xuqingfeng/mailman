@@ -7,6 +7,7 @@ new Vue({
         from: '',
         body: '',
         emails: [],
+        sendClicked: false,
         previewLinkIsHidden: true
     },
     ready: function () {
@@ -36,28 +37,68 @@ new Vue({
                 console.error('empty');
                 sweetAlert("Oops...", "missing info !", "error");
             } else {
-                var data = {
-                    data: JSON.stringify({
-                        subject: self.subject,
-                        to: to,
-                        cc: cc,
-                        from: self.from,
-                        body: self.body
-                    })
-                };
-                $.post('/api/mail', data, function (json) {
-                        console.info(json);
-                        if (json.success) {
-                            self.previewLinkIsHidden = true;
-                            swal("Awesome", json.msg, "success");
-                        } else {
-                            sweetAlert("Oops...", "send mail fail !", "error");
+                if (self.sendClicked) {
+                    swal({
+                        title: "Send Again ?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, do it !",
+                        cancelButtonText: "No, cancel it !",
+                        closeOnConfirm: true,
+                        closeOnCancel: true
+                    }, function (isConfirm) {
+                        if (isConfirm) {
+                            console.info('isConfirm');
+                            var data = {
+                                data: JSON.stringify({
+                                    subject: self.subject,
+                                    to: to,
+                                    cc: cc,
+                                    from: self.from,
+                                    body: self.body
+                                })
+                            };
+                            $.post('/api/mail', data, function (json) {
+                                    console.info(json);
+                                    if (json.success) {
+                                        self.previewLinkIsHidden = true;
+                                        swal("Email Delivered !", json.msg, "success");
+                                    } else {
+                                        sweetAlert("Oops...", "send mail fail !", "error");
+                                    }
+                                })
+                                .fail(function (err) {
+                                    console.error(err);
+                                    sweetAlert("Oops...", "request fail !", "error");
+                                });
                         }
-                    })
-                    .fail(function (err) {
-                        console.error(err);
-                        sweetAlert("Oops...", "request fail !", "error");
                     });
+                } else {
+                    self.sendClicked = true;
+                    var data = {
+                        data: JSON.stringify({
+                            subject: self.subject,
+                            to: to,
+                            cc: cc,
+                            from: self.from,
+                            body: self.body
+                        })
+                    };
+                    $.post('/api/mail', data, function (json) {
+                            console.info(json);
+                            if (json.success) {
+                                self.previewLinkIsHidden = true;
+                                swal("Email Delivered !", json.msg, "success");
+                            } else {
+                                sweetAlert("Oops...", "send mail fail !", "error");
+                            }
+                        })
+                        .fail(function (err) {
+                            console.error(err);
+                            sweetAlert("Oops...", "request fail !", "error");
+                        });
+                }
+
             }
         },
         preview: function () {

@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	configMode    = 0755
+	configMode       = 0755
 	dbName           = "mailman.db"
 	LogName          = "mailman.log"
 	DefaultSMTPPort  = 25
@@ -37,12 +37,12 @@ var (
 func init() {
 
 	homeDir, _ := GetHomeDir()
-    CreateConfigDir()
+	CreateConfigDir()
 	logFile, err := os.OpenFile(homeDir+ConfigPath["logPath"]+"/"+LogName, os.O_WRONLY|os.O_CREATE, configMode)
 	if err != nil {
-        // mailman.log not exist
+		// mailman.log not exist
 		FileLog.Fatal(err.Error())
-        //log.Fatal(err)
+		//log.Fatal(err)
 	}
 	FileLog.Out = logFile
 	FileLog.Formatter = &logrus.TextFormatter{DisableColors: true}
