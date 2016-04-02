@@ -25,14 +25,17 @@ new Vue({
     methods: {
         send: function () {
             var self = this;
-
-            if (!self.subject || !self.to || !self.from || !self.body) {
+            var to = self.to.split(',').filter(function (n) {
+                    return n;
+                }),
+                cc = self.cc.split(',').filter(function (n) {
+                    return n;
+                });
+            if (!self.subject || !self.from || !self.body || to.length < 1) {
                 // sweetAlert
                 console.error('empty');
                 sweetAlert("Oops...", "missing info !", "error");
             } else {
-                var to = self.to.split(','),
-                    cc = self.cc.split(',');
                 var data = {
                     data: JSON.stringify({
                         subject: self.subject,
@@ -42,7 +45,6 @@ new Vue({
                         body: self.body
                     })
                 };
-                console.info(data);
                 $.post('/api/mail', data, function (json) {
                         console.info(json);
                         if (json.success) {
