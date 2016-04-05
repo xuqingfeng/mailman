@@ -102,7 +102,7 @@ COPYRIGHT:
             os.Exit(1)
         }
 
-        log.Info("Open 127.0.0.1:" + strconv.Itoa(portInUse) + " in browser")
+        log.Info("open 127.0.0.1:" + strconv.Itoa(portInUse) + " in browser")
 
         s := spinner.New(spinner.CharSets[spinnerCharIndex], 100 * time.Millisecond)
         s.Color("cyan")
@@ -373,7 +373,7 @@ func WSLogHandler(rw http.ResponseWriter, r *http.Request) {
         if err != nil && err != io.EOF {
             log.Fatal(err.Error())
         } else if err == io.EOF {
-            // wait for me
+            // wait
             time.Sleep(readLogFileGap * time.Second)
         } else {
             if err = conn.WriteMessage(1, []byte(line)); err != nil {

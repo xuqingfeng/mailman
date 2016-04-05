@@ -1,26 +1,48 @@
 package smtp
 
-import "testing"
+import (
+    "testing"
+    "github.com/xuqingfeng/mailman/util"
+)
 
 var (
-	testSMTPServer = SMTPServer{
-		"@example.com",
-		"smtp.example.com",
-	}
+    testSMTPServer = SMTPServer{
+        "@example.com",
+        "smtp.example.com",
+    }
 )
+
+func TestGetSMTPServer(t *testing.T) {
+
+    _, err := GetSMTPServer("test" + testSMTPServer.Address)
+    if util.SMTPServerNotFoundErr != err {
+        t.Error("@example.com SMTP Server exist")
+    }
+}
 
 func TestSaveSMTPServer(t *testing.T) {
 
-	err := SaveSMTPServer(testSMTPServer)
-	if err != nil {
-		t.Errorf("SaveSMTPServer() fail %v", err)
-	}
+    err := SaveSMTPServer(testSMTPServer)
+    if err != nil {
+        t.Errorf("SaveSMTPServer() fail %v", err)
+    }
+}
+
+func TestGetCustomSMTPServer(t *testing.T) {
+
+    customSMTPServerList, err := GetCustomSMTPServer()
+    if err != nil {
+        t.Errorf("GetCustomSMTPServer() fail %v", err)
+    }
+    if len(customSMTPServerList) < 1 {
+        t.Error("GetCustomSMTPServer() fail")
+    }
 }
 
 func TestDeleteSMTPServer(t *testing.T) {
 
-	err := DeleteSMTPServer(testSMTPServer.Address)
-	if err != nil {
-		t.Errorf("DeleteSMTPServer() fail %v", err)
-	}
+    err := DeleteSMTPServer(testSMTPServer.Address)
+    if err != nil {
+        t.Errorf("DeleteSMTPServer() fail %v", err)
+    }
 }

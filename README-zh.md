@@ -3,8 +3,6 @@
 
 ![](https://img.shields.io/travis/xuqingfeng/mailman/master.svg?style=flat-square)
 
-
-
 #### 默认支持的邮箱类型
 
 - QQ Mail

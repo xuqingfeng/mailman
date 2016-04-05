@@ -3,9 +3,10 @@ go:
   - 1.5
   - 1.6
   - tip
-
+before_install:
+  - go get golang.org/x/tools/cmd/cover
+  - go get github.com/mattn/goveralls
 install:
   - go get -v ./...
-
 script:
-  - go test -v ./...
+  - $HOME/gopath/bin/goveralls -service=travis-ci -repotoken $COVERALLS_TOKEN
