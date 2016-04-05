@@ -23,6 +23,6 @@ func TestSendMail(t *testing.T) {
 func TestParseMailContent(t *testing.T) {
 
 	if "" == ParseMailContent("") {
-		t.Errorf("")
+		t.Error("ParseMailContent() fail")
 	}
 }

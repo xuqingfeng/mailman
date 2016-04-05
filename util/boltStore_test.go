@@ -18,8 +18,8 @@ func TestNewBoltStore(t *testing.T) {
 	if err != nil {
 		t.Errorf("NewBoltStore() fail %v", err)
 	}
-	if boltStore != nil {
-		t.Log("NewBoltStore() success")
+	if boltStore == nil {
+		t.Error("NewBoltStore() fail")
 	}
 }
 
@@ -36,8 +36,8 @@ func TestSetGet(t *testing.T) {
 	if err != nil {
 		t.Errorf("Get() fail %v", err)
 	}
-	if valueInBolt != nil {
-		t.Logf("Get() success %s", valueInBolt)
+	if valueInBolt == nil {
+		t.Error("Get() fail")
 	}
 }
 
@@ -51,8 +51,8 @@ func TestDelete(t *testing.T) {
 		t.Errorf("Delete() fail %v", err)
 	}
 	valueToBeDeleted, _ := boltStore.Get([]byte(k), kvBucketName)
-	if valueToBeDeleted == nil {
-		t.Log("Delete() success")
+	if valueToBeDeleted != nil {
+		t.Error("Delete() fail")
 	}
 }
 
@@ -71,8 +71,8 @@ func TestGetRange(t *testing.T) {
 	if err != nil {
 		t.Errorf("GetRange() fail %v", err)
 	}
-	if reflect.DeepEqual(kvGroup, kvGroupInBolt) {
-		t.Log("GetRange() success")
+	if !reflect.DeepEqual(kvGroup, kvGroupInBolt) {
+		t.Error("GetRange() fail")
 	}
 }
 

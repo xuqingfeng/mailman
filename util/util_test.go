@@ -8,7 +8,7 @@ func TestGetHomeDir(t *testing.T) {
 	if err != nil {
 		t.Errorf("GetHomeDir() fail %v", err)
 	}
-	if "" != homeDir {
-		t.Logf("GetHomeDir success %s", homeDir)
+	if "" == homeDir {
+		t.Error("GetHomeDir() fail")
 	}
 }
