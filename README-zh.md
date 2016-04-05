@@ -12,4 +12,4 @@
 - Outlook
 - Gmail
 
-关于 Gmail 无法发送邮件问题,查看这里:[https://support.google.com/mail/answer/14257](https://support.google.com/mail/answer/14257)
+关于 Gmail 无法发送邮件问题,查看这里: [https://support.google.com/mail/answer/14257](https://support.google.com/mail/answer/14257)

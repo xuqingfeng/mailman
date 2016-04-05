@@ -1,6 +1,15 @@
 (function () {
     if (window.WebSocket) {
-        var conn = new WebSocket('ws://localhost:8000/api/wslog');
+        // get random port ?
+        var loc = window.location, wsUri;
+        if ('https' === loc.scheme) {
+            wsUri = 'wss:';
+        } else {
+            wsUri = 'ws:';
+        }
+        wsUri += '//' + loc.host + '/api/wslog';
+        console.info('wsUri', wsUri);
+        var conn = new WebSocket(wsUri);
         conn.onopen = function () {
             console.info('ws opened');
 
