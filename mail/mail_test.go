@@ -15,14 +15,15 @@ func TestSendMail(t *testing.T) {
 		"example body",
 	}
 	err := SendMail(exampleMail)
-	if err != util.SMTPServerNotFoundErr {
-		t.Error("@example.com SMTP Server exist ")
+	if err != util.KeyNotFoundErr {
+		t.Error("@example.com key exist ")
 	}
 }
 
 func TestParseMailContent(t *testing.T) {
 
-	if "" == ParseMailContent("") {
+    // mail-template not exist
+	if "" != ParseMailContent("") {
 		t.Error("ParseMailContent() fail")
 	}
 }
