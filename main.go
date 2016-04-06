@@ -367,7 +367,6 @@ func WSLogHandler(rw http.ResponseWriter, r *http.Request) {
 		log.Error(err.Error())
 	}
 	reader := bufio.NewReader(logFile)
-
 	for {
 		line, err := reader.ReadString('\n')
 		if err != nil && err != io.EOF {

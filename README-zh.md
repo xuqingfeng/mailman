@@ -1,5 +1,5 @@
 ## mailman :cop:
-> send :e-mail: through browser
+> local :email: client with custom SMTP server
 
 ![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)
 ![Coverage Status](https://img.shields.io/coveralls/xuqingfeng/mailman/master.svg)
