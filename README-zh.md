@@ -1,5 +1,5 @@
 ## mailman :cop:
-> local :email: client with custom SMTP server
+> 可自定义 SMTP 服务器的本地:email:客户端
 
 ![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)
 ![Coverage Status](https://img.shields.io/coveralls/xuqingfeng/mailman/master.svg)
