@@ -18,14 +18,14 @@ func GetAccountEmail() ([]string, error) {
 	}
 	defer boltStore.Close()
 
-	accounts, err := boltStore.GetRange(util.AccountBucketName)
+	_, order, err := boltStore.GetRange(util.AccountBucketName)
 	if err != nil {
 		util.FileLog.Error(err.Error())
 		return nil, err
 	}
 	var ret []string
-	for k, _ := range accounts {
-		ret = append(ret, k)
+	for _, v := range order {
+		ret = append(ret, v)
 	}
 
 	return ret, nil

@@ -43,14 +43,14 @@ func GetCustomSMTPServer() ([]SMTPServer, error) {
 	}
 	defer boltStore.Close()
 
-	customSMTPServer, err := boltStore.GetRange(util.SmtpBucketName)
+	customSMTPServer, order, err := boltStore.GetRange(util.SmtpBucketName)
 	if err != nil {
 		util.FileLog.Error(err.Error())
 		return nil, err
 	}
 	var customSMTPServerList []SMTPServer
-	for k, v := range customSMTPServer {
-		customSMTPServerList = append(customSMTPServerList, SMTPServer{k, v})
+	for _, v := range order {
+		customSMTPServerList = append(customSMTPServerList, SMTPServer{v, customSMTPServer[v]})
 	}
 
 	return customSMTPServerList, nil

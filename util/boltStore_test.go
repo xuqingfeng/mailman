@@ -67,7 +67,7 @@ func TestGetRange(t *testing.T) {
 	for k, v := range kvGroup {
 		boltStore.Set([]byte(k), []byte(v), kvBucketName)
 	}
-	kvGroupInBolt, err := boltStore.GetRange(kvBucketName)
+	kvGroupInBolt, _, err := boltStore.GetRange(kvBucketName)
 	if err != nil {
 		t.Errorf("GetRange() fail %v", err)
 	}

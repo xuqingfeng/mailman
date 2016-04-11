@@ -10,6 +10,10 @@ var (
 		"test@example.com",
 		"password",
 	}
+	test1Account = Account{
+		"test1@example.com",
+		"password1",
+	}
 )
 
 func TestSaveAccount(t *testing.T) {
@@ -18,10 +22,12 @@ func TestSaveAccount(t *testing.T) {
 	if err != nil {
 		t.Errorf("SaveAccount() fail %v", err)
 	}
+	SaveAccount(test1Account)
 }
 func TestGetAccountEmail(t *testing.T) {
 
 	accounts, err := GetAccountEmail()
+	t.Logf("%#v", accounts)
 	if err != nil {
 		t.Errorf("GetAccountEmail() fail %v", err)
 	}
@@ -47,4 +53,5 @@ func TestDeleteAccount(t *testing.T) {
 	if err != nil {
 		t.Errorf("DeleteAccount() fail %v", err)
 	}
+	DeleteAccount("test1@example.com")
 }

@@ -18,14 +18,14 @@ func GetContacts() ([]Contacts, error) {
 	}
 	defer boltStore.Close()
 
-	contacts, err := boltStore.GetRange(util.ContactsBucketName)
+	contacts, order, err := boltStore.GetRange(util.ContactsBucketName)
 	if err != nil {
 		util.FileLog.Error(err.Error())
 		return nil, err
 	}
 	var contactsList []Contacts
-	for k, v := range contacts {
-		contactsList = append(contactsList, Contacts{k, v})
+	for _, v := range order {
+		contactsList = append(contactsList, Contacts{v, contacts[v]})
 	}
 
 	return contactsList, nil
