@@ -158,7 +158,7 @@ func (b *BoltStore) GetRange(bucketName []byte) (map[string]string, []string, er
 	var order []string
 	curs := tx.Bucket(bucketName).Cursor()
 	// reverse
-	for k, v := curs.Last(); k != nil; k, v = curs.Prev() {
+	for k, v := curs.First(); k != nil; k, v = curs.Next() {
 		ret[string(k)] = string(v)
 		order = append(order, string(k))
 		//FileLog.Warn("k: " + string(k) + " " + "v: " + string(v))
