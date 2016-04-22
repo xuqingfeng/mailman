@@ -23,6 +23,12 @@ func TestNewBoltStore(t *testing.T) {
 	if boltStore == nil {
 		t.Error("NewBoltStore() fail")
 	}
+
+	fakePath := "/tmp/fakeDir/fake.db"
+	_, err = NewBoltStore(fakePath)
+	if err == nil {
+		t.Error("db path doesn't exist NewBoltStore() should fail")
+	}
 }
 
 func TestSetGet(t *testing.T) {

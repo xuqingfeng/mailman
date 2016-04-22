@@ -12,7 +12,6 @@ const (
 	dbName           = "mailman.db"
 	LogName          = "mailman.log"
 	DefaultSMTPPort  = 25
-	DefaultLang      = "en"
 	MailBodyKey      = "YTua0G1ViXGg9fxvrtwVRNfKD"
 	MailTemplatePath = "./web/mail-template"
 	MailTemplateType = "responsive"
@@ -20,12 +19,13 @@ const (
 
 var (
 	FileLog    = logrus.New()
-	DBPath     string
 	ConfigPath = map[string]string{
 		"dbPath":  "/.mailman/db",
 		"logPath": "/.mailman/log",
 		"tmpPath": "/.mailman/tmp",
 	}
+	DBPath            string
+	DefaultLang       = "en"
 	DefaultSMTPServer = map[string]string{
 		"@qq.com":      "smtp.qq.com",
 		"@hotmail.com": "smtp.live.com",

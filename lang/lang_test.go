@@ -1,6 +1,9 @@
 package lang
 
-import "testing"
+import (
+	"github.com/xuqingfeng/mailman/util"
+	"testing"
+)
 
 func TestSaveLang(t *testing.T) {
 
@@ -9,6 +12,14 @@ func TestSaveLang(t *testing.T) {
 	if err != nil {
 		t.Errorf("SaveLang() fail %v", err)
 	}
+	// fail
+	fakePath := "/tmp/fakeDir/fake.db"
+	util.DBPath, fakePath = fakePath, util.DBPath
+	err = SaveLang(lang)
+	if err == nil {
+		t.Error("db file doesn't exist SaveLog() should fail")
+	}
+	util.DBPath, fakePath = fakePath, util.DBPath
 }
 
 func TestGetLang(t *testing.T) {
@@ -18,4 +29,20 @@ func TestGetLang(t *testing.T) {
 		t.Errorf("GetLang() fail %v", err)
 	}
 	t.Log(lng)
+
+	// fail
+	fakePath := "/tmp/fakeDir/fake.db"
+	util.DBPath, fakePath = fakePath, util.DBPath
+	lng, err = GetLang()
+	if err == nil {
+		t.Error("db file doesn't exist GetLog() should fail")
+	}
+	util.DBPath, fakePath = fakePath, util.DBPath
+	fakeLang := "fakeLang"
+	util.DefaultLang, fakeLang = fakeLang, util.DefaultLang
+	_, err = GetLang()
+	if err == nil {
+		t.Error("lang doesn't exist GetLog() should fail")
+	}
+	util.DefaultLang, fakeLang = fakeLang, util.DefaultLang
 }

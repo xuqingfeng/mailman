@@ -1,0 +1,14 @@
+mode: set
+github.com/xuqingfeng/mailman/contacts/contacts.go:13.40,16.16 2 1
+github.com/xuqingfeng/mailman/contacts/contacts.go:19.2,22.16 3 1
+github.com/xuqingfeng/mailman/contacts/contacts.go:26.2,27.26 2 1
+github.com/xuqingfeng/mailman/contacts/contacts.go:31.2,31.26 1 1
+github.com/xuqingfeng/mailman/contacts/contacts.go:16.16,18.3 1 0
+github.com/xuqingfeng/mailman/contacts/contacts.go:22.16,25.3 2 0
+github.com/xuqingfeng/mailman/contacts/contacts.go:27.26,29.3 1 1
+github.com/xuqingfeng/mailman/contacts/contacts.go:33.44,36.16 2 1
+github.com/xuqingfeng/mailman/contacts/contacts.go:39.2,41.94 2 1
+github.com/xuqingfeng/mailman/contacts/contacts.go:36.16,38.3 1 0
+github.com/xuqingfeng/mailman/contacts/contacts.go:43.41,46.16 2 1
+github.com/xuqingfeng/mailman/contacts/contacts.go:49.2,51.65 2 1
+github.com/xuqingfeng/mailman/contacts/contacts.go:46.16,48.3 1 0
