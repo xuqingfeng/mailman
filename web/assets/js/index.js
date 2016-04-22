@@ -5,6 +5,7 @@ new Vue({
         to: '',
         cc: '',
         from: '',
+        priority: false,
         body: '',
         emails: [],
         sendClicked: false,
@@ -37,6 +38,7 @@ new Vue({
                 console.error('empty');
                 sweetAlert("Oops...", "missing info !", "error");
             } else {
+                console.info('priority', self.priority);
                 if (self.sendClicked) {
                     swal({
                         title: "Send Again ?",
@@ -48,16 +50,17 @@ new Vue({
                         closeOnCancel: true
                     }, function (isConfirm) {
                         if (isConfirm) {
-                            console.info('isConfirm');
                             var data = {
                                 data: JSON.stringify({
                                     subject: self.subject,
                                     to: to,
                                     cc: cc,
                                     from: self.from,
+                                    priority: self.priority,
                                     body: self.body
                                 })
                             };
+                            console.log('data', data);
                             $.post('/api/mail', data, function (json) {
                                     console.info(json);
                                     if (json.success) {
@@ -81,9 +84,11 @@ new Vue({
                             to: to,
                             cc: cc,
                             from: self.from,
+                            priority: self.priority,
                             body: self.body
                         })
                     };
+                    console.log('data', data);
                     $.post('/api/mail', data, function (json) {
                             console.info(json);
                             if (json.success) {

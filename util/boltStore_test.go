@@ -1,9 +1,11 @@
 package util
 
 import (
+	"github.com/boltdb/bolt"
 	"os"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestMain(m *testing.M) {
@@ -83,5 +85,17 @@ func TestDeleteBucket(t *testing.T) {
 	err := boltStore.DeleteBucket(kvBucketName)
 	if err != nil {
 		t.Errorf("DeleteBucket() fail %v", err)
+	}
+}
+
+func TestMultiOpenBolt(t *testing.T) {
+	_, err := bolt.Open("testdata/test.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	if err != nil {
+		t.Errorf("bolt open fail %v", err)
+	}
+
+	_, err = bolt.Open("testdata/test.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	if err == nil {
+		t.Errorf("bolt reopen should fail  %v", err)
 	}
 }

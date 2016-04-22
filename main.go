@@ -144,9 +144,12 @@ func MailHandler(rw http.ResponseWriter, r *http.Request) {
 	} else if "POST" == r.Method {
 
 		data := r.PostFormValue("data")
+		log.Printf("data: %#v", data)
 		var m mail.Mail
 
 		err := json.Unmarshal([]byte(data), &m)
+		log.Printf("m: %#v", m)
+
 		if err != nil {
 
 			sendError(rw, DataIsNotJsonErr.Error())

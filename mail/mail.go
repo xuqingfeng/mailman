@@ -14,9 +14,10 @@ type Mail struct {
 	Subject string   `json:"subject"`
 	To      []string `json:"to"`
 	//Cc      []Contacts
-	Cc   []string `json:"cc"`
-	From string   `json:"from"`
-	Body string   `json:"body"`
+	Cc       []string `json:"cc"`
+	From     string   `json:"from"`
+	Priority bool     `json:"priority"`
+	Body     string   `json:"body"`
 }
 
 //****Mail START****
@@ -42,6 +43,10 @@ func SendMail(mail Mail) error {
 	// with name - SetAddressHeader
 	//m.SetAddressHeader("Cc", mail.Cc[0].Email, mail.Cc[0].Name)
 	m.SetHeader("From", account.Email)
+
+	if mail.Priority {
+		m.SetHeader("X-Priority", "1")
+	}
 
 	content := ParseMailContent(mail.Body)
 
