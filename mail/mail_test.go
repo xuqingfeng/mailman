@@ -32,6 +32,7 @@ func TestSendMail(t *testing.T) {
 		[]string{"to@example.com"},
 		[]string{},
 		"from@example.com",
+		false,
 		"example body",
 	}
 	err := SendMail(exampleMail)
