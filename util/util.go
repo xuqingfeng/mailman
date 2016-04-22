@@ -12,6 +12,7 @@ const (
 	dbName           = "mailman.db"
 	LogName          = "mailman.log"
 	DefaultSMTPPort  = 25
+	DefaultLang      = "en"
 	MailBodyKey      = "YTua0G1ViXGg9fxvrtwVRNfKD"
 	MailTemplatePath = "./web/mail-template"
 	MailTemplateType = "responsive"

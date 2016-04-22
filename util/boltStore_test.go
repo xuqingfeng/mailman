@@ -30,11 +30,11 @@ func TestSetGet(t *testing.T) {
 	k, v := "testKey", "testValue"
 	boltStore, _ := NewBoltStore(DBPath)
 	defer boltStore.Close()
-	err := boltStore.Set([]byte(k), []byte(v), kvBucketName)
+	err := boltStore.Set([]byte(k), []byte(v), testBucketName)
 	if err != nil {
 		t.Errorf("Set() fail %v", err)
 	}
-	valueInBolt, err := boltStore.Get([]byte(k), kvBucketName)
+	valueInBolt, err := boltStore.Get([]byte(k), testBucketName)
 	if err != nil {
 		t.Errorf("Get() fail %v", err)
 	}
@@ -48,11 +48,11 @@ func TestDelete(t *testing.T) {
 	k := "testKey"
 	boltStore, _ := NewBoltStore(DBPath)
 	defer boltStore.Close()
-	err := boltStore.Delete([]byte(k), kvBucketName)
+	err := boltStore.Delete([]byte(k), testBucketName)
 	if err != nil {
 		t.Errorf("Delete() fail %v", err)
 	}
-	valueToBeDeleted, _ := boltStore.Get([]byte(k), kvBucketName)
+	valueToBeDeleted, _ := boltStore.Get([]byte(k), testBucketName)
 	if valueToBeDeleted != nil {
 		t.Error("Delete() fail")
 	}
@@ -67,9 +67,9 @@ func TestGetRange(t *testing.T) {
 		"testKey1": "testValue1",
 	}
 	for k, v := range kvGroup {
-		boltStore.Set([]byte(k), []byte(v), kvBucketName)
+		boltStore.Set([]byte(k), []byte(v), testBucketName)
 	}
-	kvGroupInBolt, _, err := boltStore.GetRange(kvBucketName)
+	kvGroupInBolt, _, err := boltStore.GetRange(testBucketName)
 	if err != nil {
 		t.Errorf("GetRange() fail %v", err)
 	}
@@ -82,7 +82,7 @@ func TestDeleteBucket(t *testing.T) {
 
 	boltStore, _ := NewBoltStore(DBPath)
 	defer boltStore.Close()
-	err := boltStore.DeleteBucket(kvBucketName)
+	err := boltStore.DeleteBucket(testBucketName)
 	if err != nil {
 		t.Errorf("DeleteBucket() fail %v", err)
 	}

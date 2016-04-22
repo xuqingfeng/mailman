@@ -13,6 +13,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/xuqingfeng/mailman/account"
 	"github.com/xuqingfeng/mailman/contacts"
+	"github.com/xuqingfeng/mailman/lang"
 	"github.com/xuqingfeng/mailman/mail"
 	"github.com/xuqingfeng/mailman/smtp"
 	"github.com/xuqingfeng/mailman/util"
@@ -116,6 +117,7 @@ COPYRIGHT:
 
 		subRouter := router.PathPrefix("/api").Subrouter()
 		subRouter.HandleFunc("/", APIHandler)
+		subRouter.HandleFunc("/lang", LangHandler)
 		subRouter.HandleFunc("/mail", MailHandler)
 		subRouter.HandleFunc("/account", AccountHandler)
 		subRouter.HandleFunc("/contacts", ContactsHandler)
@@ -136,6 +138,41 @@ func APIHandler(rw http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(rw, "default api route")
 }
 
+func LangHandler(rw http.ResponseWriter, r *http.Request) {
+
+	if "GET" == r.Method {
+		lg, _ := lang.GetLang()
+
+		switch lg {
+		case "en", "zh":
+			sendSuccess(rw, lg, "get lang success")
+		default:
+			sendSuccess(rw, "en", "get lang success")
+		}
+
+	} else if "POST" == r.Method {
+
+		data := r.PostFormValue("data")
+		var lg lang.Lang
+		err := json.Unmarshal([]byte(data), &lg)
+		if err != nil {
+
+			sendError(rw, DataIsNotJsonErr.Error())
+		} else if err = lang.SaveLang(lg); err != nil {
+			sendError(rw, "save lang fail "+err.Error())
+		} else {
+			l, err := lang.GetLang()
+			if err != nil {
+
+				sendError(rw, "get lang fail "+err.Error())
+			} else {
+
+				sendSuccess(rw, l, "save lang success")
+			}
+		}
+	}
+}
+
 func MailHandler(rw http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
@@ -144,11 +181,9 @@ func MailHandler(rw http.ResponseWriter, r *http.Request) {
 	} else if "POST" == r.Method {
 
 		data := r.PostFormValue("data")
-		log.Printf("data: %#v", data)
 		var m mail.Mail
 
 		err := json.Unmarshal([]byte(data), &m)
-		log.Printf("m: %#v", m)
 
 		if err != nil {
 

@@ -12,10 +12,24 @@ new Vue({
         servers: [],
         emailClicked: false,
         contactsClicked: false,
-        smtpClicked: false
+        smtpClicked: false,
+        lang: 'en',
+        i18n: {}
     },
     ready: function () {
         var self = this;
+
+        // default
+        applyLangSet(self);
+
+        $.get('/api/lang', function (json) {
+            if (json.success) {
+                self.lang = json.data;
+                i18next.changeLanguage(self.lang);
+                console.info(self.lang);
+                applyLangSet(self);
+            }
+        });
         $.get('/api/account', function (json) {
                 console.info('account', json);
                 if (json.success) {
@@ -44,11 +58,25 @@ new Vue({
                 console.error(err);
             });
     },
+    watch: {
+        'lang': function (val, oldVal) {
+            var self = this;
+            $.post('/api/lang', {
+                data: JSON.stringify({type: val})
+            }, function (json) {
+                if (json.success) {
+                    self.lang = val;
+                    i18next.changeLanguage(self.lang);
+                    applyLangSet(self);
+                }
+            });
+        }
+    },
     methods: {
         saveAccount: function () {
             var self = this;
             if (!checkParams('saveAccount', self)) {
-                sweetAlert("Oops...", "missing info !", "error");
+                swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
                 $.post('/api/account', {
                         data: JSON.stringify({
@@ -64,7 +92,7 @@ new Vue({
                     })
                     .fail(function (err) {
                         console.error(err);
-                        sweetAlert("Oops...", err, "error");
+                        swal(self.i18n.oops, err, "error");
                     });
             }
         },
@@ -83,7 +111,7 @@ new Vue({
             var self = this;
             console.info('accountEmail ', self.accountEmail);
             if (!checkParams('deleteAccount', self)) {
-                sweetAlert("Oops...", "missing info !", "error");
+                swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
                 $.ajax({
                     url: '/api/account',
@@ -100,7 +128,7 @@ new Vue({
                     },
                     error: function (err) {
                         console.error(err);
-                        sweetAlert("Oops...", err, "error");
+                        swal(self.i18n.oops, err, "error");
                     }
                 });
             }
@@ -108,7 +136,7 @@ new Vue({
         saveContacts: function () {
             var self = this;
             if (!checkParams('saveContacts', self)) {
-                sweetAlert("Oops...", "missing info !", "error");
+                swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
                 $.post('/api/contacts', {
                     data: JSON.stringify({
@@ -123,7 +151,7 @@ new Vue({
                     }
                 }).fail(function (err) {
                     console.error(err);
-                    sweetAlert("Oops...", err, "error");
+                    swal(self.i18n.oops, err, "error");
                 })
             }
         },
@@ -144,7 +172,7 @@ new Vue({
             var self = this;
             console.info('delete contacts ', self.contactsEmail)
             if (!checkParams('deleteContacts', self)) {
-                sweetAlert("Oops...", "missing info !", "error");
+                swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
                 $.ajax({
                     url: '/api/contacts',
@@ -159,7 +187,7 @@ new Vue({
                         }
                     },
                     error: function (err) {
-                        sweetAlert("Oops...", err, "error");
+                        swal(self.i18n.oops, err, "error");
                     }
                 });
             }
@@ -167,7 +195,7 @@ new Vue({
         saveSmtp: function () {
             var self = this;
             if (!checkParams('saveSmtp', self)) {
-                sweetAlert("Oops...", "missing info !", "error");
+                swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
                 $.post('/api/smtpServer', {
                     data: JSON.stringify({
@@ -182,7 +210,7 @@ new Vue({
                     }
                 }).fail(function (err) {
                     console.error(err);
-                    sweetAlert("Oops...", err, "error");
+                    swal(self.i18n.oops, err, "error");
                 })
             }
         },
@@ -201,7 +229,7 @@ new Vue({
         deleteSmtp: function () {
             var self = this;
             if (!checkParams('deleteSmtp', self)) {
-                sweetAlert("Oops...", "missing info !", "error");
+                swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
                 $.ajax({
                     url: '/api/smtpServer',
@@ -216,7 +244,7 @@ new Vue({
                         }
                     },
                     error: function (err) {
-                        sweetAlert("Oops...", err, "error");
+                        swal(self.i18n.oops, err, "error");
                     }
                 });
             }
@@ -255,6 +283,35 @@ function checkParams(type, self) {
         default:
             return false;
     }
+}
 
+function applyLangSet(self) {
+    // i18n
+    self.i18n = {
+        account: i18next.t('account'),
+        email: i18next.t('email'),
+        password: i18next.t('password'),
+        contacts: i18next.t('contacts'),
+        name: i18next.t('name'),
+        advanced_settings: i18next.t('advanced_settings'),
+        lang: i18next.t('lang'),
+        custom_smtp_server: i18next.t('custom_smtp_server'),
+        mail_address: i18next.t('mail_address'),
+        smtp_server: i18next.t('smtp_server'),
+        save: i18next.t('save'),
+        delete: i18next.t('delete'),
+        index: i18next.t('index'),
+        setting: i18next.t('setting'),
+        log: i18next.t('log'),
+
+        oops: i18next.t('oops'),
+        missing_info: i18next.t('missing_info'),
+        send_again: i18next.t('send_again'),
+        yes_do_it: i18next.t('yes_do_it'),
+        no_cancel_it: i18next.t('no_cancel_it'),
+        email_delivered: i18next.t('email_delivered'),
+        request: i18next.t('request'),
+        send_email_fail: i18next.t('send_email_fail')
+    };
 }
 

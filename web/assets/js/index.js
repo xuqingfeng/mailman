@@ -9,10 +9,22 @@ new Vue({
         body: '',
         emails: [],
         sendClicked: false,
-        previewLinkIsHidden: true
+        previewLinkIsHidden: true,
+        lang: 'en',
+        i18n: {}
     },
     ready: function () {
         var self = this;
+
+        // default
+        applyLangSet(self);
+        $.get('/api/lang', function (json) {
+            if (json.success) {
+                self.lang = json.data;
+                i18next.changeLanguage(self.lang);
+                applyLangSet(self);
+            }
+        });
         $.get('/api/account', function (json) {
                 if (json.success && json.data) {
                     self.emails = json.data;
@@ -21,7 +33,7 @@ new Vue({
             })
             .fail(function (err) {
                 console.error(err);
-                sweetAlert("Oops...", err, "error");
+                swal(self.i18n.oops, err, "error");
             });
     },
     methods: {
@@ -34,18 +46,17 @@ new Vue({
                     return n;
                 });
             if (!self.subject || !self.from || !self.body || to.length < 1) {
-                // sweetAlert
-                console.error('empty');
-                sweetAlert("Oops...", "missing info !", "error");
+                // swal
+                swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
                 console.info('priority', self.priority);
                 if (self.sendClicked) {
                     swal({
-                        title: "Send Again ?",
+                        title: self.i18n.send_again,
                         type: "warning",
                         showCancelButton: true,
-                        confirmButtonText: "Yes, do it !",
-                        cancelButtonText: "No, cancel it !",
+                        confirmButtonText: self.i18n.yes_do_it,
+                        cancelButtonText: self.i18n.no_cancel_it,
                         closeOnConfirm: true,
                         closeOnCancel: true
                     }, function (isConfirm) {
@@ -65,14 +76,14 @@ new Vue({
                                     console.info(json);
                                     if (json.success) {
                                         self.previewLinkIsHidden = true;
-                                        swal("Email Delivered !", json.msg, "success");
+                                        swal(self.i18n.email_delivered, json.msg, "success");
                                     } else {
-                                        sweetAlert("Oops...", "send mail fail !", "error");
+                                        swal(self.i18n.oops, self.i18n.send_email_fail, "error");
                                     }
                                 })
                                 .fail(function (err) {
                                     console.error(err);
-                                    sweetAlert("Oops...", "request fail !", "error");
+                                    swal(self.i18n.oops, self.i18n.request_fail, "error");
                                 });
                         }
                     });
@@ -93,14 +104,14 @@ new Vue({
                             console.info(json);
                             if (json.success) {
                                 self.previewLinkIsHidden = true;
-                                swal("Email Delivered !", json.msg, "success");
+                                swal(self.i18n.email_delivered, json.msg, "success");
                             } else {
-                                sweetAlert("Oops...", "send mail fail !", "error");
+                                swal(self.i18n.oops, self.i18n.send_email_fail, "error");
                             }
                         })
                         .fail(function (err) {
                             console.error(err);
-                            sweetAlert("Oops...", "request fail !", "error");
+                            swal(self.i18n.oops, self.i18n.request_fail, "error");
                         });
                 }
 
@@ -110,7 +121,7 @@ new Vue({
             var self = this;
             if (!self.body) {
                 console.error('empty');
-                sweetAlert("Oops...", "missing info !", "error");
+                swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
                 $.post('/api/preview', {
                         data: JSON.stringify({
@@ -124,9 +135,38 @@ new Vue({
                     })
                     .fail(function (err) {
                         console.error(err);
-                        sweetAlert("Oops...", "request fail !", "error");
+                        swal(self.i18n.oops, self.i18n.request_fail, "error");
                     });
             }
         }
     }
 });
+
+function applyLangSet(self) {
+
+    // i18n
+    self.i18n = {
+        subject: i18next.t('subject'),
+        to: i18next.t('to'),
+        cc: i18next.t('cc'),
+        from: i18next.t('from'),
+        body: i18next.t('body'),
+        support_markdown_syntax: i18next.t('support_markdown_syntax'),
+        high_priority: i18next.t('high_priority'),
+        preview: i18next.t('preview'),
+        send: i18next.t('send'),
+        go_to_preview: i18next.t('go_to_preview'),
+        index: i18next.t('index'),
+        setting: i18next.t('setting'),
+        log: i18next.t('log'),
+
+        oops: i18next.t('oops'),
+        missing_info: i18next.t('missing_info'),
+        send_again: i18next.t('send_again'),
+        yes_do_it: i18next.t('yes_do_it'),
+        no_cancel_it: i18next.t('no_cancel_it'),
+        email_delivered: i18next.t('email_delivered'),
+        request: i18next.t('request'),
+        send_email_fail: i18next.t('send_email_fail')
+    };
+}

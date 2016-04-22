@@ -10,10 +10,11 @@ const (
 )
 
 var (
-	kvBucketName       = []byte("kv")
+	KVBucketName       = []byte("kv")
 	AccountBucketName  = []byte("account")
 	ContactsBucketName = []byte("contacts")
 	SmtpBucketName     = []byte("smtp")
+	testBucketName     = []byte("test")
 	KeyNotFoundErr     = errors.New("Key Not Found")
 )
 
@@ -54,7 +55,7 @@ func (b *BoltStore) initialize() error {
 	defer tx.Rollback()
 
 	// create all buckets
-	if _, err = tx.CreateBucketIfNotExists(kvBucketName); err != nil {
+	if _, err = tx.CreateBucketIfNotExists(KVBucketName); err != nil {
 		return err
 	}
 	if _, err = tx.CreateBucketIfNotExists(AccountBucketName); err != nil {
@@ -64,6 +65,9 @@ func (b *BoltStore) initialize() error {
 		return err
 	}
 	if _, err = tx.CreateBucketIfNotExists(SmtpBucketName); err != nil {
+		return err
+	}
+	if _, err = tx.CreateBucketIfNotExists(testBucketName); err != nil {
 		return err
 	}
 
