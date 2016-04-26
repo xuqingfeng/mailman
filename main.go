@@ -18,6 +18,7 @@ import (
 	"github.com/xuqingfeng/mailman/smtp"
 	"github.com/xuqingfeng/mailman/util"
 	"io"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
@@ -223,7 +224,9 @@ func FileHandler(rw http.ResponseWriter, r *http.Request) {
 
 		for _, fileHeaders := range r.MultipartForm.File {
 			for _, fileHeader := range fileHeaders {
-				err := mail.SaveAttachment(fileHeader, token)
+				f, _ := fileHeader.Open()
+				fileContent, _ := ioutil.ReadAll(f)
+				err := mail.SaveAttachment(fileContent, token, fileHeader.Filename)
 				if err != nil {
 					sendError(rw, "save attachment fail")
 					// todo multi

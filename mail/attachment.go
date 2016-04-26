@@ -4,15 +4,14 @@ import (
 	"github.com/xuqingfeng/lift"
 	"github.com/xuqingfeng/mailman/util"
 	"io/ioutil"
-	"mime/multipart"
 	"os"
 	"path/filepath"
 )
 
-func SaveAttachment(f *multipart.FileHeader, token string) error {
+// SaveAttachment(f *multipart.FileHeader, token string) 不知道如何测试,更改方法
+func SaveAttachment(fileContent []byte, token, fileName string) error {
 
 	homeDir, _ := util.GetHomeDir()
-	file, _ := f.Open()
 	dirPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token)
 	// ModePerm
 	err := lift.CreateDirectory(dirPath, os.ModePerm)
@@ -20,11 +19,10 @@ func SaveAttachment(f *multipart.FileHeader, token string) error {
 		util.FileLog.Error(err.Error())
 		return err
 	}
-	path := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token, f.Filename)
+	attachmentPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token, fileName)
 	// 中文乱码
-	//path := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token, "中文测试")
-	buf, _ := ioutil.ReadAll(file)
-	err = ioutil.WriteFile(path, buf, os.ModePerm)
+	//attachmentPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token, "中文测试")
+	err = ioutil.WriteFile(attachmentPath, fileContent, os.ModePerm)
 	if err != nil {
 		util.FileLog.Error(err.Error())
 		return err

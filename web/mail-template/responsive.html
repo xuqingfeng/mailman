@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 100%; line-height: 1.6em; margin: 0; padding: 0;">
 <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style>
@@ -50,8 +51,16 @@
             margin: 0;
             padding: 0;
         }
+
+        img.emoji {
+            height: 1em;
+            width: 1em;
+            margin: 0 .05em 0 .1em;
+            vertical-align: -0.1em;
+        }
     </style>
     <title>Mailman | HTML Email Template</title>
+    <script src="//twemoji.maxcdn.com/2/twemoji.min.js"></script>
 </head>
 <body bgcolor="#fff"
       style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 100%; line-height: 1.6em; -webkit-font-smoothing: antialiased; height: 100%; -webkit-text-size-adjust: none; width: 100% !important; margin: 0; padding: 0;">
@@ -113,5 +122,9 @@
     </tr>
 </table>
 <!-- /footer -->
+<script>
+    twemoji.size = '36x36';
+    twemoji.parse(document.body);
+</script>
 </body>
 </html>
