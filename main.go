@@ -223,10 +223,6 @@ func FileHandler(rw http.ResponseWriter, r *http.Request) {
 
 		for _, fileHeaders := range r.MultipartForm.File {
 			for _, fileHeader := range fileHeaders {
-				//file, _ := fileHeader.Open()
-				//path := fmt.Sprintf("files: %s", fileHeader.Filename)
-				//log.Println(path)
-
 				err := mail.SaveAttachment(fileHeader, token)
 				if err != nil {
 					sendError(rw, "save attachment fail")

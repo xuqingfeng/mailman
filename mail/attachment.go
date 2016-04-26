@@ -23,11 +23,9 @@ func SaveAttachment(f *multipart.FileHeader, token string) error {
 	path := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token, f.Filename)
 	// 中文乱码
 	//path := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token, "中文测试")
-	//log.Printf("save path: %s", path)
 	buf, _ := ioutil.ReadAll(file)
 	err = ioutil.WriteFile(path, buf, os.ModePerm)
 	if err != nil {
-		//log.Printf("%#v", err)
 		util.FileLog.Error(err.Error())
 		return err
 	}

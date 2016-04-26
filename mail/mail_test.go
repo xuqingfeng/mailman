@@ -34,6 +34,8 @@ func TestSendMail(t *testing.T) {
 		"from@example.com",
 		false,
 		"example body",
+		"1461655086246",
+		[]string{},
 	}
 	err := SendMail(exampleMail)
 	if err == nil {

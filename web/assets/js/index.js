@@ -206,23 +206,3 @@ function getAcceptedFileNames() {
 
     return acceptedFileNames;
 }
-
-(function () {
-    //Dropzone.options.attachment = {
-    //    maxFileSize: 10,
-    //    dictDefaultMessage: vue.i18n.add_attachment
-    //};
-
-    //var attachmentDropzone = new Dropzone('div#attachment', {
-    //    url: '/api/file',
-    //    dictDefaultMessage: 'Add Attachment'
-    //});
-    //console.info('add_attachment:', vue.i18n.add_attachment);
-    //Dropzone.options.attachment = {
-    //    maxFileSize: 10,
-    //    dictDefaultMessage: vue.i18n.add_attachment
-    //};
-
-
-    //Dropzone.options.attachment = false;
-})();
