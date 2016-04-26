@@ -5,6 +5,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"os"
 	"os/user"
+	"path/filepath"
 )
 
 const (
@@ -85,4 +86,10 @@ func CreateConfigDir() error {
 		}
 	}
 	return nil
+}
+
+func GetTmpDir() string {
+
+	homeDir, _ := GetHomeDir()
+	return filepath.Join(homeDir, ConfigPath["tmpPath"])
 }

@@ -1,4 +1,6 @@
-new Vue({
+var myDropzone = {};
+Dropzone.autoDiscover = false;
+var vue = new Vue({
     el: '#index',
     data: {
         subject: '',
@@ -11,7 +13,8 @@ new Vue({
         sendClicked: false,
         previewLinkIsHidden: true,
         lang: 'en',
-        i18n: {}
+        i18n: {},
+        token: Date.now().toString()
     },
     ready: function () {
         var self = this;
@@ -23,6 +26,23 @@ new Vue({
                 self.lang = json.data;
                 i18next.changeLanguage(self.lang);
                 applyLangSet(self);
+
+                // dorpzone
+                myDropzone = new Dropzone("form#attachment", {
+                    url: "/api/file",
+                    addRemoveLinks: true,
+                    filesizeBase: 1024,
+                    uploadMultiple: true,
+                    maxFiles: 5,
+                    //myDropzone.processQueue();
+                    //autoProcessQueue: false,
+                    dictDefaultMessage: self.i18n.add_attachment,
+                    dictRemoveFile: self.i18n.remove_file
+                });
+                // todo save attachment fail
+                myDropzone.on('sending', function (file, xhr, formData) {
+                    formData.append('token', self.token);
+                });
             }
         });
         $.get('/api/account', function (json) {
@@ -39,6 +59,7 @@ new Vue({
     methods: {
         send: function () {
             var self = this;
+
             var to = self.to.split(',').filter(function (n) {
                     return n;
                 }),
@@ -46,7 +67,6 @@ new Vue({
                     return n;
                 });
             if (!self.subject || !self.from || !self.body || to.length < 1) {
-                // swal
                 swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
                 console.info('priority', self.priority);
@@ -68,7 +88,9 @@ new Vue({
                                     cc: cc,
                                     from: self.from,
                                     priority: self.priority,
-                                    body: self.body
+                                    body: self.body,
+                                    token: self.token,
+                                    attachmentFileNames: getAcceptedFileNames()
                                 })
                             };
                             console.log('data', data);
@@ -96,7 +118,9 @@ new Vue({
                             cc: cc,
                             from: self.from,
                             priority: self.priority,
-                            body: self.body
+                            body: self.body,
+                            token: self.token,
+                            attachmentFileNames: getAcceptedFileNames()
                         })
                     };
                     console.log('data', data);
@@ -159,6 +183,8 @@ function applyLangSet(self) {
         index: i18next.t('index'),
         setting: i18next.t('setting'),
         log: i18next.t('log'),
+        add_attachment: i18next.t('add_attachment'),
+        remove_file: i18next.t('remove_file'),
 
         oops: i18next.t('oops'),
         missing_info: i18next.t('missing_info'),
@@ -170,3 +196,33 @@ function applyLangSet(self) {
         send_email_fail: i18next.t('send_email_fail')
     };
 }
+
+function getAcceptedFileNames() {
+    var acceptedFiles = myDropzone.getAcceptedFiles();
+    var acceptedFileNames = [];
+    acceptedFiles.filter(function (f) {
+        acceptedFileNames.push(f.name);
+    });
+
+    return acceptedFileNames;
+}
+
+(function () {
+    //Dropzone.options.attachment = {
+    //    maxFileSize: 10,
+    //    dictDefaultMessage: vue.i18n.add_attachment
+    //};
+
+    //var attachmentDropzone = new Dropzone('div#attachment', {
+    //    url: '/api/file',
+    //    dictDefaultMessage: 'Add Attachment'
+    //});
+    //console.info('add_attachment:', vue.i18n.add_attachment);
+    //Dropzone.options.attachment = {
+    //    maxFileSize: 10,
+    //    dictDefaultMessage: vue.i18n.add_attachment
+    //};
+
+
+    //Dropzone.options.attachment = false;
+})();

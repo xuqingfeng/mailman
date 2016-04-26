@@ -17,6 +17,8 @@ i18next.init({
                 'index': 'Index',
                 'setting': 'Setting',
                 'log': 'Log',
+                'add_attachment': 'Add Attachment',
+                'remove_file': 'Remove',
 
                 // setting
                 'account': 'Account',
@@ -60,6 +62,8 @@ i18next.init({
                 'index': '首页',
                 'setting': '设置',
                 'log': '日志',
+                'add_attachment': '添加附件',
+                'remove_file': '删除',
 
                 // setting
                 'account': '帐号',

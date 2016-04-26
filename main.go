@@ -32,6 +32,8 @@ const (
 	minTCPPort         = 0
 	maxTCPPort         = 65535
 	maxReservedTCPPort = 1024
+	// 15M
+	maxMemory = 1024 * 1024 * 15
 )
 
 var (
@@ -119,6 +121,7 @@ COPYRIGHT:
 		subRouter.HandleFunc("/", APIHandler)
 		subRouter.HandleFunc("/lang", LangHandler)
 		subRouter.HandleFunc("/mail", MailHandler)
+		subRouter.HandleFunc("/file", FileHandler)
 		subRouter.HandleFunc("/account", AccountHandler)
 		subRouter.HandleFunc("/contacts", ContactsHandler)
 		subRouter.HandleFunc("/smtpServer", SMTPServerHandler)
@@ -194,6 +197,43 @@ func MailHandler(rw http.ResponseWriter, r *http.Request) {
 		} else {
 			// empty struct
 			sendSuccess(rw, struct{}{}, "send mail success")
+		}
+	}
+}
+
+func FileHandler(rw http.ResponseWriter, r *http.Request) {
+
+	if "GET" == r.Method {
+
+		sendSuccess(rw, struct{}{}, HI_THERE)
+	} else if "POST" == r.Method {
+
+		if err := r.ParseMultipartForm(maxMemory); err != nil {
+			sendError(rw, err.Error())
+		}
+
+		token := ""
+		for k, vs := range r.MultipartForm.Value {
+			for _, v := range vs {
+				if "token" == k {
+					token += v
+				}
+			}
+		}
+
+		for _, fileHeaders := range r.MultipartForm.File {
+			for _, fileHeader := range fileHeaders {
+				//file, _ := fileHeader.Open()
+				//path := fmt.Sprintf("files: %s", fileHeader.Filename)
+				//log.Println(path)
+
+				err := mail.SaveAttachment(fileHeader, token)
+				if err != nil {
+					sendError(rw, "save attachment fail")
+					// todo multi
+					break
+				}
+			}
 		}
 	}
 }

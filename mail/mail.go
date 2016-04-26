@@ -7,6 +7,7 @@ import (
 	"github.com/xuqingfeng/mailman/util"
 	"gopkg.in/gomail.v2"
 	"io/ioutil"
+	"path/filepath"
 	"strings"
 )
 
@@ -14,10 +15,12 @@ type Mail struct {
 	Subject string   `json:"subject"`
 	To      []string `json:"to"`
 	//Cc      []Contacts
-	Cc       []string `json:"cc"`
-	From     string   `json:"from"`
-	Priority bool     `json:"priority"`
-	Body     string   `json:"body"`
+	Cc                  []string `json:"cc"`
+	From                string   `json:"from"`
+	Priority            bool     `json:"priority"`
+	Body                string   `json:"body"`
+	Token               string   `json:"token"`
+	AttachmentFileNames []string `json:"attachmentFileNames"`
 }
 
 //****Mail START****
@@ -44,8 +47,19 @@ func SendMail(mail Mail) error {
 	//m.SetAddressHeader("Cc", mail.Cc[0].Email, mail.Cc[0].Name)
 	m.SetHeader("From", account.Email)
 
+	// priority
 	if mail.Priority {
 		m.SetHeader("X-Priority", "1")
+	}
+
+	// attachment
+	tmpDir := util.GetTmpDir()
+	attachmentDir := filepath.Join(tmpDir, mail.Token)
+	if len(mail.AttachmentFileNames) > 0 {
+		for _, v := range mail.AttachmentFileNames {
+			attachmentPath := filepath.Join(attachmentDir, v)
+			m.Attach(attachmentPath)
+		}
 	}
 
 	content := ParseMailContent(mail.Body)
