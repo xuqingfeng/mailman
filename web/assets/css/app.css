@@ -22,3 +22,8 @@ footer p {
     margin-right: .5em;
     cursor: pointer;
 }
+
+/* contacts */
+span.prefix {
+    color: darkgray;
+}

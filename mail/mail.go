@@ -12,9 +12,8 @@ import (
 )
 
 type Mail struct {
-	Subject string   `json:"subject"`
-	To      []string `json:"to"`
-	//Cc      []Contacts
+	Subject             string   `json:"subject"`
+	To                  []string `json:"to"`
 	Cc                  []string `json:"cc"`
 	From                string   `json:"from"`
 	Priority            bool     `json:"priority"`
@@ -43,7 +42,7 @@ func SendMail(mail Mail) error {
 		// multiple cc
 		m.SetHeader("Cc", mail.Cc...)
 	}
-	// with name - SetAddressHeader
+	// todo with name - SetAddressHeader
 	//m.SetAddressHeader("Cc", mail.Cc[0].Email, mail.Cc[0].Name)
 	m.SetHeader("From", account.Email)
 

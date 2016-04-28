@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="assets/lib/dropzone/4.3.0/dropzone.min.css">
     <link rel="stylesheet" href="assets/lib/dropzone/4.3.0/basic.min.css">
     <link rel="stylesheet" href="assets/lib/sweetalert/1.1.3/sweetalert.css">
+    <!--<link rel="stylesheet" href="assets/lib/selectize/0.12.1/selectize.css">-->
+    <!--<link rel="stylesheet" href="assets/lib/selectize/0.12.1/selectize.bootstrap3.css">-->
+    <link rel="stylesheet" href="assets/lib/selectize/0.12.1/selectize.default.css">
+    <!--<link rel="stylesheet" href="assets/lib/selectize/0.12.1/selectize.legacy.css">-->
     <link rel="stylesheet" href="assets/css/app.css">
     <title>Mailman</title>
 </head>
@@ -31,15 +35,17 @@
                     <div class="form-group">
                         <label for="to" class="col-lg-2 control-label">{{i18n.to}}</label>
                         <div class="col-lg-10">
-                            <input type="text" class="form-control" id="to" placeholder="to" autocomplete="off"
-                                   v-model="to">
+                            <!--<input type="text" class="form-control" id="to" placeholder="to" autocomplete="off"-->
+                                   <!--v-model="to">-->
+                            <select name="to" id="to"></select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="cc" class="col-lg-2 control-label">{{i18n.cc}}</label>
                         <div class="col-lg-10">
-                            <input type="text" class="form-control" id="cc" placeholder="cc"
-                                   autocomplete="off" v-model="cc">
+                            <!--<input type="text" class="form-control" id="cc" placeholder="cc"-->
+                                   <!--autocomplete="off" v-model="cc">-->
+                            <select name="cc" id="cc"></select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -130,6 +136,7 @@
 <script type="text/javascript" src="assets/lib/sweetalert/1.1.3/sweetalert.min.js"></script>
 <script type="text/javascript" src="assets/lib/i18next/2.5.1/i18next.min.js"></script>
 <script type="text/javascript" src="assets/lib/dropzone/4.3.0/dropzone.min.js"></script>
+<script type="text/javascript" src="assets/lib/selectize/0.12.1/selectize.min.js"></script>
 <script type="text/javascript" src="assets/js/app.js"></script>
 <script type="text/javascript" src="assets/js/index.js"></script>
 </body>

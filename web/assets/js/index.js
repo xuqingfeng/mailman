@@ -1,11 +1,13 @@
 var myDropzone = {};
+var toContactsLoaded = false;
+var ccContactsLoaded = false;
 Dropzone.autoDiscover = false;
 var vue = new Vue({
     el: '#index',
     data: {
         subject: '',
-        to: '',
-        cc: '',
+        to: [],
+        cc: [],
         from: '',
         priority: false,
         body: '',
@@ -60,13 +62,16 @@ var vue = new Vue({
         send: function () {
             var self = this;
 
-            var to = self.to.split(',').filter(function (n) {
-                    return n;
-                }),
-                cc = self.cc.split(',').filter(function (n) {
-                    return n;
-                });
-            if (!self.subject || !self.from || !self.body || to.length < 1) {
+            self.to = $('#to').val();
+            self.cc = $('#cc').val();
+
+            //var to = self.to.split(',').filter(function (n) {
+            //        return n;
+            //    }),
+            //    cc = self.cc.split(',').filter(function (n) {
+            //        return n;
+            //    });
+            if (!self.subject || !self.from || !self.body || self.to.length < 1) {
                 swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
                 console.info('priority', self.priority);
@@ -84,8 +89,8 @@ var vue = new Vue({
                             var data = {
                                 data: JSON.stringify({
                                     subject: self.subject,
-                                    to: to,
-                                    cc: cc,
+                                    to: self.to,
+                                    cc: self.cc,
                                     from: self.from,
                                     priority: self.priority,
                                     body: self.body,
@@ -114,8 +119,8 @@ var vue = new Vue({
                     var data = {
                         data: JSON.stringify({
                             subject: self.subject,
-                            to: to,
-                            cc: cc,
+                            to: self.to,
+                            cc: self.cc,
                             from: self.from,
                             priority: self.priority,
                             body: self.body,
@@ -206,3 +211,152 @@ function getAcceptedFileNames() {
 
     return acceptedFileNames;
 }
+
+$(function () {
+    var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
+        '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
+
+    $('#to').selectize({
+        persist: false,
+        maxItems: null,
+        valueField: 'email',
+        labelField: 'name',
+        searchField: ['name', 'email'],
+        options: [],
+        render: {
+            item: function (item, escape) {
+                return '<div>' +
+                    (item.name ? '<span class="name">' + escape(item.name) + '</span> ' : '') +
+                    (item.email ? '<span class="email">' + escape(item.email) + '</span>' : '') +
+                    '</div>';
+            },
+            option: function (item, escape) {
+                var label = item.name || item.email;
+                var caption = item.name ? item.email : null;
+                return '<div>' +
+                    '<span class="prefix">' + escape(label) + '</span> ' +
+                    (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+                    '</div>';
+            }
+        },
+        load: function (query, callback) {
+            //console.info('query:', query);
+            //if (!query.length) return callback();
+            // todo needed??
+            if (!toContactsLoaded) {
+                $.ajax({
+                    url: '/api/contacts',
+                    type: 'GET',
+                    error: function () {
+                        callback();
+                    },
+                    success: function (json) {
+                        callback(json.data);
+                        toContactsLoaded = true;
+                    }
+                });
+            }
+        },
+        createFilter: function (input) {
+            var match, regex;
+
+            // email@address.com
+            regex = new RegExp('^' + REGEX_EMAIL + '$', 'i');
+            match = input.match(regex);
+            if (match) return !this.options.hasOwnProperty(match[0]);
+
+            // name <email@address.com>
+            regex = new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i');
+            match = input.match(regex);
+            if (match) return !this.options.hasOwnProperty(match[2]);
+
+            return false;
+        },
+        create: function (input) {
+            if ((new RegExp('^' + REGEX_EMAIL + '$', 'i')).test(input)) {
+                return {email: input};
+            }
+            var match = input.match(new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i'));
+            if (match) {
+                return {
+                    email: match[2],
+                    name: $.trim(match[1])
+                };
+            }
+            //alert('Invalid email address.');
+            return false;
+        }
+    });
+
+    $('#cc').selectize({
+        persist: false,
+        maxItems: null,
+        valueField: 'email',
+        labelField: 'name',
+        searchField: ['name', 'email'],
+        options: [],
+        render: {
+            item: function (item, escape) {
+                return '<div>' +
+                    (item.name ? '<span class="name">' + escape(item.name) + '</span> ' : '') +
+                    (item.email ? '<span class="email">' + escape(item.email) + '</span>' : '') +
+                    '</div>';
+            },
+            option: function (item, escape) {
+                var label = item.name || item.email;
+                var caption = item.name ? item.email : null;
+                return '<div>' +
+                    '<span class="prefix">' + escape(label) + '</span> ' +
+                    (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+                    '</div>';
+            }
+        },
+        load: function (query, callback) {
+            //console.info('query:', query);
+            //if (!query.length) return callback();
+            // todo needed??
+            if (!ccContactsLoaded) {
+                $.ajax({
+                    url: '/api/contacts',
+                    type: 'GET',
+                    error: function () {
+                        callback();
+                    },
+                    success: function (json) {
+                        callback(json.data);
+                        ccContactsLoaded = true;
+                    }
+                });
+            }
+        },
+        createFilter: function (input) {
+            var match, regex;
+
+            // email@address.com
+            regex = new RegExp('^' + REGEX_EMAIL + '$', 'i');
+            match = input.match(regex);
+            if (match) return !this.options.hasOwnProperty(match[0]);
+
+            // name <email@address.com>
+            regex = new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i');
+            match = input.match(regex);
+            if (match) return !this.options.hasOwnProperty(match[2]);
+
+            return false;
+        },
+        create: function (input) {
+            if ((new RegExp('^' + REGEX_EMAIL + '$', 'i')).test(input)) {
+                return {email: input};
+            }
+            var match = input.match(new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i'));
+            if (match) {
+                return {
+                    email: match[2],
+                    name: $.trim(match[1])
+                };
+            }
+            //alert('Invalid email address.');
+            return false;
+        }
+    });
+});
