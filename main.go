@@ -130,7 +130,7 @@ COPYRIGHT:
 		subRouter.HandleFunc("/wslog", WSLogHandler)
 
 		// done
-		router.PathPrefix("/").Handler(http.FileServer(http.Dir("web")))
+		router.PathPrefix("/").Handler(http.FileServer(http.Dir("ui")))
 
 		http.ListenAndServe(":"+strconv.Itoa(portInUse), router)
 	}

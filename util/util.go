@@ -14,7 +14,7 @@ const (
 	LogName          = "mailman.log"
 	DefaultSMTPPort  = 25
 	MailBodyKey      = "YTua0G1ViXGg9fxvrtwVRNfKD"
-	MailTemplatePath = "./web/mail-template"
+	MailTemplatePath = "./ui/mail-template"
 	MailTemplateType = "responsive"
 )
 
