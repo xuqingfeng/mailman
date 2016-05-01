@@ -21,6 +21,7 @@ footer p {
     margin-top: .5em;
     margin-right: .5em;
     cursor: pointer;
+    display: inline-block;
 }
 
 /* contacts */

@@ -222,6 +222,7 @@ $(function () {
         valueField: 'email',
         labelField: 'name',
         searchField: ['name', 'email'],
+        // todo use model??
         options: [],
         render: {
             item: function (item, escape) {
