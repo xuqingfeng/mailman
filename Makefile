@@ -10,3 +10,6 @@ build: format
 
 format:
 	go fmt ./...
+
+test:
+	go test ./...
