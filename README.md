@@ -1,6 +1,15 @@
 ## mailman :cop:
-> local :love_letter: client with customizable SMTP server
+> 可自定义 SMTP 服务器的本地:love_letter:客户端
 
 ![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)
 ![Coverage Status](https://img.shields.io/coveralls/xuqingfeng/mailman/master.svg)
 ![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/mailman)
+
+#### 默认支持的邮箱类型
+
+- QQ Mail
+- Hotmail
+- Outlook
+- Gmail
+
+关于 Gmail 无法发送邮件问题,查看这里: [https://support.google.com/mail/answer/14257](https://support.google.com/mail/answer/14257)
