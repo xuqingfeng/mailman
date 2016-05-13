@@ -65,12 +65,6 @@ var vue = new Vue({
             self.to = $('#to').val();
             self.cc = $('#cc').val();
 
-            //var to = self.to.split(',').filter(function (n) {
-            //        return n;
-            //    }),
-            //    cc = self.cc.split(',').filter(function (n) {
-            //        return n;
-            //    });
             if (!self.subject || !self.from || !self.body || self.to.length < 1) {
                 swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
@@ -222,7 +216,6 @@ $(function () {
         valueField: 'email',
         labelField: 'name',
         searchField: ['name', 'email'],
-        // todo use model??
         options: [],
         render: {
             item: function (item, escape) {
@@ -241,22 +234,21 @@ $(function () {
             }
         },
         load: function (query, callback) {
-            //console.info('query:', query);
             //if (!query.length) return callback();
             // todo needed??
-            if (!toContactsLoaded) {
-                $.ajax({
-                    url: '/api/contacts',
-                    type: 'GET',
-                    error: function () {
-                        callback();
-                    },
-                    success: function (json) {
-                        callback(json.data);
-                        toContactsLoaded = true;
-                    }
-                });
-            }
+            //if (!toContactsLoaded) {
+            $.ajax({
+                url: '/api/contacts',
+                type: 'GET',
+                error: function () {
+                    callback();
+                },
+                success: function (json) {
+                    callback(json.data);
+                    toContactsLoaded = true;
+                }
+            });
+            //}
         },
         createFilter: function (input) {
             var match, regex;
@@ -313,22 +305,21 @@ $(function () {
             }
         },
         load: function (query, callback) {
-            //console.info('query:', query);
             //if (!query.length) return callback();
             // todo needed??
-            if (!ccContactsLoaded) {
-                $.ajax({
-                    url: '/api/contacts',
-                    type: 'GET',
-                    error: function () {
-                        callback();
-                    },
-                    success: function (json) {
-                        callback(json.data);
-                        ccContactsLoaded = true;
-                    }
-                });
-            }
+            //if (!ccContactsLoaded) {
+            $.ajax({
+                url: '/api/contacts',
+                type: 'GET',
+                error: function () {
+                    callback();
+                },
+                success: function (json) {
+                    callback(json.data);
+                    ccContactsLoaded = true;
+                }
+            });
+            //}
         },
         createFilter: function (input) {
             var match, regex;
