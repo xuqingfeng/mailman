@@ -22,6 +22,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 )
@@ -87,7 +88,7 @@ COPYRIGHT:
 	app := cli.NewApp()
 	app.Name = "mailman"
 	app.Usage = "local email client with customizable SMTP server"
-	app.Version = "0.0.1"
+	app.Version = "0.2"
 	app.Author = "xuqingfeng"
 	app.Action = func(c *cli.Context) {
 
@@ -133,6 +134,24 @@ COPYRIGHT:
 		router.PathPrefix("/").Handler(http.FileServer(http.Dir("ui")))
 
 		http.ListenAndServe(":"+strconv.Itoa(portInUse), router)
+	}
+	app.Commands = []cli.Command{
+		{
+			Name:        "clean",
+			Usage:       "clean up tmp dir",
+			Description: "mailman clean",
+			Action: func(c *cli.Context) {
+				log.Info("*** clean START ***")
+				homeDir, _ := util.GetHomeDir()
+				tmpPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"])
+				err := os.RemoveAll(tmpPath)
+				if err != nil {
+					log.Error(err)
+				}
+				util.CreateConfigDir()
+				log.Info("*** clean STOP ***")
+			},
+		},
 	}
 
 	app.Run(os.Args)
@@ -439,7 +458,8 @@ func WSLogHandler(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	homeDir, _ := util.GetHomeDir()
-	logFile, err := os.Open(homeDir + util.ConfigPath["logPath"] + "/" + util.LogName)
+	logFilePath := filepath.Join(homeDir, util.ConfigPath["logPath"], util.LogName)
+	logFile, err := os.Open(logFilePath)
 	if err != nil {
 		log.Error(err.Error())
 	}

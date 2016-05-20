@@ -26,8 +26,8 @@ func TestGetContacts(t *testing.T) {
 	if err != nil {
 		t.Errorf("GetContacts() fail %v", err)
 	}
-	contactsList := []Contacts{{"test@example.com", "test"}}
-	if !reflect.DeepEqual(contactsList, c) {
+
+	if !contactInContacts(testContacts, c) {
 		t.Error("GetContacts() fail")
 	}
 }
@@ -38,4 +38,16 @@ func TestDeleteContacts(t *testing.T) {
 	if err != nil {
 		t.Errorf("DeleteContacts() fail %v", err)
 	}
+}
+
+func contactInContacts(c Contacts, cs []Contacts) bool {
+
+	var in = false
+	for _, v := range cs {
+		if reflect.DeepEqual(c, v) {
+			in = true
+		}
+	}
+
+	return in
 }

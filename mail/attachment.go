@@ -20,8 +20,6 @@ func SaveAttachment(fileContent []byte, token, fileName string) error {
 		return err
 	}
 	attachmentPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token, fileName)
-	// 中文乱码
-	//attachmentPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token, "中文测试")
 	err = ioutil.WriteFile(attachmentPath, fileContent, os.ModePerm)
 	if err != nil {
 		util.FileLog.Error(err.Error())

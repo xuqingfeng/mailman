@@ -9,10 +9,11 @@ import (
 )
 
 const (
-	configMode       = 0755
-	dbName           = "mailman.db"
-	LogName          = "mailman.log"
-	DefaultSMTPPort  = 25
+	configMode      = 0755
+	dbName          = "mailman.db"
+	LogName         = "mailman.log"
+	DefaultSMTPPort = 25
+	// magic key (avoid content conflict)
 	MailBodyKey      = "YTua0G1ViXGg9fxvrtwVRNfKD"
 	MailTemplatePath = "./ui/mail-template"
 	MailTemplateType = "responsive"
@@ -40,7 +41,8 @@ func init() {
 
 	homeDir, _ := GetHomeDir()
 	CreateConfigDir()
-	logFile, err := os.OpenFile(homeDir+ConfigPath["logPath"]+"/"+LogName, os.O_WRONLY|os.O_CREATE, configMode)
+	logFilePath := filepath.Join(homeDir, ConfigPath["logPath"], LogName)
+	logFile, err := os.OpenFile(logFilePath, os.O_WRONLY|os.O_CREATE, configMode)
 	if err != nil {
 		// mailman.log not exist
 		FileLog.Fatal(err.Error())
@@ -48,7 +50,7 @@ func init() {
 	}
 	FileLog.Out = logFile
 	FileLog.Formatter = &logrus.TextFormatter{DisableColors: true}
-	DBPath = homeDir + ConfigPath["dbPath"] + "/" + dbName
+	DBPath = filepath.Join(homeDir, ConfigPath["dbPath"], dbName)
 }
 
 type Msg struct {
