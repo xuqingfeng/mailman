@@ -12,4 +12,4 @@ before_install:
 install:
   - go get -v ./...
 script:
-  - ./test-coverage.sh
+  - ./coverage.sh --coveralls
