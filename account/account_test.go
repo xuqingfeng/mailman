@@ -59,11 +59,18 @@ func TestDeleteAccount(t *testing.T) {
 func TestEncryptPassword(t *testing.T) {
 
 	password := []byte("fakePassword")
-	encryptedPassword := encryptPassword(password)
+	encryptedPassword, err := encryptPassword(password)
+	t.Logf("%x", encryptedPassword)
+	if err != nil {
+		t.Error(err)
+	}
 	if string(password) == string(encryptedPassword) {
 		t.Error("encryptPassword fail")
 	}
-	decryptedPassword := decryptPassword(encryptedPassword)
+	decryptedPassword, err := decryptPassword(encryptedPassword)
+	if err != nil {
+		t.Error(err)
+	}
 	if string(password) != string(decryptedPassword) {
 		t.Error("decryptPassword fail")
 	}

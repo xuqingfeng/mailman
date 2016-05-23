@@ -95,3 +95,9 @@ func GetTmpDir() string {
 	homeDir, _ := GetHomeDir()
 	return filepath.Join(homeDir, ConfigPath["tmpPath"])
 }
+
+func GetUserName() string {
+
+	u, _ := user.Current()
+	return u.Username
+}

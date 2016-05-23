@@ -12,3 +12,11 @@ func TestGetHomeDir(t *testing.T) {
 		t.Error("GetHomeDir() fail")
 	}
 }
+
+func TestGetUserName(t *testing.T) {
+
+	username := GetUserName()
+	if 0 == len(username) {
+		t.Error("GetUserName() fail")
+	}
+}
