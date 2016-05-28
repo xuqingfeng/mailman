@@ -28,3 +28,7 @@ footer p {
 span.prefix {
     color: darkgray;
 }
+
+[v-cloak] {
+    display: none;
+}
