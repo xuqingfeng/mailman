@@ -5,6 +5,23 @@
 ![Coverage Status](https://img.shields.io/coveralls/xuqingfeng/mailman/master.svg)
 ![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/mailman)
 
+### 安装
+
+```bash
+go get github.com/xuqingfeng/mailman
+
+cd $GOPATH/src/github.com/xuqingfeng/mailman
+
+make run
+```
+
+### 贡献代码
+
+1.write code
+2.make test pass (`make test`)
+3.format code (`make format`)
+4.send pull request
+
 #### 默认支持的邮箱类型
 
 - QQ Mail

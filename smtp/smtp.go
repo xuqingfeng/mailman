@@ -1,8 +1,9 @@
 package smtp
 
 import (
-	"github.com/xuqingfeng/mailman/util"
 	"regexp"
+
+	"github.com/xuqingfeng/mailman/util"
 )
 
 type SMTPServer struct {

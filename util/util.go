@@ -2,10 +2,11 @@ package util
 
 import (
 	"errors"
-	"github.com/Sirupsen/logrus"
 	"os"
 	"os/user"
 	"path/filepath"
+
+	"github.com/Sirupsen/logrus"
 )
 
 const (

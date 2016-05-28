@@ -1,10 +1,11 @@
 package mail
 
 import (
-	"github.com/xuqingfeng/mailman/account"
-	"github.com/xuqingfeng/mailman/smtp"
 	"os"
 	"testing"
+
+	"github.com/xuqingfeng/mailman/account"
+	"github.com/xuqingfeng/mailman/smtp"
 )
 
 func TestMain(m *testing.M) {

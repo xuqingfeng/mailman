@@ -1,11 +1,12 @@
 package util
 
 import (
-	"github.com/boltdb/bolt"
 	"os"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/boltdb/bolt"
 )
 
 func TestMain(m *testing.M) {

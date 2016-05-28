@@ -1,14 +1,15 @@
 package mail
 
 import (
+	"io/ioutil"
+	"path/filepath"
+	"strings"
+
 	"github.com/russross/blackfriday"
 	"github.com/xuqingfeng/mailman/account"
 	"github.com/xuqingfeng/mailman/smtp"
 	"github.com/xuqingfeng/mailman/util"
 	"gopkg.in/gomail.v2"
-	"io/ioutil"
-	"path/filepath"
-	"strings"
 )
 
 type Mail struct {

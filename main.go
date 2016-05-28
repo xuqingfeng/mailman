@@ -5,6 +5,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"net"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strconv"
+	"time"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/briandowns/spinner"
 	"github.com/codegangsta/cli"
@@ -17,14 +26,6 @@ import (
 	"github.com/xuqingfeng/mailman/mail"
 	"github.com/xuqingfeng/mailman/smtp"
 	"github.com/xuqingfeng/mailman/util"
-	"io"
-	"io/ioutil"
-	"net"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strconv"
-	"time"
 )
 
 const (
@@ -480,12 +481,6 @@ func WSLogHandler(rw http.ResponseWriter, r *http.Request) {
 }
 
 //***echo JSON START*****
-func sendJson(rw http.ResponseWriter, msg util.Msg) {
-
-	msgInByteSlice, _ := json.Marshal(msg)
-	rw.Header().Set("Content-Type", "application/json")
-	rw.Write(msgInByteSlice)
-}
 func sendSuccess(rw http.ResponseWriter, data interface{}, message string) {
 
 	msg = util.Msg{

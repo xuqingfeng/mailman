@@ -1,8 +1,9 @@
 package lang
 
 import (
-	"github.com/xuqingfeng/mailman/util"
 	"testing"
+
+	"github.com/xuqingfeng/mailman/util"
 )
 
 func TestSaveLang(t *testing.T) {

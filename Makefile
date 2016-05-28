@@ -13,3 +13,7 @@ format:
 
 test:
 	go test ./...
+
+# user: Current not implemented on linux/arm
+gox:
+	gox -osarch="linux/amd64 linux/arm darwin/amd64"

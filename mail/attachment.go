@@ -1,14 +1,14 @@
 package mail
 
 import (
-	"github.com/xuqingfeng/lift"
-	"github.com/xuqingfeng/mailman/util"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/xuqingfeng/lift"
+	"github.com/xuqingfeng/mailman/util"
 )
 
-// SaveAttachment(f *multipart.FileHeader, token string) 不知道如何测试,更改方法
 func SaveAttachment(fileContent []byte, token, fileName string) error {
 
 	homeDir, _ := util.GetHomeDir()

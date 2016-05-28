@@ -1,8 +1,9 @@
 package smtp
 
 import (
-	"github.com/xuqingfeng/mailman/util"
 	"testing"
+
+	"github.com/xuqingfeng/mailman/util"
 )
 
 var (

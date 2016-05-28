@@ -1,10 +1,11 @@
 package mail
 
 import (
-	"github.com/xuqingfeng/mailman/util"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/xuqingfeng/mailman/util"
 )
 
 func TestSaveAttachment(t *testing.T) {

@@ -2,6 +2,7 @@ package util
 
 import (
 	"errors"
+
 	"github.com/boltdb/bolt"
 )
 
