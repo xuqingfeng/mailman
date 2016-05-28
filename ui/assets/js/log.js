@@ -8,7 +8,6 @@
             wsUri = 'ws:';
         }
         wsUri += '//' + loc.host + '/api/wslog';
-        console.info('wsUri', wsUri);
         var conn = new WebSocket(wsUri);
         conn.onopen = function () {
             console.info('ws opened');
@@ -20,7 +19,6 @@
         };
 
         conn.onmessage = function (evt) {
-            console.log('receive data ', evt.data);
             $('.log').prepend(evt.data + '<br>')
         }
     }

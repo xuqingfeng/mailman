@@ -26,12 +26,10 @@ new Vue({
             if (json.success) {
                 self.lang = json.data;
                 i18next.changeLanguage(self.lang);
-                console.info(self.lang);
                 applyLangSet(self);
             }
         });
         $.get('/api/account', function (json) {
-                console.info('account', json);
                 if (json.success) {
                     self.emails = json.data;
                 }
@@ -40,7 +38,6 @@ new Vue({
                 console.error(err);
             });
         $.get('/api/contacts', function (json) {
-                console.info('contacts', json);
                 if (json.success) {
                     self.contacts = json.data;
                 }
@@ -49,7 +46,6 @@ new Vue({
                 console.error(err);
             });
         $.get('/api/smtpServer', function (json) {
-                console.info('smtpServer', json);
                 if (json.success) {
                     self.servers = json.data;
                 }
@@ -98,7 +94,6 @@ new Vue({
         },
         manageEmail: function (email) {
             var self = this;
-            console.info('manage: ', email);
             if (!self.emailClicked) {
                 self.accountEmail = email;
                 self.emailClicked = !self.emailClicked;
@@ -109,7 +104,6 @@ new Vue({
         },
         deleteAccount: function () {
             var self = this;
-            console.info('accountEmail ', self.accountEmail);
             if (!checkParams('deleteAccount', self)) {
                 swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
@@ -118,7 +112,6 @@ new Vue({
                     type: 'DELETE',
                     data: JSON.stringify({key: self.accountEmail}),
                     success: function (json) {
-                        console.info('deleteAccount', json);
                         if (json.success) {
                             self.accountEmail = '';
                             self.accountPassword = '';
@@ -157,7 +150,6 @@ new Vue({
         },
         manageContacts: function (contacts) {
             var self = this;
-            console.info('manage contacts ', contacts);
             if (!self.contactsClicked) {
                 self.contactsEmail = contacts.email;
                 self.contactsName = contacts.name;
@@ -170,7 +162,6 @@ new Vue({
         },
         deleteContacts: function () {
             var self = this;
-            console.info('delete contacts ', self.contactsEmail)
             if (!checkParams('deleteContacts', self)) {
                 swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {

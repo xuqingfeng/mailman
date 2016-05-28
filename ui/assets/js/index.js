@@ -68,7 +68,6 @@ var vue = new Vue({
             if (!self.subject || !self.from || !self.body || self.to.length < 1) {
                 swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
-                console.info('priority', self.priority);
                 if (self.sendClicked) {
                     swal({
                         title: self.i18n.send_again,
@@ -92,9 +91,7 @@ var vue = new Vue({
                                     attachmentFileNames: getAcceptedFileNames()
                                 })
                             };
-                            console.log('data', data);
                             $.post('/api/mail', data, function (json) {
-                                    console.info(json);
                                     if (json.success) {
                                         self.previewLinkIsHidden = true;
                                         swal(self.i18n.email_delivered, json.msg, "success");
@@ -122,9 +119,7 @@ var vue = new Vue({
                             attachmentFileNames: getAcceptedFileNames()
                         })
                     };
-                    console.log('data', data);
                     $.post('/api/mail', data, function (json) {
-                            console.info(json);
                             if (json.success) {
                                 self.previewLinkIsHidden = true;
                                 swal(self.i18n.email_delivered, json.msg, "success");
@@ -151,7 +146,6 @@ var vue = new Vue({
                             body: self.body
                         })
                     }, function (json) {
-                        console.info(json);
                         if (json.success) {
                             self.previewLinkIsHidden = false;
                         }
