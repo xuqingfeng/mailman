@@ -143,7 +143,7 @@ COPYRIGHT:
 			Description: "mailman clean",
 			Action: func(c *cli.Context) {
 				log.Info("*** clean START ***")
-				homeDir, _ := util.GetHomeDir()
+				homeDir := util.GetHomeDir()
 				tmpPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"])
 				err := os.RemoveAll(tmpPath)
 				if err != nil {
@@ -458,7 +458,7 @@ func WSLogHandler(rw http.ResponseWriter, r *http.Request) {
 		log.Error(err.Error())
 	}
 
-	homeDir, _ := util.GetHomeDir()
+	homeDir := util.GetHomeDir()
 	logFilePath := filepath.Join(homeDir, util.ConfigPath["logPath"], util.LogName)
 	logFile, err := os.Open(logFilePath)
 	if err != nil {

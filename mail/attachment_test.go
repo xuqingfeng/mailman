@@ -19,7 +19,7 @@ func TestSaveAttachment(t *testing.T) {
 		t.Errorf("SaveAttachment() fail %v", err)
 	}
 
-	homeDir, _ := util.GetHomeDir()
+	homeDir := util.GetHomeDir()
 	attachmentPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token, fileName)
 	if _, err = os.Stat(attachmentPath); err != nil {
 		t.Errorf("SaveAttachment() fail %v", err)

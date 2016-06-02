@@ -4,10 +4,7 @@ import "testing"
 
 func TestGetHomeDir(t *testing.T) {
 
-	homeDir, err := GetHomeDir()
-	if err != nil {
-		t.Errorf("GetHomeDir() fail %v", err)
-	}
+	homeDir := GetHomeDir()
 	if "" == homeDir {
 		t.Error("GetHomeDir() fail")
 	}

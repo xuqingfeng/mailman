@@ -11,7 +11,7 @@ import (
 
 func SaveAttachment(fileContent []byte, token, fileName string) error {
 
-	homeDir, _ := util.GetHomeDir()
+	homeDir := util.GetHomeDir()
 	dirPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token)
 	// ModePerm
 	err := lift.CreateDirectory(dirPath, os.ModePerm)

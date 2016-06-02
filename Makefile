@@ -16,4 +16,4 @@ test:
 
 # user: Current not implemented on linux/arm
 gox:
-	gox -osarch="linux/amd64 linux/arm darwin/amd64"
+	gox -osarch="linux/amd64 linux/386 linux/arm64 linux/arm darwin/amd64 darwin/386"
