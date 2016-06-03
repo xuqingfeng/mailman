@@ -9,7 +9,7 @@
 
 ### Install
 
-```bash
+```sh
 go get github.com/xuqingfeng/mailman
 
 cd $GOPATH/src/github.com/xuqingfeng/mailman
