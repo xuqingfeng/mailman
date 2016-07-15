@@ -19,11 +19,13 @@ make run
 
 ### 贡献代码
 
-1. 写代码
+1. Fork
 
-2. 测试通过 & 格式代码 (`make test` & `make format`)
+2. Coding
 
-3. 发送 pull request
+3. Format Code & Pass Test (`make format` & `make test`)
+
+4. Send Pull Request
 
 #### 当前默认支持的邮箱
 

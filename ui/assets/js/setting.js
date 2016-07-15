@@ -35,7 +35,6 @@ new Vue({
                 }
             })
             .fail(function (err) {
-                console.error(err);
             });
         $.get('/api/contacts', function (json) {
                 if (json.success) {
@@ -43,7 +42,6 @@ new Vue({
                 }
             })
             .fail(function (err) {
-                console.error(err);
             });
         $.get('/api/smtpServer', function (json) {
                 if (json.success) {
@@ -51,15 +49,12 @@ new Vue({
                 }
             })
             .fail(function (err) {
-                console.error(err);
             });
     },
     watch: {
         'lang': function (val, oldVal) {
             var self = this;
-            $.post('/api/lang', {
-                data: JSON.stringify({type: val})
-            }, function (json) {
+            $.post('/api/lang', JSON.stringify({type: val}), function (json) {
                 if (json.success) {
                     self.lang = val;
                     i18next.changeLanguage(self.lang);
@@ -74,12 +69,10 @@ new Vue({
             if (!checkParams('saveAccount', self)) {
                 swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
-                $.post('/api/account', {
-                        data: JSON.stringify({
+                $.post('/api/account', JSON.stringify({
                             email: self.accountEmail,
                             password: self.accountPassword
-                        })
-                    }, function (json) {
+                        }), function (json) {
                         if (json.success && json.data) {
                             self.accountEmail = '';
                             self.accountPassword = '';
@@ -87,7 +80,6 @@ new Vue({
                         }
                     })
                     .fail(function (err) {
-                        console.error(err);
                         swal(self.i18n.oops, err, "error");
                     });
             }
@@ -120,7 +112,6 @@ new Vue({
                         }
                     },
                     error: function (err) {
-                        console.error(err);
                         swal(self.i18n.oops, err, "error");
                     }
                 });
@@ -131,19 +122,16 @@ new Vue({
             if (!checkParams('saveContacts', self)) {
                 swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
-                $.post('/api/contacts', {
-                    data: JSON.stringify({
+                $.post('/api/contacts', JSON.stringify({
                         name: self.contactsName,
                         email: self.contactsEmail
-                    })
-                }, function (json) {
+                    }), function (json) {
                     if (json.success && json.data) {
                         self.contactsName = '';
                         self.contactsEmail = '';
                         self.contacts = json.data;
                     }
                 }).fail(function (err) {
-                    console.error(err);
                     swal(self.i18n.oops, err, "error");
                 })
             }
@@ -188,19 +176,16 @@ new Vue({
             if (!checkParams('saveSmtp', self)) {
                 swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
-                $.post('/api/smtpServer', {
-                    data: JSON.stringify({
+                $.post('/api/smtpServer', JSON.stringify({
                         address: self.smtpAddress,
                         server: self.smtpServer
-                    })
-                }, function (json) {
+                    }), function (json) {
                     if (json.success && json.data) {
                         self.smtpAddress = '';
                         self.smtpServer = '';
                         self.servers = json.data;
                     }
                 }).fail(function (err) {
-                    console.error(err);
                     swal(self.i18n.oops, err, "error");
                 })
             }

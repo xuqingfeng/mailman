@@ -5,10 +5,10 @@ all: run
 run: build
 	./mailman
 
-build: format
+build: fmt
 	go build
 
-format:
+fmt:
 	go fmt ./...
 
 test:

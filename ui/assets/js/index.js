@@ -1,6 +1,6 @@
-var myDropzone = {};
-var toContactsLoaded = false;
-var ccContactsLoaded = false;
+var myDropzone = {},
+    toContactsLoaded = false,
+    ccContactsLoaded = false;
 Dropzone.autoDiscover = false;
 var vue = new Vue({
     el: '#index',
@@ -53,7 +53,6 @@ var vue = new Vue({
                 }
             })
             .fail(function (err) {
-                console.error(err);
                 swal(self.i18n.oops, err, "error");
             });
     },
@@ -78,8 +77,7 @@ var vue = new Vue({
                         closeOnCancel: true
                     }, function (isConfirm) {
                         if (isConfirm) {
-                            var data = {
-                                data: JSON.stringify({
+                            var data = JSON.stringify({
                                     subject: self.subject,
                                     to: self.to,
                                     cc: self.cc,
@@ -88,8 +86,7 @@ var vue = new Vue({
                                     body: self.body,
                                     token: self.token,
                                     attachmentFileNames: getAcceptedFileNames()
-                                })
-                            };
+                                });
                             $.post('/api/mail', data, function (json) {
                                     if (json.success) {
                                         self.previewLinkIsHidden = true;
@@ -99,15 +96,13 @@ var vue = new Vue({
                                     }
                                 })
                                 .fail(function (err) {
-                                    console.error(err);
                                     swal(self.i18n.oops, self.i18n.request_fail, "error");
                                 });
                         }
                     });
                 } else {
                     self.sendClicked = true;
-                    var data = {
-                        data: JSON.stringify({
+                    var data = JSON.stringify({
                             subject: self.subject,
                             to: self.to,
                             cc: self.cc,
@@ -116,8 +111,7 @@ var vue = new Vue({
                             body: self.body,
                             token: self.token,
                             attachmentFileNames: getAcceptedFileNames()
-                        })
-                    };
+                        });
                     $.post('/api/mail', data, function (json) {
                             if (json.success) {
                                 self.previewLinkIsHidden = true;
@@ -127,7 +121,6 @@ var vue = new Vue({
                             }
                         })
                         .fail(function (err) {
-                            console.error(err);
                             swal(self.i18n.oops, self.i18n.request_fail, "error");
                         });
                 }
@@ -137,20 +130,16 @@ var vue = new Vue({
         preview: function () {
             var self = this;
             if (!self.body) {
-                console.error('empty');
                 swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
-                $.post('/api/preview', {
-                        data: JSON.stringify({
+                $.post('/api/preview', JSON.stringify({
                             body: self.body
-                        })
-                    }, function (json) {
+                        }), function (json) {
                         if (json.success) {
                             self.previewLinkIsHidden = false;
                         }
                     })
                     .fail(function (err) {
-                        console.error(err);
                         swal(self.i18n.oops, self.i18n.request_fail, "error");
                     });
             }
@@ -227,9 +216,6 @@ $(function () {
             }
         },
         load: function (query, callback) {
-            //if (!query.length) return callback();
-            // todo needed??
-            //if (!toContactsLoaded) {
             $.ajax({
                 url: '/api/contacts',
                 type: 'GET',
@@ -241,7 +227,6 @@ $(function () {
                     toContactsLoaded = true;
                 }
             });
-            //}
         },
         createFilter: function (input) {
             var match, regex;
@@ -298,9 +283,6 @@ $(function () {
             }
         },
         load: function (query, callback) {
-            //if (!query.length) return callback();
-            // todo needed??
-            //if (!ccContactsLoaded) {
             $.ajax({
                 url: '/api/contacts',
                 type: 'GET',
@@ -312,7 +294,6 @@ $(function () {
                     ccContactsLoaded = true;
                 }
             });
-            //}
         },
         createFilter: function (input) {
             var match, regex;

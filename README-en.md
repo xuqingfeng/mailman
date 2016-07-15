@@ -19,8 +19,10 @@ make run
 
 ### Contribute
 
-1. Write code
+1. Fork
 
-2. Make test pass & Format code (`make test` & `make format`)
+2. Coding
 
-3. Send pull request
+3. Format Code & Pass Test (`make format` & `make test`)
+
+4. Send Pull Request
