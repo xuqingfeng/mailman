@@ -5,7 +5,7 @@
 ![Coverage Status](https://img.shields.io/coveralls/xuqingfeng/mailman/master.svg)
 ![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/mailman)
 
-[DEMO](https://github.com/xuqingfeng/mailman/wiki/demo)
+[演示](https://github.com/xuqingfeng/mailman/wiki/demo)
 
 ### 安装
 

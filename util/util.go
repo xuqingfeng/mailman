@@ -17,7 +17,8 @@ const (
 	// magic key (avoid content conflict)
 	MailBodyKey      = "YTua0G1ViXGg9fxvrtwVRNfKD"
 	MailTemplatePath = "./ui/mail-template"
-	MailTemplateType = "responsive"
+	//MailTemplateType = "responsive"
+	MailTemplateType = "stationery"
 )
 
 var (

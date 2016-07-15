@@ -20,7 +20,6 @@ var vue = new Vue({
     },
     ready: function () {
         var self = this;
-
         // default
         applyLangSet(self);
         $.get('/api/lang', function (json) {
