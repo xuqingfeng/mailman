@@ -2,6 +2,7 @@ package util
 
 import (
 	"errors"
+	"sort"
 
 	"github.com/boltdb/bolt"
 )
@@ -168,5 +169,7 @@ func (b *BoltStore) GetRange(bucketName []byte) (map[string]string, []string, er
 		order = append(order, string(k))
 		//FileLog.Warn("k: " + string(k) + " " + "v: " + string(v))
 	}
+	// sort
+	sort.Strings(order)
 	return ret, order, nil
 }
