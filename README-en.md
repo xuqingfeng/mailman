@@ -18,13 +18,3 @@ cd $GOPATH/src/github.com/xuqingfeng/mailman
 
 make run
 ```
-
-### Contribute
-
-1. Fork
-
-2. Coding
-
-3. Format Code & Pass Test (`make format` & `make test`)
-
-4. Send Pull Request

@@ -19,16 +19,6 @@ cd $GOPATH/src/github.com/xuqingfeng/mailman
 make run
 ```
 
-### 贡献代码
-
-1. Fork
-
-2. Coding
-
-3. Format Code & Pass Test (`make format` & `make test`)
-
-4. Send Pull Request
-
 #### 当前默认支持的邮箱
 
 - [QQ Mail](https://mail.qq.com/)
