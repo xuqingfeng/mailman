@@ -89,7 +89,7 @@ COPYRIGHT:
 	app := cli.NewApp()
 	app.Name = "mailman"
 	app.Usage = "local email client with customizable SMTP server"
-	app.Version = "0.3.0"
+	app.Version = "0.3.1"
 	app.Author = "xuqingfeng"
 	app.Action = func(c *cli.Context) {
 
@@ -158,20 +158,20 @@ COPYRIGHT:
 	app.Run(os.Args)
 }
 
-func APIHandler(rw http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(rw, "default api route")
+func APIHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "default api route")
 }
 
-func LangHandler(rw http.ResponseWriter, r *http.Request) {
+func LangHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 		lg, _ := lang.GetLang()
 
 		switch lg {
 		case "en", "zh":
-			sendSuccess(rw, lg, "I! get lang success")
+			sendSuccess(w, lg, "I! get lang success")
 		default:
-			sendSuccess(rw, "en", "I! get lang success")
+			sendSuccess(w, "en", "I! get lang success")
 		}
 
 	} else if "POST" == r.Method {
@@ -180,53 +180,53 @@ func LangHandler(rw http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&lg)
 		if err != nil {
 
-			sendError(rw, DataIsNotJsonErr.Error())
+			sendError(w, DataIsNotJsonErr.Error())
 		} else if err = lang.SaveLang(lg); err != nil {
-			sendError(rw, "E! save lang fail: "+err.Error())
+			sendError(w, "E! save lang fail: "+err.Error())
 		} else {
 			l, err := lang.GetLang()
 			if err != nil {
 
-				sendError(rw, "E! get lang fail: "+err.Error())
+				sendError(w, "E! get lang fail: "+err.Error())
 			} else {
 
-				sendSuccess(rw, l, "I! save lang success")
+				sendSuccess(w, l, "I! save lang success")
 			}
 		}
 	}
 }
 
-func MailHandler(rw http.ResponseWriter, r *http.Request) {
+func MailHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
-		sendSuccess(rw, struct{}{}, HI_THERE)
+		sendSuccess(w, struct{}{}, HI_THERE)
 	} else if "POST" == r.Method {
 
 		var m mail.Mail
 		err := json.NewDecoder(r.Body).Decode(&m)
 		if err != nil {
 
-			sendError(rw, "E! "+DataIsNotJsonErr.Error())
+			sendError(w, "E! "+DataIsNotJsonErr.Error())
 		} else if err = mail.SendMail(m); err != nil {
 
-			sendError(rw, "E! send mail fail: "+err.Error())
+			sendError(w, "E! send mail fail: "+err.Error())
 		} else {
 			// empty struct
-			sendSuccess(rw, struct{}{}, "I! send mail success")
+			sendSuccess(w, struct{}{}, "I! send mail success")
 		}
 	}
 }
 
-func FileHandler(rw http.ResponseWriter, r *http.Request) {
+func FileHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
-		sendSuccess(rw, struct{}{}, HI_THERE)
+		sendSuccess(w, struct{}{}, HI_THERE)
 	} else if "POST" == r.Method {
 
 		if err := r.ParseMultipartForm(maxMemory); err != nil {
-			sendError(rw, "E! parse posted file fail: "+err.Error())
+			sendError(w, "E! parse posted file fail: "+err.Error())
 		}
 
 		token := ""
@@ -244,7 +244,7 @@ func FileHandler(rw http.ResponseWriter, r *http.Request) {
 				fileContent, _ := ioutil.ReadAll(f)
 				err := mail.SaveAttachment(fileContent, token, fileHeader.Filename)
 				if err != nil {
-					sendError(rw, "E! save attachment fail")
+					sendError(w, "E! save attachment fail")
 					// todo multi
 					break
 				}
@@ -253,16 +253,16 @@ func FileHandler(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func AccountHandler(rw http.ResponseWriter, r *http.Request) {
+func AccountHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
 		emails, err := account.GetAccountEmail()
 		if err != nil {
-			sendError(rw, "E! get account email fail: "+err.Error())
+			sendError(w, "E! get account email fail: "+err.Error())
 		} else {
 			// empty []string
-			sendSuccess(rw, emails, "I! get account email success")
+			sendSuccess(w, emails, "I! get account email success")
 		}
 	} else if "POST" == r.Method {
 
@@ -270,18 +270,18 @@ func AccountHandler(rw http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&at)
 		if err != nil {
 
-			sendError(rw, "E! "+DataIsNotJsonErr.Error())
+			sendError(w, "E! "+DataIsNotJsonErr.Error())
 		} else if err = account.SaveAccount(at); err != nil {
 
-			sendError(rw, "E! save account fail: "+err.Error())
+			sendError(w, "E! save account fail: "+err.Error())
 		} else {
 			emails, err := account.GetAccountEmail()
 			if err != nil {
 
-				sendError(rw, "E! get account email fail: "+err.Error())
+				sendError(w, "E! get account email fail: "+err.Error())
 			} else {
 
-				sendSuccess(rw, emails, "I! save account success")
+				sendSuccess(w, emails, "I! save account success")
 			}
 		}
 	} else if "DELETE" == r.Method {
@@ -290,34 +290,34 @@ func AccountHandler(rw http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&k)
 		if err != nil {
 
-			sendError(rw, "E! "+DataIsNotJsonErr.Error()+" "+err.Error())
+			sendError(w, "E! "+DataIsNotJsonErr.Error()+" "+err.Error())
 		} else if err = account.DeleteAccount(k.Key); err != nil {
 
-			sendError(rw, "E! delete account fail: "+err.Error())
+			sendError(w, "E! delete account fail: "+err.Error())
 		} else {
 			emails, err := account.GetAccountEmail()
 			if err != nil {
 
-				sendError(rw, "E! get account email fail: "+err.Error())
+				sendError(w, "E! get account email fail: "+err.Error())
 			} else {
 
-				sendSuccess(rw, emails, "I! delete account success")
+				sendSuccess(w, emails, "I! delete account success")
 			}
 		}
 	}
 }
 
-func ContactsHandler(rw http.ResponseWriter, r *http.Request) {
+func ContactsHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
 		contacts, err := contacts.GetContacts()
 		if err != nil {
 
-			sendError(rw, "E! get contacts fail: "+err.Error())
+			sendError(w, "E! get contacts fail: "+err.Error())
 		} else {
 
-			sendSuccess(rw, contacts, "I! get contacts success")
+			sendSuccess(w, contacts, "I! get contacts success")
 		}
 	} else if "POST" == r.Method {
 
@@ -325,18 +325,18 @@ func ContactsHandler(rw http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&ct)
 		if err != nil {
 
-			sendError(rw, DataIsNotJsonErr.Error())
+			sendError(w, DataIsNotJsonErr.Error())
 		} else if err = contacts.SaveContacts(ct); err != nil {
 
-			sendError(rw, "E! save contacts fail: "+err.Error())
+			sendError(w, "E! save contacts fail: "+err.Error())
 		} else {
 			contacts, err := contacts.GetContacts()
 			if err != nil {
 
-				sendError(rw, "E! get contacts fail: "+err.Error())
+				sendError(w, "E! get contacts fail: "+err.Error())
 			} else {
 
-				sendSuccess(rw, contacts, "I! save contacts success")
+				sendSuccess(w, contacts, "I! save contacts success")
 			}
 		}
 	} else if "DELETE" == r.Method {
@@ -344,34 +344,34 @@ func ContactsHandler(rw http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&k)
 		if err != nil {
 
-			sendError(rw, DataIsNotJsonErr.Error()+" "+err.Error())
+			sendError(w, DataIsNotJsonErr.Error()+" "+err.Error())
 		} else if err = contacts.DeleteContacts(k.Key); err != nil {
 
-			sendError(rw, "E! delete contacts fail: "+err.Error())
+			sendError(w, "E! delete contacts fail: "+err.Error())
 		} else {
 			c, err := contacts.GetContacts()
 			if err != nil {
 
-				sendError(rw, "E! get contacts fail: "+err.Error())
+				sendError(w, "E! get contacts fail: "+err.Error())
 			} else {
 
-				sendSuccess(rw, c, "I! delete contacts success")
+				sendSuccess(w, c, "I! delete contacts success")
 			}
 		}
 	}
 }
 
-func SMTPServerHandler(rw http.ResponseWriter, r *http.Request) {
+func SMTPServerHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
 		customSMTPServer, err := smtp.GetCustomSMTPServer()
 		if err != nil {
 
-			sendError(rw, "E! get custom SMTP server fail: "+err.Error())
+			sendError(w, "E! get custom SMTP server fail: "+err.Error())
 		} else {
 
-			sendSuccess(rw, customSMTPServer, "I! get custom SMTP Server success")
+			sendSuccess(w, customSMTPServer, "I! get custom SMTP Server success")
 		}
 	} else if "POST" == r.Method {
 
@@ -379,19 +379,19 @@ func SMTPServerHandler(rw http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&smtpServer)
 		if err != nil {
 
-			sendError(rw, "E! "+DataIsNotJsonErr.Error())
+			sendError(w, "E! "+DataIsNotJsonErr.Error())
 		} else if err = smtp.SaveSMTPServer(smtpServer); err != nil {
 
-			sendError(rw, "E! "+err.Error())
+			sendError(w, "E! "+err.Error())
 		} else {
 
 			customSMTPServer, err := smtp.GetCustomSMTPServer()
 			if err != nil {
 
-				sendError(rw, "E! "+err.Error())
+				sendError(w, "E! "+err.Error())
 			} else {
 
-				sendSuccess(rw, customSMTPServer, "I! save SMTP Server success")
+				sendSuccess(w, customSMTPServer, "I! save SMTP Server success")
 			}
 		}
 	} else if "DELETE" == r.Method {
@@ -399,29 +399,29 @@ func SMTPServerHandler(rw http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&k)
 		if err != nil {
 
-			sendError(rw, "E! "+DataIsNotJsonErr.Error()+" "+err.Error())
+			sendError(w, "E! "+DataIsNotJsonErr.Error()+" "+err.Error())
 		} else if err = smtp.DeleteSMTPServer(k.Key); err != nil {
 
-			sendError(rw, "E! delete SMTPServer fail: "+err.Error())
+			sendError(w, "E! delete SMTPServer fail: "+err.Error())
 		} else {
 			server, err := smtp.GetCustomSMTPServer()
 			if err != nil {
 
-				sendError(rw, "E! get custom SMTP server fail: "+err.Error())
+				sendError(w, "E! get custom SMTP server fail: "+err.Error())
 			} else {
 
-				sendSuccess(rw, server, "I! delete SMTP server success")
+				sendSuccess(w, server, "I! delete SMTP server success")
 			}
 		}
 	}
 }
 
-func PreviewHandler(rw http.ResponseWriter, r *http.Request) {
+func PreviewHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
-		rw.Header().Set("Content-Type", "text/html")
-		rw.Write([]byte(previewContent))
+		w.Header().Set("Content-Type", "text/html")
+		w.Write([]byte(previewContent))
 	} else if "POST" == r.Method {
 
 		type Body struct {
@@ -431,18 +431,18 @@ func PreviewHandler(rw http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&body)
 		if err != nil {
 
-			sendError(rw, "E! "+DataIsNotJsonErr.Error())
+			sendError(w, "E! "+DataIsNotJsonErr.Error())
 		} else {
 
 			previewContent = mail.ParseMailContent(body.Body)
-			sendSuccess(rw, struct{}{}, previewContent)
+			sendSuccess(w, struct{}{}, previewContent)
 		}
 	}
 }
 
-func WSLogHandler(rw http.ResponseWriter, r *http.Request) {
+func WSLogHandler(w http.ResponseWriter, r *http.Request) {
 
-	conn, err := upgrader.Upgrade(rw, r, nil)
+	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Error(err.Error())
 	}
@@ -470,7 +470,7 @@ func WSLogHandler(rw http.ResponseWriter, r *http.Request) {
 }
 
 //***echo JSON START*****
-func sendSuccess(rw http.ResponseWriter, data interface{}, message string) {
+func sendSuccess(w http.ResponseWriter, data interface{}, message string) {
 
 	msg = util.Msg{
 		Success: true,
@@ -479,10 +479,10 @@ func sendSuccess(rw http.ResponseWriter, data interface{}, message string) {
 	}
 
 	msgInByteSlice, _ := json.Marshal(msg)
-	rw.Header().Set("Content-Type", "application/json")
-	rw.Write(msgInByteSlice)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(msgInByteSlice)
 }
-func sendError(rw http.ResponseWriter, message string) {
+func sendError(w http.ResponseWriter, message string) {
 
 	msg = util.Msg{
 		Success: false,
@@ -490,8 +490,8 @@ func sendError(rw http.ResponseWriter, message string) {
 	}
 
 	msgInByteSlice, _ := json.Marshal(msg)
-	rw.Header().Set("Content-Type", "application/json")
-	rw.Write(msgInByteSlice)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(msgInByteSlice)
 }
 
 //***echo JSON END*****

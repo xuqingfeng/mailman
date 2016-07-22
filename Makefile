@@ -15,4 +15,4 @@ test:
 	go test ./...
 
 gox:
-	gox -osarch="linux/amd64 linux/386 darwin/amd64"
+	gox -osarch="linux/amd64 linux/386 linux/arm darwin/amd64"

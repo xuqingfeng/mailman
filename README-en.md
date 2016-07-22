@@ -7,10 +7,12 @@
 
 [DEMO](https://github.com/xuqingfeng/mailman/wiki/demo)
 
+[中文](./README.md) | English
+
 ### Install
 
 ```sh
-go get github.com/xuqingfeng/mailman
+go get -d -u github.com/xuqingfeng/mailman
 
 cd $GOPATH/src/github.com/xuqingfeng/mailman
 
