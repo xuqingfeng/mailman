@@ -1,9 +1,9 @@
 ## mailman :cop:
 > local :love_letter: client with customizable SMTP server
 
-![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)
-![Coverage Status](https://img.shields.io/coveralls/xuqingfeng/mailman/master.svg)
-![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/mailman)
+[![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)
+[![Coverage Status](https://img.shields.io/coveralls/xuqingfeng/mailman/master.svg)](https://coveralls.io/github/xuqingfeng/mailman)
+[![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/mailman)](https://goreportcard.com/report/github.com/xuqingfeng/mailman)
 
 [DEMO](https://github.com/xuqingfeng/mailman/wiki/demo)
 

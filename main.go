@@ -26,6 +26,8 @@ import (
 	"github.com/xuqingfeng/mailman/mail"
 	"github.com/xuqingfeng/mailman/smtp"
 	"github.com/xuqingfeng/mailman/util"
+	"os/exec"
+	"runtime"
 )
 
 const (
@@ -46,7 +48,7 @@ var (
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
-	DataIsNotJsonErr = errors.New("data is not json format")
+	ErrDataIsNotJson = errors.New("data is not json format")
 )
 
 type Key struct {
@@ -108,7 +110,14 @@ COPYRIGHT:
 			os.Exit(1)
 		}
 
-		log.Info("open 127.0.0.1:" + strconv.Itoa(portInUse) + " in browser")
+		if runtime.GOOS == "darwin" {
+			_, err := exec.Command("env", "open", "http://127.0.0.1:"+strconv.Itoa(portInUse)).Output()
+			if err != nil {
+				log.Fatalf("darwin open fail: %s", err.Error())
+			}
+		} else {
+			log.Info("open 127.0.0.1:" + strconv.Itoa(portInUse) + " in browser")
+		}
 
 		s := spinner.New(spinner.CharSets[spinnerCharIndex], 100*time.Millisecond)
 		s.Color("cyan")
@@ -180,7 +189,7 @@ func LangHandler(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&lg)
 		if err != nil {
 
-			sendError(w, DataIsNotJsonErr.Error())
+			sendError(w, ErrDataIsNotJson.Error())
 		} else if err = lang.SaveLang(lg); err != nil {
 			sendError(w, "E! save lang fail: "+err.Error())
 		} else {
@@ -207,7 +216,7 @@ func MailHandler(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&m)
 		if err != nil {
 
-			sendError(w, "E! "+DataIsNotJsonErr.Error())
+			sendError(w, "E! "+ErrDataIsNotJson.Error())
 		} else if err = mail.SendMail(m); err != nil {
 
 			sendError(w, "E! send mail fail: "+err.Error())
@@ -270,7 +279,7 @@ func AccountHandler(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&at)
 		if err != nil {
 
-			sendError(w, "E! "+DataIsNotJsonErr.Error())
+			sendError(w, "E! "+ErrDataIsNotJson.Error())
 		} else if err = account.SaveAccount(at); err != nil {
 
 			sendError(w, "E! save account fail: "+err.Error())
@@ -290,7 +299,7 @@ func AccountHandler(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&k)
 		if err != nil {
 
-			sendError(w, "E! "+DataIsNotJsonErr.Error()+" "+err.Error())
+			sendError(w, "E! "+ErrDataIsNotJson.Error()+" "+err.Error())
 		} else if err = account.DeleteAccount(k.Key); err != nil {
 
 			sendError(w, "E! delete account fail: "+err.Error())
@@ -325,7 +334,7 @@ func ContactsHandler(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&ct)
 		if err != nil {
 
-			sendError(w, DataIsNotJsonErr.Error())
+			sendError(w, ErrDataIsNotJson.Error())
 		} else if err = contacts.SaveContacts(ct); err != nil {
 
 			sendError(w, "E! save contacts fail: "+err.Error())
@@ -344,7 +353,7 @@ func ContactsHandler(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&k)
 		if err != nil {
 
-			sendError(w, DataIsNotJsonErr.Error()+" "+err.Error())
+			sendError(w, ErrDataIsNotJson.Error()+" "+err.Error())
 		} else if err = contacts.DeleteContacts(k.Key); err != nil {
 
 			sendError(w, "E! delete contacts fail: "+err.Error())
@@ -379,7 +388,7 @@ func SMTPServerHandler(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&smtpServer)
 		if err != nil {
 
-			sendError(w, "E! "+DataIsNotJsonErr.Error())
+			sendError(w, "E! "+ErrDataIsNotJson.Error())
 		} else if err = smtp.SaveSMTPServer(smtpServer); err != nil {
 
 			sendError(w, "E! "+err.Error())
@@ -399,7 +408,7 @@ func SMTPServerHandler(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&k)
 		if err != nil {
 
-			sendError(w, "E! "+DataIsNotJsonErr.Error()+" "+err.Error())
+			sendError(w, "E! "+ErrDataIsNotJson.Error()+" "+err.Error())
 		} else if err = smtp.DeleteSMTPServer(k.Key); err != nil {
 
 			sendError(w, "E! delete SMTPServer fail: "+err.Error())
@@ -431,7 +440,7 @@ func PreviewHandler(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&body)
 		if err != nil {
 
-			sendError(w, "E! "+DataIsNotJsonErr.Error())
+			sendError(w, "E! "+ErrDataIsNotJson.Error())
 		} else {
 
 			previewContent = mail.ParseMailContent(body.Body)
@@ -469,7 +478,6 @@ func WSLogHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//***echo JSON START*****
 func sendSuccess(w http.ResponseWriter, data interface{}, message string) {
 
 	msg = util.Msg{
@@ -494,9 +502,6 @@ func sendError(w http.ResponseWriter, message string) {
 	w.Write(msgInByteSlice)
 }
 
-//***echo JSON END*****
-
-//***check TCP port is available START***
 func isTCPPortAvailable(port int) bool {
 
 	if port < minTCPPort || port > maxTCPPort {
@@ -509,5 +514,3 @@ func isTCPPortAvailable(port int) bool {
 	conn.Close()
 	return true
 }
-
-//***check TCP port is available END***

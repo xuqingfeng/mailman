@@ -11,7 +11,6 @@ type SMTPServer struct {
 	Server  string `json:"server"`
 }
 
-//****SMTP START****
 func GetSMTPServer(email string) (string, error) {
 
 	customSMTPServer, _ := GetCustomSMTPServer()
@@ -78,5 +77,3 @@ func DeleteSMTPServer(address string) error {
 
 	return boltStore.Delete([]byte(address), util.SmtpBucketName)
 }
-
-//****SMTP END****

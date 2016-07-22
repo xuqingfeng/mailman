@@ -149,10 +149,10 @@ func (b *BoltStore) DeleteBucket(bucketName []byte) error {
 	return tx.Commit()
 }
 
-// range map
-// the iteration order is not specified and is not guaranteed to be the same from one iteration to the next.
-// https://blog.golang.org/go-maps-in-action
 func (b *BoltStore) GetRange(bucketName []byte) (map[string]string, []string, error) {
+	// range map
+	// the iteration order is not specified and is not guaranteed to be the same from one iteration to the next.
+	// https://blog.golang.org/go-maps-in-action
 
 	tx, err := b.conn.Begin(false)
 	if err != nil {

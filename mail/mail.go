@@ -23,7 +23,6 @@ type Mail struct {
 	AttachmentFileNames []string `json:"attachmentFileNames"`
 }
 
-//****Mail START****
 func SendMail(mail Mail) error {
 
 	account, err := account.GetAccountInfo(mail.From)
@@ -88,5 +87,3 @@ func ParseMailContent(body string) string {
 
 	return content
 }
-
-//****Mail END****

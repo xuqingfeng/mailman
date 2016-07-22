@@ -21,7 +21,6 @@ type Account struct {
 	Password string `json:"password"`
 }
 
-//****Account START****
 func GetAccountEmail() ([]string, error) {
 
 	boltStore, err := util.NewBoltStore(util.DBPath)
@@ -127,5 +126,3 @@ func generateKey() []byte {
 
 	return []byte(k)
 }
-
-//****Account END****

@@ -9,7 +9,6 @@ type Contacts struct {
 	Name  string `json:"name"`
 }
 
-//****Contacts START****
 func GetContacts() ([]Contacts, error) {
 
 	boltStore, err := util.NewBoltStore(util.DBPath)
@@ -50,5 +49,3 @@ func DeleteContacts(email string) error {
 
 	return boltStore.Delete([]byte(email), util.ContactsBucketName)
 }
-
-//****Contacts END****
