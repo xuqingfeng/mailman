@@ -9,7 +9,7 @@
 
 中文 | [English](./README-en.md)
 
-### 安装
+### 源码安装
 
 ```sh
 go get -d -u github.com/xuqingfeng/mailman
@@ -18,6 +18,10 @@ cd $GOPATH/src/github.com/xuqingfeng/mailman
 
 make run
 ```
+
+### 下载打包文件
+
+[https://github.com/xuqingfeng/mailman/releases](https://github.com/xuqingfeng/mailman/releases)
 
 #### 当前默认支持的邮箱
 

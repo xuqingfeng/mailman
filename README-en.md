@@ -9,7 +9,7 @@
 
 [中文](./README.md) | English
 
-### Install
+### Install From Source
 
 ```sh
 go get -d -u github.com/xuqingfeng/mailman
@@ -18,3 +18,7 @@ cd $GOPATH/src/github.com/xuqingfeng/mailman
 
 make run
 ```
+
+### Install Binary
+
+[https://github.com/xuqingfeng/mailman/releases](https://github.com/xuqingfeng/mailman/releases)
