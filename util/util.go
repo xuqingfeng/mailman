@@ -13,9 +13,6 @@ const (
 	configMode      = 0755
 	dbName          = "mailman.db"
 	LogName         = "mailman.log"
-	DefaultSMTPPort = 25
-	// magic key (avoid content conflict)
-	MailBodyKey      = "YTua0G1ViXGg9fxvrtwVRNfKD"
 	MailTemplatePath = "./ui/mail-template"
 	MailTemplateType = "responsive"
 	//MailTemplateType = "stationery"

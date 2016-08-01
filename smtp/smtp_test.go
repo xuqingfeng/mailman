@@ -10,6 +10,7 @@ var (
 	testSMTPServer = SMTPServer{
 		"@example.com",
 		"smtp.example.com",
+        "25",
 	}
 )
 
