@@ -17,6 +17,7 @@ func TestMain(m *testing.M) {
 	smtp4mail := smtp.SMTPServer{
 		"@example.com",
 		"smtp.example.com",
+		"25",
 	}
 	account.SaveAccount(account4mail)
 	smtp.SaveSMTPServer(smtp4mail)

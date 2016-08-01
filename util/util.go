@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	configMode      = 0755
-	dbName          = "mailman.db"
-	LogName         = "mailman.log"
+	configMode       = 0755
+	dbName           = "mailman.db"
+	LogName          = "mailman.log"
 	MailTemplatePath = "./ui/mail-template"
 	MailTemplateType = "responsive"
 	//MailTemplateType = "stationery"
