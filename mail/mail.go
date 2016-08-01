@@ -1,16 +1,17 @@
 package mail
 
 import (
+	"bytes"
+	"html/template"
 	"io/ioutil"
 	"path/filepath"
-	"strings"
+	"strconv"
 
 	"github.com/russross/blackfriday"
 	"github.com/xuqingfeng/mailman/account"
 	"github.com/xuqingfeng/mailman/smtp"
 	"github.com/xuqingfeng/mailman/util"
 	"gopkg.in/gomail.v2"
-	"strconv"
 )
 
 type Mail struct {
@@ -77,18 +78,38 @@ func SendMail(mail Mail) error {
 	}
 	return nil
 }
-func ParseMailContent(body string) string {
+func ParseMailContent(body string) (content string) {
 
-	var content = ""
 	// markdown parse
 	parsedContent := blackfriday.MarkdownCommon([]byte(body))
+	content = string(parsedContent)
+
 	mailTemplateContent, err := ioutil.ReadFile(util.MailTemplatePath + "/" + util.MailTemplateType + ".html")
 	if err != nil {
 		util.FileLog.Warn(err.Error())
-		content = string(parsedContent)
+		return
 	} else {
-		content = strings.Replace(string(mailTemplateContent), "{{MAIL_BODY_"+util.MailBodyKey+"}}", string(parsedContent), -1)
+		type mailContent struct {
+			Content string
+		}
+		tpl, err := template.New("mail").Parse(string(mailTemplateContent))
+		if err != nil {
+			util.FileLog.Warn(err.Error())
+			return
+		} else {
+			var buf bytes.Buffer
+			mc := mailContent{
+				content,
+			}
+			err = tpl.Execute(&buf, mc)
+			if err != nil {
+				util.FileLog.Warn(err.Error())
+				return
+			} else {
+				content = buf.String()
+			}
+		}
 	}
 
-	return content
+	return
 }
