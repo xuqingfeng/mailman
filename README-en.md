@@ -1,4 +1,4 @@
-## mailman :cop:
+## ![ICON](./ui/assets/img/mailman.png) mailman
 > local :love_letter: client with customizable SMTP server
 
 [![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)

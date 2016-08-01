@@ -30,7 +30,8 @@ i18next.init({
                 'lang': 'Language',
                 'custom_smtp_server': 'Custom SMTP Server',
                 'mail_address': 'Mail Address',
-                'smtp_server': 'SMTP Server',
+                'smtp_server': 'Server',
+                'smtp_port': 'Port',
                 'save': 'Save',
                 'delete': 'Delete',
 
@@ -75,12 +76,13 @@ i18next.init({
                 'lang': '语言',
                 'custom_smtp_server': '自定义 SMTP 服务器',
                 'mail_address': '邮箱后缀',
-                'smtp_server': 'SMTP 服务器',
+                'smtp_server': '服务器',
+                'smtp_port': '端口',
                 'save': '保存',
                 'delete': '删除',
 
                 // other
-                'oops': '我嚓...',
+                'oops': '哎哟喂...',
                 'missing_info': '缺少参数!',
                 'send_again': '重新发送?',
                 'yes_do_it': '是的, 发送!',

@@ -10,6 +10,7 @@ import (
 	"github.com/xuqingfeng/mailman/smtp"
 	"github.com/xuqingfeng/mailman/util"
 	"gopkg.in/gomail.v2"
+	"strconv"
 )
 
 type Mail struct {
@@ -65,7 +66,11 @@ func SendMail(mail Mail) error {
 
 	m.SetBody("text/html", content)
 
-	d := gomail.NewDialer(SMTPServer, util.DefaultSMTPPort, account.Email, account.Password)
+	port, err := strconv.Atoi(SMTPServer.Port)
+	if err != nil {
+		return err
+	}
+	d := gomail.NewDialer(SMTPServer.Server, port, account.Email, account.Password)
 	if err = d.DialAndSend(m); err != nil {
 		util.FileLog.Error(err.Error())
 		return err

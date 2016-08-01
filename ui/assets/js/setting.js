@@ -7,6 +7,7 @@ new Vue({
         contactsEmail: '',
         smtpAddress: '',
         smtpServer: '',
+        smtpPort: '',
         emails: [],
         contacts: [],
         servers: [],
@@ -178,12 +179,16 @@ new Vue({
             } else {
                 $.post('/api/smtpServer', JSON.stringify({
                         address: self.smtpAddress,
-                        server: self.smtpServer
+                        server: self.smtpServer,
+                        port: self.smtpPort
                     }), function (json) {
                     if (json.success && json.data) {
                         self.smtpAddress = '';
                         self.smtpServer = '';
+                        self.smtpPort = '';
                         self.servers = json.data;
+
+                        self.smtpClicked = false;
                     }
                 }).fail(function (err) {
                     swal(self.i18n.oops, err, "error");
@@ -195,10 +200,12 @@ new Vue({
             if (!self.smtpClicked) {
                 self.smtpAddress = smtp.address;
                 self.smtpServer = smtp.server;
+                self.smtpPort = smtp.port;
                 self.smtpClicked = !self.smtpClicked;
             } else {
                 self.smtpAddress = '';
                 self.smtpServer = '';
+                self.smtpPort = '';
                 self.smtpClicked = !self.smtpClicked;
             }
         },
@@ -215,6 +222,7 @@ new Vue({
                         if (json.success) {
                             self.smtpAddress = '';
                             self.smtpServer = '';
+                            self.smtpPort = '';
                             self.servers = json.data;
                             self.smtpClicked = !self.smtpClicked;
                         }
@@ -242,7 +250,7 @@ function checkParams(type, self) {
             break;
         case 'saveSmtp':
 
-            return !(!self.smtpAddress || !self.smtpServer);
+            return !(!self.smtpAddress || !self.smtpServer || !self.smtpPort);
             break;
         case 'deleteAccount':
 
@@ -274,6 +282,7 @@ function applyLangSet(self) {
         custom_smtp_server: i18next.t('custom_smtp_server'),
         mail_address: i18next.t('mail_address'),
         smtp_server: i18next.t('smtp_server'),
+        smtp_port: i18next.t('smtp_port'),
         save: i18next.t('save'),
         delete: i18next.t('delete'),
         index: i18next.t('index'),

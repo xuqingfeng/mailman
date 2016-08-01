@@ -1,4 +1,4 @@
-## mailman :cop:
+## ![ICON](./ui/assets/img/mailman.png) mailman
 > 可自定义 SMTP 服务器的本地:love_letter:客户端
 
 [![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)
@@ -19,7 +19,7 @@ cd $GOPATH/src/github.com/xuqingfeng/mailman
 make run
 ```
 
-### 下载打包文件
+### 打包文件安装
 
 [https://github.com/xuqingfeng/mailman/releases](https://github.com/xuqingfeng/mailman/releases)
 

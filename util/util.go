@@ -28,14 +28,8 @@ var (
 		"logPath": "/.mailman/log",
 		"tmpPath": "/.mailman/tmp",
 	}
-	DBPath            string
-	DefaultLang       = "en"
-	DefaultSMTPServer = map[string]string{
-		"@qq.com":      "smtp.qq.com",
-		"@hotmail.com": "smtp.live.com",
-		"@outlook.com": "smtp.live.com",
-		"@gmail.com":   "smtp.gmail.com",
-	}
+	DBPath                string
+	DefaultLang           = "en"
 	SMTPServerNotFoundErr = errors.New("SMTP Server Not Found")
 )
 

@@ -3,15 +3,34 @@ package smtp
 import (
 	"regexp"
 
+	"encoding/json"
 	"github.com/xuqingfeng/mailman/util"
 )
 
 type SMTPServer struct {
 	Address string `json:"address"`
 	Server  string `json:"server"`
+	Port    string `json:"port"`
 }
 
-func GetSMTPServer(email string) (string, error) {
+var (
+	defaultSMTPServer = []SMTPServer{
+		{
+			"@qq.com", "smtp.qq.com", "25",
+		},
+		{
+			"@hotmail.com", "smtp.live.com", "25",
+		},
+		{
+			"@outlook.com", "smtp.live.com", "25",
+		},
+		{
+			"@gmail.com", "smtp.gmail.com", "25",
+		},
+	}
+)
+
+func GetSMTPServer(email string) (SMTPServer, error) {
 
 	customSMTPServer, _ := GetCustomSMTPServer()
 	for _, v := range customSMTPServer {
@@ -20,11 +39,11 @@ func GetSMTPServer(email string) (string, error) {
 			util.FileLog.Error(err.Error())
 		}
 		if ok {
-			return v.Server, nil
+			return v, nil
 		}
 	}
-	for k, v := range util.DefaultSMTPServer {
-		ok, err := regexp.MatchString(".*"+k, email)
+	for _, v := range defaultSMTPServer {
+		ok, err := regexp.MatchString(".*"+v.Address, email)
 		if err != nil {
 			util.FileLog.Error(err.Error())
 		}
@@ -33,7 +52,7 @@ func GetSMTPServer(email string) (string, error) {
 		}
 	}
 
-	return "", util.SMTPServerNotFoundErr
+	return SMTPServer{}, util.SMTPServerNotFoundErr
 }
 func GetCustomSMTPServer() ([]SMTPServer, error) {
 
@@ -50,7 +69,13 @@ func GetCustomSMTPServer() ([]SMTPServer, error) {
 	}
 	var customSMTPServerList []SMTPServer
 	for _, v := range order {
-		customSMTPServerList = append(customSMTPServerList, SMTPServer{v, customSMTPServer[v]})
+		smtpServer := customSMTPServer[v]
+		var server SMTPServer
+		err = json.Unmarshal([]byte(smtpServer), &server)
+		if err != nil {
+			return customSMTPServerList, err
+		}
+		customSMTPServerList = append(customSMTPServerList, server)
 	}
 
 	return customSMTPServerList, nil
@@ -65,7 +90,11 @@ func SaveSMTPServer(smtpServer SMTPServer) error {
 	}
 	defer boltStore.Close()
 
-	return boltStore.Set([]byte(smtpServer.Address), []byte(smtpServer.Server), util.SmtpBucketName)
+	encoded, err := json.Marshal(smtpServer)
+	if err != nil {
+		return err
+	}
+	return boltStore.Set([]byte(smtpServer.Address), encoded, util.SmtpBucketName)
 }
 func DeleteSMTPServer(address string) error {
 
