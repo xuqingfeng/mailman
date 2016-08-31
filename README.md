@@ -1,15 +1,11 @@
-<p align="center">
-   ![ICON](./docs/mailman.png)
-</p>
-<h3 align="center">mailman</h3>
-<p align="center">
-支持 HTML 模板和 SMTP 的 :love_letter: 客户端
-</p>
-<p align="center">
+![ICON](./docs/mailman.png)
+
+## mailman
+>支持 HTML 模板和 SMTP 的 :love_letter: 客户端
+
 [![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)
 [![Coverage Status](https://img.shields.io/coveralls/xuqingfeng/mailman/master.svg)](https://coveralls.io/github/xuqingfeng/mailman)
 [![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/mailman)](https://goreportcard.com/report/github.com/xuqingfeng/mailman)
-</p>
 
 中文 | [English](./README.en.md)
 
@@ -18,11 +14,9 @@
 ### 安装
 
 ```sh
-go get -d -u github.com/xuqingfeng/mailman
+go get -u github.com/xuqingfeng/mailman
 
-cd $GOPATH/src/github.com/xuqingfeng/mailman
-
-make run
+mailman
 ```
 或者直接下载 [打包文件](https://github.com/xuqingfeng/mailman/releases)
 
