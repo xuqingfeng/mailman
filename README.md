@@ -3,7 +3,7 @@
 </p>
 <h3 align="center">mailman</h3>
 <p align="center">
-可自定义 SMTP 服务器的本地 :love_letter: 客户端
+支持 HTML 模板和 SMTP 的 :love_letter: 客户端
 </p>
 <p align="center">
 [![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)

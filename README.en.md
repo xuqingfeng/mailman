@@ -3,7 +3,7 @@
 </p>
 <h3 align="center">mailman</h3>
 <p align="center">
-Local :love_letter: client with customizable SMTP server
+Local :love_letter: client with html template and SMTP support
 </p>
 <p align="center">
 [![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)
