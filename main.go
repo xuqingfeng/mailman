@@ -10,8 +10,11 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
+	"strings"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -26,19 +29,19 @@ import (
 	"github.com/xuqingfeng/mailman/mail"
 	"github.com/xuqingfeng/mailman/smtp"
 	"github.com/xuqingfeng/mailman/util"
-	"os/exec"
-	"runtime"
 )
 
 const (
-	spinnerCharIndex   = 14
-	readLogFileGap     = 5 // second
+	SPINNER_CHAR_INDEX = 14
+	READ_LOG_FILE_GAP  = 5 // second
 	HI_THERE           = "HI THERE !"
-	minTCPPort         = 0
-	maxTCPPort         = 65535
-	maxReservedTCPPort = 1024
+	MIN_TCP_PORT       = 0
+	MEX_TCP_PORT       = 65535
+	//maxReservedTCPPort = 1024
 	// 15M
-	maxMemory = 1024 * 1024 * 15
+	MAX_MEMORY = 1024 * 1024 * 15
+
+	ASSETS_PREFIX = "ui"
 )
 
 var (
@@ -48,7 +51,7 @@ var (
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
-	ErrDataIsNotJson = errors.New("data is not json format")
+	ErrDataIsNotJson = errors.New("data is not json formated")
 )
 
 type Key struct {
@@ -90,11 +93,12 @@ COPYRIGHT:
 
 	app := cli.NewApp()
 	app.Name = "mailman"
-	app.Usage = "local email client with customizable SMTP server"
-	app.Version = "0.3.1"
+	app.Usage = "local email client with html template and SMTP support"
+	app.Version = "0.4.0"
 	app.Author = "xuqingfeng"
 	app.Action = func(c *cli.Context) {
 
+		// FIXME: 16/8/31
 		portInUse := -1
 		portStart := 8000
 		portEnd := 8100
@@ -107,11 +111,10 @@ COPYRIGHT:
 		}
 		if -1 == portInUse {
 			log.Fatal("can't find availiable port")
-			os.Exit(1)
 		}
 
 		if runtime.GOOS == "darwin" {
-			_, err := exec.Command("env", "open", "http://127.0.0.1:"+strconv.Itoa(portInUse)).Output()
+			_, err := exec.Command("open", "http://127.0.0.1:"+strconv.Itoa(portInUse)).Output()
 			if err != nil {
 				log.Fatalf("darwin open fail: %s", err.Error())
 			}
@@ -119,29 +122,36 @@ COPYRIGHT:
 			log.Info("open 127.0.0.1:" + strconv.Itoa(portInUse) + " in browser")
 		}
 
-		s := spinner.New(spinner.CharSets[spinnerCharIndex], 100*time.Millisecond)
+		s := spinner.New(spinner.CharSets[SPINNER_CHAR_INDEX], 100*time.Millisecond)
 		s.Color("cyan")
 		s.Start()
 
 		// util init
 		util.CreateConfigDir()
 
-		// listen
+		// router
 		router := mux.NewRouter()
 
-		subRouter := router.PathPrefix("/api").Subrouter()
-		subRouter.HandleFunc("/", APIHandler)
-		subRouter.HandleFunc("/lang", LangHandler)
-		subRouter.HandleFunc("/mail", MailHandler)
-		subRouter.HandleFunc("/file", FileHandler)
-		subRouter.HandleFunc("/account", AccountHandler)
-		subRouter.HandleFunc("/contacts", ContactsHandler)
-		subRouter.HandleFunc("/smtpServer", SMTPServerHandler)
-		subRouter.HandleFunc("/preview", PreviewHandler)
-		subRouter.HandleFunc("/wslog", WSLogHandler)
+		apiSubRouter := router.PathPrefix("/api").Subrouter()
+		apiSubRouter.HandleFunc("/", APIHandler)
+		apiSubRouter.HandleFunc("/lang", LangHandler)
+		apiSubRouter.HandleFunc("/mail", MailHandler)
+		apiSubRouter.HandleFunc("/file", FileHandler)
+		apiSubRouter.HandleFunc("/account", AccountHandler)
+		apiSubRouter.HandleFunc("/contacts", ContactsHandler)
+		apiSubRouter.HandleFunc("/smtpServer", SMTPServerHandler)
+		apiSubRouter.HandleFunc("/preview", PreviewHandler)
+		apiSubRouter.HandleFunc("/wslog", WSLogHandler)
 
-		// done
-		router.PathPrefix("/").Handler(http.FileServer(http.Dir("ui")))
+		// / /index /setting /log
+		rootSubRouter := router.PathPrefix("/").Subrouter()
+		rootSubRouter.HandleFunc("/", IndexHandler)
+		rootSubRouter.HandleFunc("/index", IndexHandler)
+		rootSubRouter.HandleFunc("/setting", SettingHandler)
+		rootSubRouter.HandleFunc("/log", LogHandler)
+
+		// /assets
+		router.HandleFunc("/assets/"+`{path:\S+}`, AssetsHandler)
 
 		http.ListenAndServe(":"+strconv.Itoa(portInUse), router)
 	}
@@ -151,7 +161,7 @@ COPYRIGHT:
 			Usage:       "clean up tmp dir",
 			Description: "mailman clean",
 			Action: func(c *cli.Context) {
-				log.Info("*** clean START ***")
+				log.Info("*** START ***")
 				homeDir := util.GetHomeDir()
 				tmpPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"])
 				err := os.RemoveAll(tmpPath)
@@ -159,7 +169,7 @@ COPYRIGHT:
 					log.Error(err)
 				}
 				util.CreateConfigDir()
-				log.Info("*** clean STOP ***")
+				log.Info("*** STOP ***")
 			},
 		},
 	}
@@ -234,7 +244,7 @@ func FileHandler(w http.ResponseWriter, r *http.Request) {
 		sendSuccess(w, struct{}{}, HI_THERE)
 	} else if "POST" == r.Method {
 
-		if err := r.ParseMultipartForm(maxMemory); err != nil {
+		if err := r.ParseMultipartForm(MAX_MEMORY); err != nil {
 			sendError(w, "E! parse posted file fail: "+err.Error())
 		}
 
@@ -469,13 +479,57 @@ func WSLogHandler(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err.Error())
 		} else if err == io.EOF {
 			// wait
-			time.Sleep(readLogFileGap * time.Second)
+			time.Sleep(READ_LOG_FILE_GAP * time.Second)
 		} else {
 			if err = conn.WriteMessage(1, []byte(line)); err != nil {
 				log.Error(err.Error())
 			}
 		}
 	}
+}
+
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+
+	asset, err := Asset(ASSETS_PREFIX + "/index.html")
+	if err != nil {
+		fmt.Fprint(w, http.StatusNotFound)
+	}
+	fmt.Fprint(w, string(asset))
+}
+
+func SettingHandler(w http.ResponseWriter, r *http.Request) {
+
+	asset, err := Asset(ASSETS_PREFIX + "/setting.html")
+	if err != nil {
+		fmt.Fprint(w, http.StatusNotFound)
+	}
+	fmt.Fprint(w, string(asset))
+}
+
+func LogHandler(w http.ResponseWriter, r *http.Request) {
+
+	asset, err := Asset(ASSETS_PREFIX + "/log.html")
+	if err != nil {
+		fmt.Fprint(w, http.StatusNotFound)
+	}
+	fmt.Fprint(w, string(asset))
+}
+
+func AssetsHandler(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	asset, err := Asset(ASSETS_PREFIX + "/assets/" + vars["path"])
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+	}
+	if strings.HasSuffix(vars["path"], ".css") {
+		// fixed (Stylesheet)
+		w.Header().Set("Content-Type", "text/css")
+	} else if strings.HasSuffix(vars["path"], ".js") {
+		// fixed
+		w.Header().Set("Content-Type", "text/javascript")
+	}
+	fmt.Fprint(w, string(asset))
 }
 
 func sendSuccess(w http.ResponseWriter, data interface{}, message string) {
@@ -504,7 +558,7 @@ func sendError(w http.ResponseWriter, message string) {
 
 func isTCPPortAvailable(port int) bool {
 
-	if port < minTCPPort || port > maxTCPPort {
+	if port < MIN_TCP_PORT || port > MEX_TCP_PORT {
 		return false
 	}
 	conn, err := net.Listen("tcp", "127.0.0.1:"+strconv.Itoa(port))

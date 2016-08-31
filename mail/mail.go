@@ -2,10 +2,10 @@ package mail
 
 import (
 	"bytes"
-	"html/template"
 	"io/ioutil"
 	"path/filepath"
 	"strconv"
+	"text/template"
 
 	"github.com/russross/blackfriday"
 	"github.com/xuqingfeng/mailman/account"

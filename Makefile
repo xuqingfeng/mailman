@@ -6,7 +6,7 @@ run: build
 	./mailman
 
 build: fmt
-	go build
+	go-bindata ui/... && go build
 
 fmt:
 	go fmt ./...
@@ -14,5 +14,5 @@ fmt:
 test:
 	go test ./...
 
-gox:
+bin:
 	gox -osarch="linux/amd64 linux/386 linux/arm darwin/amd64"

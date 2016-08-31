@@ -116,7 +116,7 @@ func decryptPassword(encryptedPassword []byte) ([]byte, error) {
 
 func generateKey() []byte {
 	var k string
-	username := util.GetUserName()
+	username := util.GetUser()
 	if len(username) > defaultKeyLength {
 		k = username[:defaultKeyLength]
 	} else {

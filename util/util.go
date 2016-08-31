@@ -3,7 +3,6 @@ package util
 import (
 	"errors"
 	"os"
-	"os/user"
 	"path/filepath"
 
 	"github.com/Sirupsen/logrus"
@@ -83,8 +82,7 @@ func GetTmpDir() string {
 	return filepath.Join(homeDir, ConfigPath["tmpPath"])
 }
 
-func GetUserName() string {
+func GetUser() string {
 
-	u, _ := user.Current()
-	return u.Username
+	return os.Getenv("USER")
 }
