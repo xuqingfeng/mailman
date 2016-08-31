@@ -10,10 +10,10 @@ func TestGetHomeDir(t *testing.T) {
 	}
 }
 
-func TestGetUserName(t *testing.T) {
+func TestGetUser(t *testing.T) {
 
-	username := GetUserName()
+	username := GetUser()
 	if 0 == len(username) {
-		t.Error("GetUserName() fail")
+		t.Error("GetUser() fail")
 	}
 }
