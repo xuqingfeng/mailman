@@ -29,6 +29,24 @@ func GetContacts() ([]Contacts, error) {
 
 	return contactsList, nil
 }
+
+//func GetContact(email string) (Contacts, error){
+//
+//    boltStore, err := util.NewBoltStore(util.DBPath)
+//    if err != nil {
+//        return Contacts{}, err
+//    }
+//    defer boltStore.Close()
+//
+//    name, err := boltStore.Get([]byte(email), util.ContactsBucketName)
+//    if err != nil {
+//        util.FileLog.Error(err.Error())
+//        return Contacts{}, err
+//    }
+//
+//    return Contacts{email, name}, nil
+//}
+
 func SaveContacts(contacts Contacts) error {
 
 	boltStore, err := util.NewBoltStore(util.DBPath)

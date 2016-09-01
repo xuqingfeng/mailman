@@ -8,6 +8,7 @@ import (
 
 	"github.com/russross/blackfriday"
 	"github.com/xuqingfeng/mailman/account"
+	"github.com/xuqingfeng/mailman/contacts"
 	"github.com/xuqingfeng/mailman/smtp"
 	"github.com/xuqingfeng/mailman/util"
 	"gopkg.in/gomail.v2"
@@ -36,16 +37,31 @@ func SendMail(mail Mail) error {
 	}
 	m := gomail.NewMessage()
 	m.SetHeader("Subject", mail.Subject)
-	m.SetHeader("To", mail.To...)
 
-	// Cc is empty
-	if len(mail.Cc) > 0 {
-		// multiple cc
-		m.SetHeader("Cc", mail.Cc...)
+	var contactsMap = make(map[string]string)
+	contactsList, err := contacts.GetContacts()
+	if err != nil {
+		return err
 	}
-	// todo with name - SetAddressHeader
-	//m.SetAddressHeader("Cc", mail.Cc[0].Email, mail.Cc[0].Name)
-	m.SetHeader("From", account.Email)
+	for _, v := range contactsList {
+		contactsMap[v.Email] = v.Name
+	}
+
+	var toSlice []string
+	for _, v := range mail.To {
+		toSlice = append(toSlice, m.FormatAddress(v, contactsMap[v]))
+	}
+	m.SetHeader("To", toSlice...)
+
+	if len(mail.Cc) > 0 {
+		var ccSlice []string
+		for _, v := range mail.Cc {
+			ccSlice = append(ccSlice, m.FormatAddress(v, contactsMap[v]))
+		}
+		m.SetHeader("Cc", ccSlice...)
+	}
+
+	m.SetHeader("From", m.FormatAddress(account.Email, contactsMap[account.Email]))
 
 	// priority
 	if mail.Priority {

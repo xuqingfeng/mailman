@@ -4,7 +4,6 @@ go:
   - tip
 os:
   - linux
-  - osx
 before_install:
   - go get golang.org/x/tools/cmd/cover
   - go get github.com/mattn/goveralls
