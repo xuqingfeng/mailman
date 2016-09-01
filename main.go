@@ -149,6 +149,7 @@ COPYRIGHT:
 		rootSubRouter.HandleFunc("/index", IndexHandler)
 		rootSubRouter.HandleFunc("/setting", SettingHandler)
 		rootSubRouter.HandleFunc("/log", LogHandler)
+		rootSubRouter.HandleFunc("/robots.txt", RobotsHandler)
 
 		// /assets
 		router.HandleFunc("/assets/"+`{path:\S+}`, AssetsHandler)
@@ -494,6 +495,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprint(w, http.StatusNotFound)
 	}
+	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprint(w, string(asset))
 }
 
@@ -503,6 +505,7 @@ func SettingHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprint(w, http.StatusNotFound)
 	}
+	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprint(w, string(asset))
 }
 
@@ -512,6 +515,17 @@ func LogHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprint(w, http.StatusNotFound)
 	}
+	w.Header().Set("Content-Type", "text/html")
+	fmt.Fprint(w, string(asset))
+}
+
+func RobotsHandler(w http.ResponseWriter, r *http.Request) {
+
+	asset, err := Asset(ASSETS_PREFIX + "/robots.txt")
+	if err != nil {
+		fmt.Fprint(w, http.StatusNotFound)
+	}
+	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprint(w, string(asset))
 }
 
