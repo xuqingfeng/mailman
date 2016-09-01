@@ -528,6 +528,14 @@ func AssetsHandler(w http.ResponseWriter, r *http.Request) {
 	} else if strings.HasSuffix(vars["path"], ".js") {
 		// fixed
 		w.Header().Set("Content-Type", "text/javascript")
+	} else if strings.HasSuffix(vars["path"], "png") {
+		w.Header().Set("Content-Type", "image/png")
+	} else if strings.HasSuffix(vars["path"], "ico") {
+		w.Header().Set("Content-Type", "image/x-icon")
+	} else if strings.HasSuffix(vars["path"], "xml") || strings.HasSuffix(vars["path"], "svg") {
+		w.Header().Set("Content-Type", "text/xml")
+	} else if strings.HasSuffix(vars["path"], "json") {
+		w.Header().Set("Content-Type", "application/json")
 	}
 	fmt.Fprint(w, string(asset))
 }
