@@ -2,7 +2,6 @@ package mail
 
 import (
 	"bytes"
-	"io/ioutil"
 	"path/filepath"
 	"strconv"
 	"text/template"
@@ -78,13 +77,16 @@ func SendMail(mail Mail) error {
 	}
 	return nil
 }
+
 func ParseMailContent(body string) (content string) {
 
 	// markdown parse
 	parsedContent := blackfriday.MarkdownCommon([]byte(body))
 	content = string(parsedContent)
 
-	mailTemplateContent, err := ioutil.ReadFile(util.MailTemplatePath + "/" + util.MailTemplateType + ".html")
+	// credit: https://github.com/leemunroe/responsive-html-email-template
+	// if responsive.html changes, run `go-bindata .`
+	mailTemplateContent, err := Asset(util.MailTemplateType + ".html")
 	if err != nil {
 		util.FileLog.Warn(err.Error())
 		return

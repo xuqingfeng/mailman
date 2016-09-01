@@ -94,7 +94,7 @@ COPYRIGHT:
 	app := cli.NewApp()
 	app.Name = "mailman"
 	app.Usage = "local email client with html template and SMTP support"
-	app.Version = "0.4.0"
+	app.Version = "0.4.1"
 	app.Author = "xuqingfeng"
 	app.Action = func(c *cli.Context) {
 

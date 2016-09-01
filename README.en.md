@@ -1,7 +1,7 @@
-![ICON](./docs/mailman.png)
+![ICON](https://raw.githubusercontent.com/xuqingfeng/mailman/master/docs/mailman.png)
 
 ## mailman
->Local :love_letter: client with html template and SMTP support
+>Local :love_letter: client with html template and smtp support
 
 [![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)
 [![Coverage Status](https://img.shields.io/coveralls/xuqingfeng/mailman/master.svg)](https://coveralls.io/github/xuqingfeng/mailman)
@@ -19,4 +19,4 @@ go get -u github.com/xuqingfeng/mailman
 mailman
 ```
 
-OR download the binary file [here](https://github.com/xuqingfeng/mailman/releases)
+ork download the binary file [here](https://github.com/xuqingfeng/mailman/releases)
