@@ -19,4 +19,4 @@ go get -u github.com/xuqingfeng/mailman
 mailman
 ```
 
-ork download the binary file [here](https://github.com/xuqingfeng/mailman/releases)
+or download the binary file [here](https://github.com/xuqingfeng/mailman/releases)
