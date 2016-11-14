@@ -4,7 +4,6 @@
 >支持 HTML 模板和 SMTP 的 :love_letter: 客户端
 
 [![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)
-[![Coverage Status](https://img.shields.io/coveralls/xuqingfeng/mailman/master.svg)](https://coveralls.io/github/xuqingfeng/mailman)
 [![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/mailman)](https://goreportcard.com/report/github.com/xuqingfeng/mailman)
 
 中文 | [English](./README.en.md)
