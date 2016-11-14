@@ -331,13 +331,13 @@ func ContactsHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
-		contacts, err := contacts.GetContacts()
+		c, err := contacts.GetContacts()
 		if err != nil {
 
 			sendError(w, "E! get contacts fail: "+err.Error())
 		} else {
 
-			sendSuccess(w, contacts, "I! get contacts success")
+			sendSuccess(w, c, "I! get contacts success")
 		}
 	} else if "POST" == r.Method {
 
@@ -350,13 +350,13 @@ func ContactsHandler(w http.ResponseWriter, r *http.Request) {
 
 			sendError(w, "E! save contacts fail: "+err.Error())
 		} else {
-			contacts, err := contacts.GetContacts()
+			c, err := contacts.GetContacts()
 			if err != nil {
 
 				sendError(w, "E! get contacts fail: "+err.Error())
 			} else {
 
-				sendSuccess(w, contacts, "I! save contacts success")
+				sendSuccess(w, c, "I! save contacts success")
 			}
 		}
 	} else if "DELETE" == r.Method {

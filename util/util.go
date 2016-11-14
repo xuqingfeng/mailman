@@ -89,15 +89,15 @@ func GetUser() string {
 
 func CreateDirectory(path string, defaultMode os.FileMode) error {
 
-    if _, err := os.Stat(path); err != nil {
-        if os.IsNotExist(err) {
-            if err := os.MkdirAll(path, defaultMode); err != nil {
-                return err
-            }
-        } else {
-            return err
-        }
-    }
+	if _, err := os.Stat(path); err != nil {
+		if os.IsNotExist(err) {
+			if err := os.MkdirAll(path, defaultMode); err != nil {
+				return err
+			}
+		} else {
+			return err
+		}
+	}
 
-    return nil
+	return nil
 }
