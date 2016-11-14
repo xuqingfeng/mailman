@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/xuqingfeng/lift"
 	"github.com/xuqingfeng/mailman/util"
 )
 
@@ -14,7 +13,7 @@ func SaveAttachment(fileContent []byte, token, fileName string) error {
 	homeDir := util.GetHomeDir()
 	dirPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token)
 	// ModePerm
-	err := lift.CreateDirectory(dirPath, os.ModePerm)
+	err := util.CreateDirectory(dirPath, os.ModePerm)
 	if err != nil {
 		util.FileLog.Error(err.Error())
 		return err

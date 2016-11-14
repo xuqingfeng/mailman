@@ -86,3 +86,18 @@ func GetUser() string {
 
 	return os.Getenv("USER")
 }
+
+func CreateDirectory(path string, defaultMode os.FileMode) error {
+
+    if _, err := os.Stat(path); err != nil {
+        if os.IsNotExist(err) {
+            if err := os.MkdirAll(path, defaultMode); err != nil {
+                return err
+            }
+        } else {
+            return err
+        }
+    }
+
+    return nil
+}
