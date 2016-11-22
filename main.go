@@ -149,6 +149,7 @@ COPYRIGHT:
 		rootSubRouter.HandleFunc("/index", IndexHandler)
 		rootSubRouter.HandleFunc("/setting", SettingHandler)
 		rootSubRouter.HandleFunc("/log", LogHandler)
+		rootSubRouter.HandleFunc("/favicon.ico", FaviconHandler)
 		rootSubRouter.HandleFunc("/robots.txt", RobotsHandler)
 
 		// /assets
@@ -517,6 +518,12 @@ func LogHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprint(w, string(asset))
+}
+
+// hide 404 of /favicon.ico
+func FaviconHandler(w http.ResponseWriter, r *http.Request) {
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func RobotsHandler(w http.ResponseWriter, r *http.Request) {
