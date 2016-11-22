@@ -18,11 +18,12 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/abbot/go-http-auth"
 	"github.com/briandowns/spinner"
-	"github.com/codegangsta/cli"
 	"github.com/fatih/color"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	"github.com/urfave/cli"
 	"github.com/xuqingfeng/mailman/account"
 	"github.com/xuqingfeng/mailman/contacts"
 	"github.com/xuqingfeng/mailman/lang"
@@ -32,6 +33,9 @@ import (
 )
 
 const (
+	name    = "mailman"
+	version = "0.4.1"
+
 	SPINNER_CHAR_INDEX = 14
 	READ_LOG_FILE_GAP  = 5 // second
 	HI_THERE           = "HI THERE !"
@@ -45,9 +49,10 @@ const (
 )
 
 var (
-	msg            util.Msg
-	previewContent = ""
-	upgrader       = websocket.Upgrader{
+	msg             util.Msg
+	enableBasicAuth = false
+	previewContent  = ""
+	upgrader        = websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
@@ -92,9 +97,9 @@ COPYRIGHT:
 `
 
 	app := cli.NewApp()
-	app.Name = "mailman"
+	app.Name = name
 	app.Usage = "Web email client supporting HTML template and SMTP"
-	app.Version = "0.4.1"
+	app.Version = version
 	app.Author = "xuqingfeng"
 	app.Action = func(c *cli.Context) {
 
@@ -110,7 +115,7 @@ COPYRIGHT:
 			portStart++
 		}
 		if -1 == portInUse {
-			log.Fatal("can't find availiable port")
+			log.Fatal("can't find available port")
 		}
 
 		if runtime.GOOS == "darwin" {
@@ -133,7 +138,7 @@ COPYRIGHT:
 		router := mux.NewRouter()
 
 		apiSubRouter := router.PathPrefix("/api").Subrouter()
-		apiSubRouter.HandleFunc("/", APIHandler)
+		apiSubRouter.HandleFunc("/ping", PingHandler)
 		apiSubRouter.HandleFunc("/lang", LangHandler)
 		apiSubRouter.HandleFunc("/mail", MailHandler)
 		apiSubRouter.HandleFunc("/file", FileHandler)
@@ -149,7 +154,6 @@ COPYRIGHT:
 		rootSubRouter.HandleFunc("/index", IndexHandler)
 		rootSubRouter.HandleFunc("/setting", SettingHandler)
 		rootSubRouter.HandleFunc("/log", LogHandler)
-		rootSubRouter.HandleFunc("/favicon.ico", FaviconHandler)
 		rootSubRouter.HandleFunc("/robots.txt", RobotsHandler)
 
 		// /assets
@@ -173,12 +177,19 @@ COPYRIGHT:
 			},
 		},
 	}
+	app.Flags = []cli.Flag{
+		cli.BoolFlag{
+			Name:        "basic-auth",
+			Usage:       "enable basic auth for mailman",
+			Destination: &enableBasicAuth,
+		},
+	}
 
 	app.Run(os.Args)
 }
 
-func APIHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "default api route")
+func PingHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "pong")
 }
 
 func LangHandler(w http.ResponseWriter, r *http.Request) {
@@ -490,6 +501,11 @@ func WSLogHandler(w http.ResponseWriter, r *http.Request) {
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
+	if !basicAuth(w, r) {
+		http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
 	asset, err := Asset(ASSETS_PREFIX + "/index.html")
 	if err != nil {
 		fmt.Fprint(w, http.StatusNotFound)
@@ -499,6 +515,11 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func SettingHandler(w http.ResponseWriter, r *http.Request) {
+
+	if !basicAuth(w, r) {
+		http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+		return
+	}
 
 	asset, err := Asset(ASSETS_PREFIX + "/setting.html")
 	if err != nil {
@@ -510,18 +531,17 @@ func SettingHandler(w http.ResponseWriter, r *http.Request) {
 
 func LogHandler(w http.ResponseWriter, r *http.Request) {
 
+	if !basicAuth(w, r) {
+		http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
 	asset, err := Asset(ASSETS_PREFIX + "/log.html")
 	if err != nil {
 		fmt.Fprint(w, http.StatusNotFound)
 	}
 	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprint(w, string(asset))
-}
-
-// hide 404 of /favicon.ico
-func FaviconHandler(w http.ResponseWriter, r *http.Request) {
-
-	w.WriteHeader(http.StatusOK)
 }
 
 func RobotsHandler(w http.ResponseWriter, r *http.Request) {
@@ -535,6 +555,11 @@ func RobotsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AssetsHandler(w http.ResponseWriter, r *http.Request) {
+
+	if !basicAuth(w, r) {
+		http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+		return
+	}
 
 	vars := mux.Vars(r)
 	asset, err := Asset(ASSETS_PREFIX + "/assets/" + vars["path"])
@@ -557,6 +582,19 @@ func AssetsHandler(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 	}
 	fmt.Fprint(w, string(asset))
+}
+
+func basicAuth(w http.ResponseWriter, r *http.Request) bool {
+
+	if enableBasicAuth {
+		ba := auth.NewBasicAuthenticator(fmt.Sprintf("%s / %s", name, version), auth.HtpasswdFileProvider(filepath.Join(util.GetHomeDir(), util.ConfigPath["htpasswdPath"])))
+		if ba.CheckAuth(r) == "" {
+			w.Header().Set("WWW-Authenticate", `Basic realm="realm"`)
+			return false
+		}
+	}
+
+	return true
 }
 
 func sendSuccess(w http.ResponseWriter, data interface{}, message string) {

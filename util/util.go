@@ -12,17 +12,16 @@ const (
 	configMode       = 0755
 	dbName           = "mailman.db"
 	LogName          = "mailman.log"
-	MailTemplatePath = "./ui/mail-template"
 	MailTemplateType = "responsive"
-	//MailTemplateType = "stationery"
 )
 
 var (
 	FileLog    = logrus.New()
 	ConfigPath = map[string]string{
-		"dbPath":  "/.mailman/db",
-		"logPath": "/.mailman/log",
-		"tmpPath": "/.mailman/tmp",
+		"dbPath":       "/.mailman/db",
+		"logPath":      "/.mailman/log",
+		"tmpPath":      "/.mailman/tmp",
+		"htpasswdPath": "/.mailman/.htpasswd",
 	}
 	DBPath                string
 	DefaultLang           = "en"

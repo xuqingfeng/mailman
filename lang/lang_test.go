@@ -34,7 +34,7 @@ func TestGetLang(t *testing.T) {
 	// fail
 	fakePath := "/tmp/fakeDir/fake.db"
 	util.DBPath, fakePath = fakePath, util.DBPath
-	lng, err = GetLang()
+	_, err = GetLang()
 	if err == nil {
 		t.Error("db file doesn't exist GetLog() should fail")
 	}

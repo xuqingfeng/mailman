@@ -48,7 +48,8 @@ func TestSendMail(t *testing.T) {
 func TestParseMailContent(t *testing.T) {
 
 	// mail-template not exist
-	if "" != ParseMailContent("") {
+	content := ParseMailContent("")
+	if len(content) == 0 {
 		t.Error("ParseMailContent() fail")
 	}
 }
