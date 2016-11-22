@@ -1,7 +1,5 @@
-![ICON](https://raw.githubusercontent.com/xuqingfeng/mailman/master/docs/mailman.png)
-
-## mailman
->Local :love_letter: client with html template and smtp support
+# mailman
+>Web email client supporting HTML template and SMTP 
 
 [![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)
 [![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/mailman)](https://goreportcard.com/report/github.com/xuqingfeng/mailman)

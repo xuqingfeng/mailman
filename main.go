@@ -93,7 +93,7 @@ COPYRIGHT:
 
 	app := cli.NewApp()
 	app.Name = "mailman"
-	app.Usage = "local email client with html template and SMTP support"
+	app.Usage = "Web email client supporting HTML template and SMTP"
 	app.Version = "0.4.1"
 	app.Author = "xuqingfeng"
 	app.Action = func(c *cli.Context) {
@@ -119,7 +119,7 @@ COPYRIGHT:
 				log.Fatalf("darwin open fail: %s", err.Error())
 			}
 		} else {
-			log.Info("open 127.0.0.1:" + strconv.Itoa(portInUse) + " in browser")
+			log.Info("Open 127.0.0.1:" + strconv.Itoa(portInUse) + " in browser")
 		}
 
 		s := spinner.New(spinner.CharSets[SPINNER_CHAR_INDEX], 100*time.Millisecond)
@@ -163,7 +163,6 @@ COPYRIGHT:
 			Usage:       "clean up tmp dir",
 			Description: "mailman clean",
 			Action: func(c *cli.Context) {
-				log.Info("*** START ***")
 				homeDir := util.GetHomeDir()
 				tmpPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"])
 				err := os.RemoveAll(tmpPath)
@@ -171,7 +170,6 @@ COPYRIGHT:
 					log.Error(err)
 				}
 				util.CreateConfigDir()
-				log.Info("*** STOP ***")
 			},
 		},
 	}

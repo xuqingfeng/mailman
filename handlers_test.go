@@ -34,6 +34,11 @@ func TestHandler(t *testing.T) {
 			200,
 		},
 		{
+			"/favicon.ico",
+			FaviconHandler,
+			200,
+		},
+		{
 			"/robots.txt",
 			RobotsHandler,
 			200,

@@ -1,7 +1,5 @@
-![ICON](https://raw.githubusercontent.com/xuqingfeng/mailman/master/docs/mailman.png)
-
-## mailman
->支持 HTML 模板和 SMTP 的 :love_letter: 客户端
+# mailman
+>支持 HTML 模板和 SMTP 的邮件客户端
 
 [![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)
 [![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/mailman)](https://goreportcard.com/report/github.com/xuqingfeng/mailman)
