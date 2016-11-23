@@ -34,13 +34,13 @@ import (
 
 const (
 	name    = "mailman"
-	version = "0.4.1"
+	version = "0.4.2"
 
 	SPINNER_CHAR_INDEX = 14
 	READ_LOG_FILE_GAP  = 5 // second
-	HI_THERE           = "HI THERE !"
+	MAILMAN_IS_AWESOME = "mailman is awesome !"
 	MIN_TCP_PORT       = 0
-	MEX_TCP_PORT       = 65535
+	MAX_TCP_PORT       = 65535
 	//maxReservedTCPPort = 1024
 	// 15M
 	MAX_MEMORY = 1024 * 1024 * 15
@@ -52,11 +52,12 @@ var (
 	msg             util.Msg
 	enableBasicAuth = false
 	previewContent  = ""
+	unauthorized    = "401 Unauthorized"
 	upgrader        = websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
-	ErrDataIsNotJson = errors.New("data is not json formated")
+	ErrDataIsNotJson = errors.New("data is not json format")
 )
 
 type Key struct {
@@ -164,7 +165,7 @@ COPYRIGHT:
 	app.Commands = []cli.Command{
 		{
 			Name:        "clean",
-			Usage:       "clean up tmp dir",
+			Usage:       "clean up tmp directory",
 			Description: "mailman clean",
 			Action: func(c *cli.Context) {
 				homeDir := util.GetHomeDir()
@@ -180,7 +181,7 @@ COPYRIGHT:
 	app.Flags = []cli.Flag{
 		cli.BoolFlag{
 			Name:        "basic-auth",
-			Usage:       "enable basic auth for mailman",
+			Usage:       "enable basic auth (~/.mailman/.htpasswd)",
 			Destination: &enableBasicAuth,
 		},
 	}
@@ -230,7 +231,7 @@ func MailHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
-		sendSuccess(w, struct{}{}, HI_THERE)
+		sendSuccess(w, struct{}{}, MAILMAN_IS_AWESOME)
 	} else if "POST" == r.Method {
 
 		var m mail.Mail
@@ -252,7 +253,7 @@ func FileHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
-		sendSuccess(w, struct{}{}, HI_THERE)
+		sendSuccess(w, struct{}{}, MAILMAN_IS_AWESOME)
 	} else if "POST" == r.Method {
 
 		if err := r.ParseMultipartForm(MAX_MEMORY); err != nil {
@@ -502,7 +503,7 @@ func WSLogHandler(w http.ResponseWriter, r *http.Request) {
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	if !basicAuth(w, r) {
-		http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+		http.Error(w, unauthorized, http.StatusUnauthorized)
 		return
 	}
 
@@ -517,7 +518,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func SettingHandler(w http.ResponseWriter, r *http.Request) {
 
 	if !basicAuth(w, r) {
-		http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+		http.Error(w, unauthorized, http.StatusUnauthorized)
 		return
 	}
 
@@ -532,7 +533,7 @@ func SettingHandler(w http.ResponseWriter, r *http.Request) {
 func LogHandler(w http.ResponseWriter, r *http.Request) {
 
 	if !basicAuth(w, r) {
-		http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+		http.Error(w, unauthorized, http.StatusUnauthorized)
 		return
 	}
 
@@ -557,7 +558,7 @@ func RobotsHandler(w http.ResponseWriter, r *http.Request) {
 func AssetsHandler(w http.ResponseWriter, r *http.Request) {
 
 	if !basicAuth(w, r) {
-		http.Error(w, "401 Unauthorized", http.StatusUnauthorized)
+		http.Error(w, unauthorized, http.StatusUnauthorized)
 		return
 	}
 
@@ -623,7 +624,7 @@ func sendError(w http.ResponseWriter, message string) {
 
 func isTCPPortAvailable(port int) bool {
 
-	if port < MIN_TCP_PORT || port > MEX_TCP_PORT {
+	if port < MIN_TCP_PORT || port > MAX_TCP_PORT {
 		return false
 	}
 	conn, err := net.Listen("tcp", "127.0.0.1:"+strconv.Itoa(port))
