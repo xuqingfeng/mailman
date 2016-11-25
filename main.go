@@ -33,9 +33,6 @@ import (
 )
 
 const (
-	name    = "mailman"
-	version = "0.4.2"
-
 	SPINNER_CHAR_INDEX = 14
 	READ_LOG_FILE_GAP  = 5 // second
 	MAILMAN_IS_AWESOME = "mailman is awesome !"
@@ -49,10 +46,14 @@ const (
 )
 
 var (
+	name    = "mailman"
+	version = "0.4.2"
+
 	msg             util.Msg
 	enableBasicAuth = false
 	previewContent  = ""
 	unauthorized    = "401 Unauthorized"
+	loopback        = "127.0.0.1"
 	upgrader        = websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
@@ -104,7 +105,6 @@ COPYRIGHT:
 	app.Author = "xuqingfeng"
 	app.Action = func(c *cli.Context) {
 
-		// FIXME: 16/8/31
 		portInUse := -1
 		portStart := 8000
 		portEnd := 8100
@@ -119,13 +119,15 @@ COPYRIGHT:
 			log.Fatal("can't find available port")
 		}
 
+		localIP := getLocalIP()
+
 		if runtime.GOOS == "darwin" {
-			_, err := exec.Command("open", "http://127.0.0.1:"+strconv.Itoa(portInUse)).Output()
+			_, err := exec.Command("open", "http://"+localIP+":"+strconv.Itoa(portInUse)).Output()
 			if err != nil {
 				log.Fatalf("darwin open fail: %s", err.Error())
 			}
 		} else {
-			log.Info("Open 127.0.0.1:" + strconv.Itoa(portInUse) + " in browser")
+			log.Info("Open " + localIP + ":" + strconv.Itoa(portInUse) + " in browser")
 		}
 
 		s := spinner.New(spinner.CharSets[SPINNER_CHAR_INDEX], 100*time.Millisecond)
@@ -627,10 +629,34 @@ func isTCPPortAvailable(port int) bool {
 	if port < MIN_TCP_PORT || port > MAX_TCP_PORT {
 		return false
 	}
-	conn, err := net.Listen("tcp", "127.0.0.1:"+strconv.Itoa(port))
+	conn, err := net.Listen("tcp", ":"+strconv.Itoa(port))
 	if err != nil {
 		return false
 	}
 	conn.Close()
 	return true
+}
+
+func getLocalIP() (ip string) {
+
+	ip = loopback
+	ifaces, err := net.Interfaces()
+	if err != nil {
+		return
+	}
+	for _, i := range ifaces {
+		addrs, err := i.Addrs()
+		if err != nil {
+			return
+		}
+		for _, addr := range addrs {
+			if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+				if ipnet.IP.To4() != nil {
+					return ipnet.IP.String()
+				}
+			}
+		}
+	}
+
+	return
 }
