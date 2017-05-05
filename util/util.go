@@ -59,6 +59,10 @@ func CreateConfigDir() error {
 
 	homeDir := GetHomeDir()
 	for _, path := range ConfigPath {
+		// dirty fix
+		if path == "/.mailman/.htpasswd" {
+			continue
+		}
 		var p = homeDir + path
 		if _, err := os.Stat(p); err != nil {
 			if os.IsNotExist(err) {

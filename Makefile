@@ -5,8 +5,11 @@ all: run
 run: build
 	./mailman
 
-build: fmt
+build: build-template
 	go-bindata ui/... && go build
+
+build-template: fmt # TODO: change package name
+	cd mail && go-bindata -o bindata.go && cd -
 
 fmt:
 	go fmt ./...
