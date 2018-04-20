@@ -5,6 +5,7 @@ go:
 os:
   - linux
 install:
+  - go get github.com/rakyll/statik
   - go get -v ./...
 script:
   - make test
