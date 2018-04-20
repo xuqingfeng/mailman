@@ -1,20 +1,20 @@
 language: go
 go:
-  - 1.x
-  - tip
+- 1.x
+- tip
 os:
-  - linux
+- linux
 install:
-  - go get github.com/rakyll/statik
-  - go get -v ./...
+- go get github.com/rakyll/statik
+- go get -v ./...
 script:
-  - make test
-  - make build-all
+- make test
+- make build-all
 
 deploy:
   provider: releases
   api_key:
-    secure: B5T7Z7NA+/kgsPlEBDKrPfhb1LFeG3tqf3uIydfpR+rQWwAYcRzP8aGqxwSiwTOMYJ6nDuX7Gb3XUWN/Tbl9hoS489PVv/vFLCqd58Da8ATn9aPUy0KIKh/qllIkP/y2RCp4zj1vVtXSNx2udFqX7C4Pc4Fe6F4KY3Da605drpWyKejpqmqvr8xOA5QBVjnfsRh9QbT2lgDheraV6LzHXGB9XFTKfNvBXsr+VzwVOr5v+iiUw/vKo+4sawcrDNwzl14gP7RpRX3itiQTTRmxNR8cpy61tiPP344FTfkQ1S44oICY27tDC4/ez5hrD/y1blLu0YImQXcTvgGql63bvMPSa205HjjbtxR2JBOGYzsYoL5I8+D+NfdgBXr3rtXy3YyOLSHxmnFAERnupcvHrpbc6R7FmKZgHFwTAtWX0Ggu+ABPbJNF1MS25WIfYScDZJL2JUQe+0TZ11u2M90B0gZGWwdlMHZhHv7dtkWipxM7PJw+NzJxu068bIP1pBjZrUKqhpaPuiEjQE7X5SE8cBMEtt0ToKZe2bcbB2ChvlDYfudLoOfCLEQXkrKjL1O7rOZ/+7veFleb2W8erCY8VbrZwMfdfLGcKsZJOjLvgaWWwDba8yBVCgb+AdKwdvA8uaHaDcvZjUjuvMYfYIwMFkfQltevuQeVT71UYhxD56A=
+    secure: cmeM5o1TsJhkW4ys9uNsiaPf144pCEcy4Opt1neMZPL1Oh4aRO+JlfqMFNlXmUNXfklSnUB0BZWjUviDwkXn7m1HIaYv0ECpQpmCnoTjB8mu5mX8YPM00v9biS49/WdAqy3kojUzv+gZQNcppZT3FqlM8w1p2orVs7nm1Li7/sHqTmzl31+3rwRyIy0LhSYiBFSdPxO5jgX9Zcdv8cEh42TG8KH37Mjiz6ZcMC5ECobgI5WkwWOt0pPYC66RqMiDLSZV1giCyqUEWCY07x3p5sRonMuBxGZgMPo8gvRWJSVTZmMq+zg4v9ZonUMVNXGNEkO1FvBCSabQYjeyuMQM9Fa4pQiwYXbpUlIchAwIR9q427JiMRSfHCGT4T+pq5kqsw6KCcdBFBw4OX+O4H7pCoOwSb1OUscIwbVtXXB7G0CzyXzlj403OVpn/JQfD8nSgIKnd3W2AQzXCElSljMP98acsLx9rnHfT+fxTLOH8sQ6FdTsGXu9BKa4QJA5XO8M5t0sr1nRJeKs1AoZ6QtnXC8Xa9kkWoK4xAlKM0NShypD33AHyAkyWVxPbfE/aqW2VkRXR7Ts2ucyacuczSxesq5wG5bxRdQpma+pJcXuylkGAfVTGYnE5z0PgP+Yna0lBLfus02LyjmfIDb53L/VT97/fnJrpC3oVIQx+ue6mNc=
   file_golb: true
   file: out/mailman*
   skip_cleanup: true
