@@ -1,10 +1,22 @@
 language: go
 go:
-  - 1.8
+  - 1.x
   - tip
 os:
   - linux
 install:
   - go get -v ./...
 script:
-  - go test -v ./...
+  - make test
+  - make build-all
+
+deploy:
+  provider: releases
+  api_key:
+    secure: B5T7Z7NA+/kgsPlEBDKrPfhb1LFeG3tqf3uIydfpR+rQWwAYcRzP8aGqxwSiwTOMYJ6nDuX7Gb3XUWN/Tbl9hoS489PVv/vFLCqd58Da8ATn9aPUy0KIKh/qllIkP/y2RCp4zj1vVtXSNx2udFqX7C4Pc4Fe6F4KY3Da605drpWyKejpqmqvr8xOA5QBVjnfsRh9QbT2lgDheraV6LzHXGB9XFTKfNvBXsr+VzwVOr5v+iiUw/vKo+4sawcrDNwzl14gP7RpRX3itiQTTRmxNR8cpy61tiPP344FTfkQ1S44oICY27tDC4/ez5hrD/y1blLu0YImQXcTvgGql63bvMPSa205HjjbtxR2JBOGYzsYoL5I8+D+NfdgBXr3rtXy3YyOLSHxmnFAERnupcvHrpbc6R7FmKZgHFwTAtWX0Ggu+ABPbJNF1MS25WIfYScDZJL2JUQe+0TZ11u2M90B0gZGWwdlMHZhHv7dtkWipxM7PJw+NzJxu068bIP1pBjZrUKqhpaPuiEjQE7X5SE8cBMEtt0ToKZe2bcbB2ChvlDYfudLoOfCLEQXkrKjL1O7rOZ/+7veFleb2W8erCY8VbrZwMfdfLGcKsZJOjLvgaWWwDba8yBVCgb+AdKwdvA8uaHaDcvZjUjuvMYfYIwMFkfQltevuQeVT71UYhxD56A=
+  file_golb: true
+  file: out/mailman*
+  skip_cleanup: true
+  on:
+    repo: xuqingfeng/mailman
+    tags: true
