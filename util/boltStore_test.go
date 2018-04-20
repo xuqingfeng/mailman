@@ -96,12 +96,12 @@ func TestDeleteBucket(t *testing.T) {
 }
 
 func TestMultiOpenBolt(t *testing.T) {
-	_, err := bolt.Open("testdata/test.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	_, err := bolt.Open("test_data/test.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		t.Errorf("bolt open fail %v", err)
 	}
 
-	_, err = bolt.Open("testdata/test.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	_, err = bolt.Open("test_data/test.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err == nil {
 		t.Errorf("bolt reopen should fail %v", err)
 	}

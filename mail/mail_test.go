@@ -11,13 +11,13 @@ import (
 func TestMain(m *testing.M) {
 
 	account4mail := account.Account{
-		"from@example.com",
-		"password",
+		Email:    "from@example.com",
+		Password: "password",
 	}
 	smtp4mail := smtp.SMTPServer{
-		"@example.com",
-		"smtp.example.com",
-		"25",
+		Address: "@example.com",
+		Server:  "smtp.example.com",
+		Port:    "25",
 	}
 	account.SaveAccount(account4mail)
 	smtp.SaveSMTPServer(smtp4mail)
@@ -48,7 +48,7 @@ func TestSendMail(t *testing.T) {
 func TestParseMailContent(t *testing.T) {
 
 	// mail-template not exist
-	content := ParseMailContent("")
+	content := ParseMailContent("test")
 	if len(content) == 0 {
 		t.Error("ParseMailContent() fail")
 	}

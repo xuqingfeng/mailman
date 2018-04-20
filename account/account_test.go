@@ -7,12 +7,8 @@ import (
 
 var (
 	testAccount = Account{
-		"test@example.com",
-		"password",
-	}
-	test1Account = Account{
-		"test1@example.com",
-		"password1",
+		Email:    "test@example.com",
+		Password: "password",
 	}
 )
 
@@ -22,7 +18,6 @@ func TestSaveAccount(t *testing.T) {
 	if err != nil {
 		t.Errorf("SaveAccount() fail %v", err)
 	}
-	SaveAccount(test1Account)
 }
 func TestGetAccountEmail(t *testing.T) {
 
@@ -53,7 +48,6 @@ func TestDeleteAccount(t *testing.T) {
 	if err != nil {
 		t.Errorf("DeleteAccount() fail %v", err)
 	}
-	DeleteAccount("test1@example.com")
 }
 
 func TestEncryptPassword(t *testing.T) {

@@ -1,4 +1,4 @@
-var myDropzone = {},
+    var myDropzone = {},
     toContactsLoaded = false,
     ccContactsLoaded = false;
 Dropzone.autoDiscover = false;

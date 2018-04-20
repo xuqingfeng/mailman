@@ -101,8 +101,7 @@ func ParseMailContent(body string) (content string) {
 	content = string(parsedContent)
 
 	// credit: https://github.com/leemunroe/responsive-html-email-template
-	// if responsive.html changes, run `go-bindata .`
-	mailTemplateContent, err := Asset(util.MailTemplateType + ".html")
+	mailTemplateContent, err := util.GetContentFromStatik("/" + util.MailTemplateType + ".html")
 	if err != nil {
 		util.FileLog.Warn(err.Error())
 		return

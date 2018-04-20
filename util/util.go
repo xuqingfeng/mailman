@@ -2,10 +2,12 @@ package util
 
 import (
 	"errors"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
 	"github.com/Sirupsen/logrus"
+	"github.com/rakyll/statik/fs"
 )
 
 const (
@@ -103,4 +105,24 @@ func CreateDirectory(path string, defaultMode os.FileMode) error {
 	}
 
 	return nil
+}
+
+func GetContentFromStatik(name string) (string, error) {
+
+	staticFS, err := fs.New()
+	if err != nil {
+		return "", err
+	}
+
+	hf, err := staticFS.Open(name)
+	defer hf.Close()
+	if err != nil {
+		return "", err
+	}
+	content, err := ioutil.ReadAll(hf)
+	if err != nil {
+		return "", err
+	}
+
+	return string(content), nil
 }
