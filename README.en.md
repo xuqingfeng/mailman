@@ -4,7 +4,7 @@
 [![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)
 [![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/mailman)](https://goreportcard.com/report/github.com/xuqingfeng/mailman)
 
-[中文](./README.md) | English
+[中文](./README.md)
 
 [DEMO](https://github.com/xuqingfeng/mailman/wiki/Demo)
 

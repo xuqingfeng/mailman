@@ -4,7 +4,7 @@
 [![Travis CI](https://img.shields.io/travis/xuqingfeng/mailman/master.svg)](https://travis-ci.org/xuqingfeng/mailman)
 [![Go Report Card](https://goreportcard.com/badge/github.com/xuqingfeng/mailman)](https://goreportcard.com/report/github.com/xuqingfeng/mailman)
 
-中文 | [English](./README.en.md)
+[English](./README.en.md)
 
 [演示](https://github.com/xuqingfeng/mailman/wiki/Demo)
 
@@ -26,4 +26,4 @@ mailman -h
 
 *注意：*
 
-关于 Gmail 无法发送邮件问题,查看这里: [https://support.google.com/mail/answer/14257](https://support.google.com/mail/answer/14257)
+关于 Gmail 无法发送邮件的问题,查看[这里](https://support.google.com/mail/answer/14257)。
