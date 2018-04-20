@@ -1,3 +1,5 @@
+//go:generate statik -src=./ui
+
 package main
 
 import (
@@ -14,7 +16,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
-	"strings"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -23,12 +24,14 @@ import (
 	"github.com/fatih/color"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	"github.com/rakyll/statik/fs"
 	"github.com/urfave/cli"
 	"github.com/xuqingfeng/mailman/account"
 	"github.com/xuqingfeng/mailman/contacts"
 	"github.com/xuqingfeng/mailman/lang"
 	"github.com/xuqingfeng/mailman/mail"
 	"github.com/xuqingfeng/mailman/smtp"
+	_ "github.com/xuqingfeng/mailman/statik"
 	"github.com/xuqingfeng/mailman/util"
 )
 
@@ -47,7 +50,7 @@ const (
 
 var (
 	name    = "mailman"
-	version = "0.4.2"
+	version = "master"
 
 	msg             util.Msg
 	enableBasicAuth = false
@@ -141,26 +144,22 @@ COPYRIGHT:
 		router := mux.NewRouter()
 
 		apiSubRouter := router.PathPrefix("/api").Subrouter()
-		apiSubRouter.HandleFunc("/ping", PingHandler)
-		apiSubRouter.HandleFunc("/lang", LangHandler)
-		apiSubRouter.HandleFunc("/mail", MailHandler)
-		apiSubRouter.HandleFunc("/file", FileHandler)
-		apiSubRouter.HandleFunc("/account", AccountHandler)
-		apiSubRouter.HandleFunc("/contacts", ContactsHandler)
-		apiSubRouter.HandleFunc("/smtpServer", SMTPServerHandler)
-		apiSubRouter.HandleFunc("/preview", PreviewHandler)
-		apiSubRouter.HandleFunc("/wslog", WSLogHandler)
+		apiSubRouter.HandleFunc("/ping", pingHandler)
+		apiSubRouter.HandleFunc("/lang", langHandler)
+		apiSubRouter.HandleFunc("/mail", mailHandler)
+		apiSubRouter.HandleFunc("/file", fileHandler)
+		apiSubRouter.HandleFunc("/account", accountHandler)
+		apiSubRouter.HandleFunc("/contacts", contactsHandler)
+		apiSubRouter.HandleFunc("/smtpServer", smtpServerHandler)
+		apiSubRouter.HandleFunc("/preview", previewHandler)
+		apiSubRouter.HandleFunc("/wslog", wsLogHandler)
 
-		// / /index /setting /log
-		rootSubRouter := router.PathPrefix("/").Subrouter()
-		rootSubRouter.HandleFunc("/", IndexHandler)
-		rootSubRouter.HandleFunc("/index", IndexHandler)
-		rootSubRouter.HandleFunc("/setting", SettingHandler)
-		rootSubRouter.HandleFunc("/log", LogHandler)
-		rootSubRouter.HandleFunc("/robots.txt", RobotsHandler)
+		statikFS, err := fs.New()
+		if err != nil {
+			log.Fatal(err)
+		}
 
-		// /assets
-		router.HandleFunc("/assets/"+`{path:\S+}`, AssetsHandler)
+		router.PathPrefix("/").Handler(http.FileServer(statikFS))
 
 		http.ListenAndServe(":"+strconv.Itoa(portInUse), router)
 	}
@@ -191,11 +190,11 @@ COPYRIGHT:
 	app.Run(os.Args)
 }
 
-func PingHandler(w http.ResponseWriter, r *http.Request) {
+func pingHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "pong")
 }
 
-func LangHandler(w http.ResponseWriter, r *http.Request) {
+func langHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 		lg, _ := lang.GetLang()
@@ -229,7 +228,7 @@ func LangHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func MailHandler(w http.ResponseWriter, r *http.Request) {
+func mailHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
@@ -251,7 +250,7 @@ func MailHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func FileHandler(w http.ResponseWriter, r *http.Request) {
+func fileHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
@@ -286,7 +285,7 @@ func FileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func AccountHandler(w http.ResponseWriter, r *http.Request) {
+func accountHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
@@ -340,7 +339,7 @@ func AccountHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func ContactsHandler(w http.ResponseWriter, r *http.Request) {
+func contactsHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
@@ -394,7 +393,7 @@ func ContactsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func SMTPServerHandler(w http.ResponseWriter, r *http.Request) {
+func smtpServerHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
@@ -449,7 +448,7 @@ func SMTPServerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func PreviewHandler(w http.ResponseWriter, r *http.Request) {
+func previewHandler(w http.ResponseWriter, r *http.Request) {
 
 	if "GET" == r.Method {
 
@@ -473,7 +472,7 @@ func PreviewHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func WSLogHandler(w http.ResponseWriter, r *http.Request) {
+func wsLogHandler(w http.ResponseWriter, r *http.Request) {
 
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -500,91 +499,6 @@ func WSLogHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-}
-
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-
-	if !basicAuth(w, r) {
-		http.Error(w, unauthorized, http.StatusUnauthorized)
-		return
-	}
-
-	asset, err := Asset(ASSETS_PREFIX + "/index.html")
-	if err != nil {
-		fmt.Fprint(w, http.StatusNotFound)
-	}
-	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprint(w, string(asset))
-}
-
-func SettingHandler(w http.ResponseWriter, r *http.Request) {
-
-	if !basicAuth(w, r) {
-		http.Error(w, unauthorized, http.StatusUnauthorized)
-		return
-	}
-
-	asset, err := Asset(ASSETS_PREFIX + "/setting.html")
-	if err != nil {
-		fmt.Fprint(w, http.StatusNotFound)
-	}
-	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprint(w, string(asset))
-}
-
-func LogHandler(w http.ResponseWriter, r *http.Request) {
-
-	if !basicAuth(w, r) {
-		http.Error(w, unauthorized, http.StatusUnauthorized)
-		return
-	}
-
-	asset, err := Asset(ASSETS_PREFIX + "/log.html")
-	if err != nil {
-		fmt.Fprint(w, http.StatusNotFound)
-	}
-	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprint(w, string(asset))
-}
-
-func RobotsHandler(w http.ResponseWriter, r *http.Request) {
-
-	asset, err := Asset(ASSETS_PREFIX + "/robots.txt")
-	if err != nil {
-		fmt.Fprint(w, http.StatusNotFound)
-	}
-	w.Header().Set("Content-Type", "text/plain")
-	fmt.Fprint(w, string(asset))
-}
-
-func AssetsHandler(w http.ResponseWriter, r *http.Request) {
-
-	if !basicAuth(w, r) {
-		http.Error(w, unauthorized, http.StatusUnauthorized)
-		return
-	}
-
-	vars := mux.Vars(r)
-	asset, err := Asset(ASSETS_PREFIX + "/assets/" + vars["path"])
-	if err != nil {
-		fmt.Fprint(w, err.Error())
-	}
-	if strings.HasSuffix(vars["path"], ".css") {
-		// fixed (Stylesheet)
-		w.Header().Set("Content-Type", "text/css")
-	} else if strings.HasSuffix(vars["path"], ".js") {
-		// fixed
-		w.Header().Set("Content-Type", "text/javascript")
-	} else if strings.HasSuffix(vars["path"], "png") {
-		w.Header().Set("Content-Type", "image/png")
-	} else if strings.HasSuffix(vars["path"], "ico") {
-		w.Header().Set("Content-Type", "image/x-icon")
-	} else if strings.HasSuffix(vars["path"], "xml") || strings.HasSuffix(vars["path"], "svg") {
-		w.Header().Set("Content-Type", "text/xml")
-	} else if strings.HasSuffix(vars["path"], "json") {
-		w.Header().Set("Content-Type", "application/json")
-	}
-	fmt.Fprint(w, string(asset))
 }
 
 func basicAuth(w http.ResponseWriter, r *http.Request) bool {

@@ -1,4 +1,5 @@
 .DS_Store
-.idea
+
 mailman
-out
+out/*
+!out/.gitkeep
