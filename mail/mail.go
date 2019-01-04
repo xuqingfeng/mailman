@@ -97,7 +97,7 @@ func SendMail(mail Mail) error {
 func ParseMailContent(body string) (content string) {
 
 	// markdown parse
-	parsedContent := blackfriday.MarkdownCommon([]byte(body))
+	parsedContent := blackfriday.Run([]byte(body))
 	content = string(parsedContent)
 
 	// credit: https://github.com/leemunroe/responsive-html-email-template
