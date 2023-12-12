@@ -6,11 +6,12 @@ import (
 	"strconv"
 	"text/template"
 
-	"github.com/russross/blackfriday"
-	"github.com/xuqingfeng/mailman/account"
-	"github.com/xuqingfeng/mailman/contacts"
-	"github.com/xuqingfeng/mailman/smtp"
-	"github.com/xuqingfeng/mailman/util"
+	"mailman/account"
+	"mailman/contacts"
+	"mailman/smtp"
+	"mailman/util"
+
+	"github.com/russross/blackfriday/v2"
 	"gopkg.in/gomail.v2"
 )
 

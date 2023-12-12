@@ -3,7 +3,7 @@ package lang
 import (
 	"testing"
 
-	"github.com/xuqingfeng/mailman/util"
+	"mailman/util"
 )
 
 func TestSaveLang(t *testing.T) {

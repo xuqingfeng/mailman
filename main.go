@@ -18,21 +18,22 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/abbot/go-http-auth"
+	"mailman/account"
+	"mailman/contacts"
+	"mailman/lang"
+	"mailman/mail"
+	"mailman/smtp"
+	_ "mailman/statik"
+	"mailman/util"
+
+	auth "github.com/abbot/go-http-auth"
 	"github.com/briandowns/spinner"
 	"github.com/fatih/color"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
 	"github.com/rakyll/statik/fs"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
-	"github.com/xuqingfeng/mailman/account"
-	"github.com/xuqingfeng/mailman/contacts"
-	"github.com/xuqingfeng/mailman/lang"
-	"github.com/xuqingfeng/mailman/mail"
-	"github.com/xuqingfeng/mailman/smtp"
-	_ "github.com/xuqingfeng/mailman/statik"
-	"github.com/xuqingfeng/mailman/util"
 )
 
 const (

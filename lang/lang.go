@@ -1,7 +1,7 @@
 package lang
 
 import (
-	"github.com/xuqingfeng/mailman/util"
+	"mailman/util"
 )
 
 type Lang struct {

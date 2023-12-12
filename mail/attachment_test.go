@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/xuqingfeng/mailman/util"
+	"mailman/util"
 )
 
 func TestSaveAttachment(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"regexp"
 
 	"encoding/json"
-	"github.com/xuqingfeng/mailman/util"
+	"mailman/util"
 )
 
 type SMTPServer struct {

@@ -4,7 +4,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 
-	"github.com/xuqingfeng/mailman/util"
+	"mailman/util"
 )
 
 const (

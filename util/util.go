@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/rakyll/statik/fs"
+	"github.com/sirupsen/logrus"
 )
 
 const (

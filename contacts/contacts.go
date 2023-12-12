@@ -1,7 +1,7 @@
 package contacts
 
 import (
-	"github.com/xuqingfeng/mailman/util"
+	"mailman/util"
 )
 
 type Contacts struct {
