@@ -3,7 +3,7 @@ package smtp
 import (
 	"testing"
 
-	"github.com/xuqingfeng/mailman/util"
+	"mailman/util"
 )
 
 var (

@@ -3,7 +3,7 @@ package util
 import (
 	"testing"
 
-	_ "github.com/xuqingfeng/mailman/statik"
+	_ "mailman/statik"
 )
 
 func TestGetHomeDir(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/xuqingfeng/mailman/util"
+	"mailman/util"
 )
 
 func SaveAttachment(fileContent []byte, token, fileName string) error {

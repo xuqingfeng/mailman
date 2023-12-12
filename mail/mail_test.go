@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/xuqingfeng/mailman/account"
-	"github.com/xuqingfeng/mailman/smtp"
+	"mailman/account"
+	"mailman/smtp"
 )
 
 func TestMain(m *testing.M) {
