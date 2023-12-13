@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/assets/lib/dropzone/4.3.0/dropzone.min.css">
     <link rel="stylesheet" href="/assets/lib/dropzone/4.3.0/basic.min.css">
     <link rel="stylesheet" href="/assets/lib/sweetalert/1.1.3/sweetalert.css">
-    <link rel="stylesheet" href="/assets/lib/selectize/0.12.1/selectize.default.css">
+    <link rel="stylesheet" href="/assets/lib/selectize/0.15.2/css/selectize.bootstrap5.css">
     <link rel="stylesheet" href="/assets/css/app.css">
     <title>Mailman</title>
 </head>
@@ -23,8 +23,8 @@
 <br>
 <div class="container" id="index" v-cloak>
     <div class="row">
-        <div class="col-lg-2"></div>
-        <div class="col-lg-8">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
             <form action="#" class="form-horizontal" v-on:submit.prevent>
                 <fieldset>
                     <legend>Mailman</legend>
@@ -37,21 +37,21 @@
                     </div>
                     <div class="form-group row m-1">
                         <label for="to" class="col-sm-1 control-label">{{i18n.to}}</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-6">
                             <select class="form-control custom-select" id="to">
                             </select>
                         </div>
                     </div>
                     <div class="form-group row m-1">
                         <label for="cc" class="col-sm-1 control-label">{{i18n.cc}}</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-6">
                             <select class="form-control custom-select" id="cc">
                             </select>
                         </div>
                     </div>
                     <div class="form-group row m-1">
                         <label for="select" class="col-sm-1 control-label">{{i18n.from}}</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-6">
                             <select class="form-control custom-select" id="select" v-model="from">
                                 <option v-for="email in emails" v-bind:value="email">{{email}}</option>
                             </select>
@@ -133,7 +133,7 @@
 <script type="text/javascript" src="/assets/lib/sweetalert/1.1.3/sweetalert.min.js"></script>
 <script type="text/javascript" src="/assets/lib/i18next/2.5.1/i18next.min.js"></script>
 <script type="text/javascript" src="/assets/lib/dropzone/4.3.0/dropzone.min.js"></script>
-<script type="text/javascript" src="/assets/lib/selectize/0.12.1/selectize.min.js"></script>
+<script type="text/javascript" src="/assets/lib/selectize/0.15.2/js/selectize.min.js"></script>
 <script type="text/javascript" src="/assets/js/app.js"></script>
 <script type="text/javascript" src="/assets/js/index.js"></script>
 </body>
