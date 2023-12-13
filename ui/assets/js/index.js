@@ -1,4 +1,4 @@
-    var myDropzone = {},
+var myDropzone = {},
     toContactsLoaded = false,
     ccContactsLoaded = false;
 Dropzone.autoDiscover = false;
@@ -47,11 +47,11 @@ var vue = new Vue({
             }
         });
         $.get('/api/account', function (json) {
-                if (json.success && json.data) {
-                    self.emails = json.data;
-                    self.from = self.emails[0];
-                }
-            })
+            if (json.success && json.data) {
+                self.emails = json.data;
+                self.from = self.emails[0];
+            }
+        })
             .fail(function (err) {
                 swal(self.i18n.oops, err, "error");
             });
@@ -78,23 +78,23 @@ var vue = new Vue({
                     }, function (isConfirm) {
                         if (isConfirm) {
                             var data = JSON.stringify({
-                                    subject: self.subject,
-                                    to: self.to,
-                                    cc: self.cc,
-                                    from: self.from,
-                                    priority: self.priority,
-                                    body: self.body,
-                                    token: self.token,
-                                    attachmentFileNames: getAcceptedFileNames()
-                                });
+                                subject: self.subject,
+                                to: self.to,
+                                cc: self.cc,
+                                from: self.from,
+                                priority: self.priority,
+                                body: self.body,
+                                token: self.token,
+                                attachmentFileNames: getAcceptedFileNames()
+                            });
                             $.post('/api/mail', data, function (json) {
-                                    if (json.success) {
-                                        self.previewLinkIsHidden = true;
-                                        swal(self.i18n.email_delivered, json.msg, "success");
-                                    } else {
-                                        swal(self.i18n.oops, self.i18n.send_email_fail, "error");
-                                    }
-                                })
+                                if (json.success) {
+                                    self.previewLinkIsHidden = true;
+                                    swal(self.i18n.email_delivered, json.msg, "success");
+                                } else {
+                                    swal(self.i18n.oops, self.i18n.send_email_fail, "error");
+                                }
+                            })
                                 .fail(function (err) {
                                     swal(self.i18n.oops, self.i18n.request_fail, "error");
                                 });
@@ -103,23 +103,23 @@ var vue = new Vue({
                 } else {
                     self.sendClicked = true;
                     var data = JSON.stringify({
-                            subject: self.subject,
-                            to: self.to,
-                            cc: self.cc,
-                            from: self.from,
-                            priority: self.priority,
-                            body: self.body,
-                            token: self.token,
-                            attachmentFileNames: getAcceptedFileNames()
-                        });
+                        subject: self.subject,
+                        to: self.to,
+                        cc: self.cc,
+                        from: self.from,
+                        priority: self.priority,
+                        body: self.body,
+                        token: self.token,
+                        attachmentFileNames: getAcceptedFileNames()
+                    });
                     $.post('/api/mail', data, function (json) {
-                            if (json.success) {
-                                self.previewLinkIsHidden = true;
-                                swal(self.i18n.email_delivered, json.msg, "success");
-                            } else {
-                                swal(self.i18n.oops, self.i18n.send_email_fail, "error");
-                            }
-                        })
+                        if (json.success) {
+                            self.previewLinkIsHidden = true;
+                            swal(self.i18n.email_delivered, json.msg, "success");
+                        } else {
+                            swal(self.i18n.oops, self.i18n.send_email_fail, "error");
+                        }
+                    })
                         .fail(function (err) {
                             swal(self.i18n.oops, self.i18n.request_fail, "error");
                         });
@@ -133,12 +133,12 @@ var vue = new Vue({
                 swal(self.i18n.oops, self.i18n.missing_info, "error");
             } else {
                 $.post('/api/preview', JSON.stringify({
-                            body: self.body
-                        }), function (json) {
-                        if (json.success) {
-                            self.previewLinkIsHidden = false;
-                        }
-                    })
+                    body: self.body
+                }), function (json) {
+                    if (json.success) {
+                        self.previewLinkIsHidden = false;
+                    }
+                })
                     .fail(function (err) {
                         swal(self.i18n.oops, self.i18n.request_fail, "error");
                     });
@@ -245,7 +245,7 @@ $(function () {
         },
         create: function (input) {
             if ((new RegExp('^' + REGEX_EMAIL + '$', 'i')).test(input)) {
-                return {email: input};
+                return { email: input };
             }
             var match = input.match(new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i'));
             if (match) {
@@ -312,7 +312,7 @@ $(function () {
         },
         create: function (input) {
             if ((new RegExp('^' + REGEX_EMAIL + '$', 'i')).test(input)) {
-                return {email: input};
+                return { email: input };
             }
             var match = input.match(new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i'));
             if (match) {
