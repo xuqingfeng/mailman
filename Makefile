@@ -17,7 +17,7 @@ fmt:
 	go fmt ./...
 
 test:
-	go vet ./... && go test -v $$(go list ./... | grep -v /vendor/)
+	go vet ./... && go test -v ./...
 
 build-all: fmt generate
 	GOOS=linux GOARCH=amd64 go build -ldflags "-w -s -X main.version=${VERSION}" -o out/mailman-linux-amd64 main.go && \
