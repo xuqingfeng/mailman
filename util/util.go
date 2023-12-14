@@ -2,7 +2,7 @@ package util
 
 import (
 	"errors"
-	"io/ioutil"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -27,7 +27,7 @@ var (
 	}
 	DBPath                string
 	DefaultLang           = "en"
-	SMTPServerNotFoundErr = errors.New("SMTP Server Not Found")
+	ErrSMTPServerNotFound = errors.New("SMTP server not found")
 )
 
 func init() {
@@ -49,7 +49,7 @@ func init() {
 type Msg struct {
 	Success bool        `json:"success"`
 	Message string      `json:"message"`
-	Data    interface{} `json:"data,emitempty"`
+	Data    interface{} `json:"data,omitempty"`
 }
 
 func GetHomeDir() string {
@@ -115,11 +115,12 @@ func GetContentFromStatik(name string) (string, error) {
 	}
 
 	hf, err := staticFS.Open(name)
-	defer hf.Close()
 	if err != nil {
 		return "", err
 	}
-	content, err := ioutil.ReadAll(hf)
+	defer hf.Close()
+
+	content, err := io.ReadAll(hf)
 	if err != nil {
 		return "", err
 	}

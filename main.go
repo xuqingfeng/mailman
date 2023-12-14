@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
@@ -274,7 +273,7 @@ func fileHandler(w http.ResponseWriter, r *http.Request) {
 		for _, fileHeaders := range r.MultipartForm.File {
 			for _, fileHeader := range fileHeaders {
 				f, _ := fileHeader.Open()
-				fileContent, _ := ioutil.ReadAll(f)
+				fileContent, _ := io.ReadAll(f)
 				err := mail.SaveAttachment(fileContent, token, fileHeader.Filename)
 				if err != nil {
 					sendError(w, "E! save attachment fail")

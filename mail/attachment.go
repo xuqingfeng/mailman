@@ -1,7 +1,6 @@
 package mail
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -19,7 +18,7 @@ func SaveAttachment(fileContent []byte, token, fileName string) error {
 		return err
 	}
 	attachmentPath := filepath.Join(homeDir, util.ConfigPath["tmpPath"], token, fileName)
-	err = ioutil.WriteFile(attachmentPath, fileContent, os.ModePerm)
+	err = os.WriteFile(attachmentPath, fileContent, os.ModePerm)
 	if err != nil {
 		util.FileLog.Error(err.Error())
 		return err

@@ -18,7 +18,7 @@ func TestGetSMTPServer(t *testing.T) {
 
 	fakeEmailAddress0 := "test@example.net"
 	_, err := GetSMTPServer(fakeEmailAddress0)
-	if util.SMTPServerNotFoundErr != err {
+	if util.ErrSMTPServerNotFound != err {
 		t.Error("@example.net SMTP Server exists")
 	}
 

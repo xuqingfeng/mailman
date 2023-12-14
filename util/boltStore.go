@@ -17,7 +17,7 @@ var (
 	ContactsBucketName = []byte("contacts")
 	SmtpBucketName     = []byte("smtp")
 	testBucketName     = []byte("test")
-	KeyNotFoundErr     = errors.New("Key Not Found")
+	ErrKeyNotFound     = errors.New("key not found")
 )
 
 type BoltStore struct {
@@ -111,7 +111,7 @@ func (b *BoltStore) Get(k, bucketName []byte) ([]byte, error) {
 	val := bucket.Get(k)
 
 	if val == nil {
-		return nil, KeyNotFoundErr
+		return nil, ErrKeyNotFound
 	}
 
 	return append([]byte{}, val...), nil

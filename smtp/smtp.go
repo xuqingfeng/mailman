@@ -52,7 +52,7 @@ func GetSMTPServer(email string) (SMTPServer, error) {
 		}
 	}
 
-	return SMTPServer{}, util.SMTPServerNotFoundErr
+	return SMTPServer{}, util.ErrSMTPServerNotFound
 }
 func GetCustomSMTPServer() ([]SMTPServer, error) {
 
