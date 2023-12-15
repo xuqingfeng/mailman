@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  relese:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21.x
+      - name: Install dependencies
+        run: go get .
+      - name: Run test
+        run: make test
+      - name: Build binary
+        run: make build-all
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            out/mailman-linux-amd64
+            out/mailman-linux-arm
+            out/mailman-darwin-amd64
+            out/mailman-windows-amd64.exe
