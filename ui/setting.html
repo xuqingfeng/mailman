@@ -39,17 +39,17 @@
                                    v-model="accountPassword">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group m-1">
                         <div class="col-lg-10 col-lg-offset-2">
-                            <button class="btn btn-primary pull-right" v-on:click="saveAccount">{{i18n.save}}</button>
-                            <button class="btn btn-info" v-bind:class="{ 'hidden':!emailClicked }"
+                            <button class="btn btn-primary" v-on:click="saveAccount">{{i18n.save}}</button>
+                            <button class="btn btn-danger" v-bind:class="{ 'hidden':!emailClicked }"
                                     v-on:click="deleteAccount">{{i18n.delete}}
                             </button>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-lg-12">
-                            <span class="label label-success label-gap" v-for="email in emails"
+                            <span class="badge text-bg-info" v-for="email in emails"
                                   v-on:click="manageEmail(email)">
                                 {{email}}
                             </span>
@@ -81,17 +81,17 @@
                                    autocomplete="off" v-model="contactsEmail">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group m-1">
                         <div class="col-lg-10 col-lg-offset-2">
-                            <button class="btn btn-primary pull-right" v-on:click="saveContacts">{{i18n.save}}</button>
-                            <button class="btn btn-info" v-bind:class="{ 'hidden': !contactsClicked }"
+                            <button class="btn btn-primary" v-on:click="saveContacts">{{i18n.save}}</button>
+                            <button class="btn btn-danger" v-bind:class="{ 'hidden': !contactsClicked }"
                                     v-on:click="deleteContacts">{{i18n.delete}}
                             </button>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-lg-12">
-                            <span class="label label-success label-gap" v-for="c in contacts"
+                            <span class="badge text-bg-info" v-for="c in contacts"
                                   v-on:click="manageContacts(c)">
                                 {{c.name}} {{c.email}}
                             </span>
@@ -105,9 +105,9 @@
     <br>
     <div class="row">
         <div class="col-lg-2"></div>
-        <div class="col-lg-8">
+        <h3 class="col-lg-8">
             {{i18n.advanced_settings}}
-        </div>
+        </h3>
         <div class="col-lg-2"></div>
     </div>
     <br>
@@ -119,14 +119,14 @@
         <div class="col-lg-2"></div>
     </div>
     <div class="row">
-        <div class="col-lg-8"></div>
+        <div class="col-lg-2"></div>
         <div class="col-lg-2">
             <select class="form-control" v-model="lang">
                 <option value="en">en</option>
                 <option value="zh">中文</option>
             </select>
         </div>
-        <div class="col-lg-2"></div>
+        <div class="col-lg-8"></div>
     </div>
     <br>
     <div class="row">
@@ -156,17 +156,17 @@
                                    placeholder="25" autocomplete="off">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group m-1">
                         <div class="col-lg-10 col-lg-offset-2">
-                            <button class="btn btn-primary pull-right" v-on:click="saveSmtp">{{i18n.save}}</button>
-                            <button class="btn btn-info" v-bind:class="{ 'hidden': !smtpClicked}"
+                            <button class="btn btn-primary" v-on:click="saveSmtp">{{i18n.save}}</button>
+                            <button class="btn btn-danger" v-bind:class="{ 'hidden': !smtpClicked}"
                                     v-on:click="deleteSmtp">{{i18n.delete}}
                             </button>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-lg-12">
-                            <span class="label label-success label-gap" v-for="s in servers" v-on:click="manageSmtp(s)">
+                            <span class="badge text-bg-info" v-for="s in servers" v-on:click="manageSmtp(s)">
                                 {{s.address}} {{s.server}} {{s.port}}
                             </span>
                         </div>
@@ -178,35 +178,32 @@
     </div>
     <footer>
         <div class="row">
-            <div class="col-lg-12">
-                <div class="col-lg-2"></div>
-                <div class="col-lg-8">
-                    <ul class="list-unstyled">
-                        <li><a href="/index.html">{{i18n.index}}</a></li>
-                        <li><a href="/setting.html">{{i18n.setting}}</a></li>
-                        <li><a href="/log.html" target="_blank">{{i18n.log}}</a></li>
-                    </ul>
-                    <p>
-                        <a href="https://github.com/xuqingfeng/mailman" target="_blank">
-                            <img src="https://img.shields.io/github/stars/xuqingfeng/mailman.svg?style=flat-square&label=Star"
-                                 alt="star">
-                        </a>
-                        <a href="https://github.com/xuqingfeng/mailman" target="_blank">
-                            <img src="https://img.shields.io/github/forks/xuqingfeng/mailman.svg?style=flat-square&label=Fork"
-                                 alt="fork">
-                        </a>
-                        <a href="https://github.com/xuqingfeng/mailman/issues" target="_blank">
-                            <img src="https://img.shields.io/github/issues/xuqingfeng/mailman.svg?style=flat-square"
-                                 alt="issues">
-                        </a>
-                    </p>
-                    <p>
-                        <img src="https://img.shields.io/github/license/xuqingfeng/mailman.svg?style=flat-square"
-                             alt="license">
-                    </p>
-                </div>
-                <div class="col-lg-2"></div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <ul class="list-unstyled">
+                    <li><a href="/index.html">{{i18n.index}}</a></li>
+                    <li><a href="/setting.html">{{i18n.setting}}</a></li>
+                    <li><a href="/log.html" target="_blank">{{i18n.log}}</a></li>
+                </ul>
+                <p>
+                    <a href="https://github.com/xuqingfeng/mailman" target="_blank">
+                        <img src="https://img.shields.io/github/stars/xuqingfeng/mailman.svg?style=flat-square&label=Star"
+                            alt="star">
+                    </a>
+                    <a href="https://github.com/xuqingfeng/mailman" target="_blank">
+                        <img src="https://img.shields.io/github/forks/xuqingfeng/mailman.svg?style=flat-square&label=Fork"
+                            alt="fork">
+                    </a>
+                    <a href="https://github.com/xuqingfeng/mailman/issues" target="_blank">
+                        <img src="https://img.shields.io/github/issues/xuqingfeng/mailman.svg?style=flat-square"
+                            alt="issues">
+                    </a>
+                </p>
+                <p>
+                    <img src="https://img.shields.io/github/license/xuqingfeng/mailman.svg?style=flat-square" alt="license">
+                </p>
             </div>
+            <div class="col-sm-2"></div>
         </div>
     </footer>
 </div>

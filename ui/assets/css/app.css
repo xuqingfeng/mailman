@@ -17,13 +17,6 @@ footer p {
     list-style-type: none;
 }
 
-.label-gap {
-    margin-top: .5em;
-    margin-right: .5em;
-    cursor: pointer;
-    display: inline-block;
-}
-
 /* contacts */
 span.prefix {
     color: darkgray;
