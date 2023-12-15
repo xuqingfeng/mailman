@@ -18,6 +18,8 @@ jobs:
         run: go get .
       - name: Run test
         run: make test
+      - name: Install github.com/rakyll/statik
+        run: go install github.com/rakyll/statik@latest
       - name: Build binary
         run: make build-all
       - name: Release
