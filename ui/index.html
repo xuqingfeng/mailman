@@ -37,21 +37,19 @@
                     </div>
                     <div class="form-group row m-1">
                         <label for="to" class="col-sm-1 control-label">{{i18n.to}}</label>
-                        <div class="col-sm-6">
+                        <div class="col-sm-5">
                             <select class="form-control custom-select" id="to">
                             </select>
                         </div>
-                    </div>
-                    <div class="form-group row m-1">
                         <label for="cc" class="col-sm-1 control-label">{{i18n.cc}}</label>
-                        <div class="col-sm-6">
+                        <div class="col-sm-5">
                             <select class="form-control custom-select" id="cc">
                             </select>
                         </div>
                     </div>
                     <div class="form-group row m-1">
                         <label for="select" class="col-sm-1 control-label">{{i18n.from}}</label>
-                        <div class="col-sm-6">
+                        <div class="col-sm-5">
                             <select class="form-control custom-select" id="select" v-model="from">
                                 <option v-for="email in emails" v-bind:value="email">{{email}}</option>
                             </select>
@@ -60,28 +58,30 @@
                     <div class="form-group row m-1">
                         <label for="textArea" class="col-sm-1 control-label">{{i18n.body}}</label>
                         <div class="col-sm-11">
-                            <textarea class="form-control" rows="15" id="textArea" v-model="body"></textarea>
-                            <span class="help-block">{{i18n.support_markdown_syntax}}</span>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" v-model="priority">{{i18n.high_priority}}
+                            <textarea class="form-control" rows="15" id="textArea" v-model="body" placeholder="{{i18n.support_markdown_syntax}}"></textarea>
+                            <div class="form-checkbox">
+                                <input type="checkbox" class="form-check-input" v-model="priority">
+                                <label class="form-check-label">
+                                    {{i18n.high_priority}}
                                 </label>
                             </div>
                         </div>
                     </div>
                     <br>
                     <div class="form-group row m-1">
-                        <div class="col-sm-10 col-sm-offset-2">
+                        <div class="col-sm-2 offset-sm-8">
                             <button type="submit" class="btn btn-secondary" v-on:click="preview">{{i18n.preview}}</button>
+                        </div>
+                        <div class="col-sm-2">
                             <button type="submit" class="btn btn-primary float-right" v-on:click="send">{{i18n.send}}
                             </button>
                         </div>
                     </div>
+                    <!-- TODO: remove -->
                     <div class="form-group row m-1">
                         <div class="col-sm-10 col-sm-offset-2">
                             <span class="label label-primary" v-bind:class="{ 'hidden':previewLinkIsHidden }"><a
-                                    href="/api/preview" target="_blank"
-                                    style="color: #ffffff;">{{i18n.go_to_preview}}</a></span>
+                                    href="/api/preview" target="_blank">{{i18n.go_to_preview}}</a></span>
                         </div>
                     </div>
                 </fieldset>
@@ -93,7 +93,6 @@
         <div class="col-sm-8">
             <form class="dropzone" id="attachment"></form>
         </div>
-        <!-- <div class="col-sm-2"></div> -->
     </div>
     <footer>
         <div class="row">
