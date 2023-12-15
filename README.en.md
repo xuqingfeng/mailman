@@ -1,12 +1,12 @@
 # mailman
 >web based email client supporting HTML template and SMTP
 
-[中文](./README.md) [DEMO](https://github.com/xuqingfeng/mailman/wiki/Demo)
+[中文](./README.md)
 
 ### Install
 
 ```sh
-go install github.com/xuqingfeng/mailman
+go install github.com/xuqingfeng/mailman@latest
 
 mailman -h
 ```

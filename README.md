@@ -1,12 +1,12 @@
 # mailman
 >支持 HTML 模板和 SMTP 的网页邮件客户端
 
-[English](./README.en.md) [演示](https://github.com/xuqingfeng/mailman/wiki/Demo)
+[English](./README.en.md)
 
 ### 安装
 
 ```sh
-go install github.com/xuqingfeng/mailman
+go install github.com/xuqingfeng/mailman@latest
 
 mailman -h
 ```
@@ -18,5 +18,3 @@ mailman -h
 - [Hotmail](https://www.hotmail.com/)
 - [Outlook](https://www.outlook.com/)
 - [Gmail](https://mail.google.com/)
-
-*注意：* 关于 Gmail 无法发送邮件的问题,查看[这里](https://support.google.com/mail/answer/14257)。
