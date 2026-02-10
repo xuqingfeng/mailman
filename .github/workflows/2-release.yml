@@ -29,4 +29,5 @@ jobs:
             out/mailman-linux-amd64
             out/mailman-linux-arm
             out/mailman-darwin-amd64
+            out/mailman-darwin-arm64
             out/mailman-windows-amd64.exe
