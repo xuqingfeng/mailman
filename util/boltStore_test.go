@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/boltdb/bolt"
+	bolt "go.etcd.io/bbolt"
 )
 
 func TestMain(m *testing.M) {
@@ -96,13 +96,23 @@ func TestDeleteBucket(t *testing.T) {
 }
 
 func TestMultiOpenBolt(t *testing.T) {
-	_, err := bolt.Open("test_data/test.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	tmpFile, err := os.CreateTemp("", "bolt-multiopen-*.db")
 	if err != nil {
-		t.Errorf("bolt open fail %v", err)
+		t.Fatalf("create temp file: %v", err)
 	}
+	path := tmpFile.Name()
+	tmpFile.Close()
+	os.Remove(path) // bbolt will create it
+	defer os.Remove(path)
 
-	_, err = bolt.Open("test_data/test.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	db, err := bolt.Open(path, 0600, &bolt.Options{Timeout: 1 * time.Second})
+	if err != nil {
+		t.Fatalf("bolt open fail %v", err)
+	}
+	defer db.Close()
+
+	_, err = bolt.Open(path, 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err == nil {
-		t.Errorf("bolt reopen should fail %v", err)
+		t.Errorf("bolt reopen should fail (exclusive lock)")
 	}
 }
