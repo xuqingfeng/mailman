@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "copy-assets": "node scripts/copy-assets.js"
+  },
   "devDependencies": {
     "@selectize/selectize": "^0.15.2",
     "bootstrap": "^5.3.8",

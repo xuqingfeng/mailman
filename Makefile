@@ -1,6 +1,6 @@
 VERSION=`git describe --abbrev=0 --tags`
 
-.PHONY: all run
+.PHONY: all build generate copy-assets fmt test run build-all
 
 all: run
 
@@ -10,8 +10,11 @@ run: build
 build: generate
 	go build -o mailman main.go
 
-generate:
+generate: copy-assets
 	go generate
+
+copy-assets:
+	npm run copy-assets
 
 fmt:
 	go fmt ./...
